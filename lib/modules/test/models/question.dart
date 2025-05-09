@@ -1,0 +1,13 @@
+class Question {
+  final String text;
+  final List<String> options;
+  final int correctAnswerIndex;
+  int? selectedOptionIndex;
+
+  Question({
+    required this.text,
+    required this.options,
+    required this.correctAnswerIndex,
+    this.selectedOptionIndex,
+  });
+}
