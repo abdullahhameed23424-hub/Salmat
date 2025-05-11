@@ -25,17 +25,19 @@ class Course {
       required this.discount,
       required this.introVideo});
 
-  factory Course.fromJson(Map<String, dynamic> map) {
+  factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
-      id: map['id'],
-      name: map['name'],
-      decoration: map['decoration'] ?? "",
-      image: map['image'] ?? "",
-      introVideo: map['introVideo'] ?? "",
-      isFree: boolConverter(map['is_free']),
-      price: map['price'] ?? "0".toString(),
-      totalPrice: map['totalPrice'] ?? "0".toString(),
-      discount: map['discount'] ?? "0".toString(),
+      id: json['id'],
+      name: json['name'],
+      decoration: json['decoration'] ?? "",
+      image: json['image'] ?? "",
+      introVideo: json['introVideo'] ?? "",
+      isFree: boolConverter(json['is_free']),
+      price: stringOrZero(json['price']),
+      totalPrice: stringOrZero(json['totalPrice']),
+      discount: stringOrZero(json['discount']),
     );
   }
 }
+
+

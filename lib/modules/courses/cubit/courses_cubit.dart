@@ -16,7 +16,7 @@ class CoursesCubit extends Cubit<CoursesState> {
   final RefreshController refreshController = RefreshController();
   int page = 1;
   late CoursesResponse coursesResponse;
-  List<Course> subjects = [];
+  List<Course> courses = [];
 
   Future<void> getCourses({required int subjectId}) async {
     if (page == 1) {
@@ -24,12 +24,12 @@ class CoursesCubit extends Cubit<CoursesState> {
     }
     try {
       Response response = await Network.getData(
-        url: "${Urls.sections}/$subjectId/subjects/?page=$page",
+        url: "${Urls.sections}/$subjectId?type=courses&page=$page",
       );
       coursesResponse = CoursesResponse.fromJson(response.data);
 
       if (page > 1) {
-        subjects.addAll(coursesResponse.data.courses);
+        courses.addAll(coursesResponse.data.courses);
 
         if (coursesResponse.data.courses.isEmpty) {
           refreshController.loadNoData();
@@ -37,15 +37,16 @@ class CoursesCubit extends Cubit<CoursesState> {
           refreshController.loadComplete();
         }
       } else {
-        subjects = coursesResponse.data.courses;
+        courses = coursesResponse.data.courses;
       }
       page = coursesResponse.data.currentPage + 1;
 
       emit(GetCoursesSuccessState());
     } on DioException catch (error) {
       emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      emit(GetCoursesErrorState(message: unknownError()));
     }
+    // catch (error) {
+    //   emit(GetCoursesErrorState(message: unknownError()));
+    // }
   }
 }

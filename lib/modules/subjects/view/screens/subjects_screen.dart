@@ -6,8 +6,10 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:my_project_new/modules/subjects/view/widgets/subject_card.dart';
+import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -39,6 +41,8 @@ class SubjectsScreen extends StatelessWidget {
                     message: state.message);
               }
               return SmartRefresher(
+                header: AppRefresherHeader(),
+                footer: const AppFooter(),
                 enablePullUp: true,
                 controller: subjectsCubit.refreshController,
                 onLoading: () {
@@ -62,6 +66,7 @@ class SubjectsScreen extends StatelessWidget {
                       ),
                     ),
                     SliverGrid.builder(
+                      itemCount: subjectsCubit.subjects.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           mainAxisSpacing: 30.h, crossAxisCount: 2),
                       itemBuilder: (context, index) => SubjectCard(

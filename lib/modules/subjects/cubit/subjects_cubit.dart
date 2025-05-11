@@ -24,7 +24,7 @@ class SubjectsCubit extends Cubit<SubjectsState> {
     }
     try {
       Response response = await Network.getData(
-        url: "${Urls.sections}/$sectionId/subjects/?page=$page",
+        url: "${Urls.sections}/$sectionId?type=subjects&page=$page",
       );
       subjectsResponse = SubjectsResponse.fromJson(response.data);
 

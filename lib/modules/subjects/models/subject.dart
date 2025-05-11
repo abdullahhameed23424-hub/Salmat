@@ -12,7 +12,7 @@ class Subject {
       required this.id});
   factory Subject.fromJson(Map<String, dynamic> json) {
     return Subject(
-      courseCount: json['course_count'] ?? 0,
+      courseCount: json['courses_count'] ?? 0,
       id: json['id'],
       name: json['name'] ?? "",
       image: json['image'] ?? "",

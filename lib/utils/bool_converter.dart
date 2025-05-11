@@ -1,5 +1,4 @@
 bool boolConverter(dynamic value) {
-
   return value == 1 ||
           value == '1' ||
           value == 'yes' ||
@@ -12,4 +11,10 @@ bool boolConverter(dynamic value) {
           value == true
       ? true
       : false;
+}
+
+String stringOrZero(dynamic str) {
+  // take number and return it as string or '0'
+  if (str == null) return "0";
+  return str.toString();
 }

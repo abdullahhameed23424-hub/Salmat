@@ -23,10 +23,9 @@ class _Data {
     return _Data(
       image: json['image'] ?? "",
       currentPage: json['current_page'],
-      seubjects: json['subjects'] == null
+      seubjects: json['data'] == null
           ? []
-          : List<Subject>.from(
-              json['subjects'].map((x) => Subject.fromJson(x))),
+          : List<Subject>.from(json['data'].map((x) => Subject.fromJson(x))),
     );
   }
 }

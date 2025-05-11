@@ -6,10 +6,13 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
 import 'package:my_project_new/modules/courses/view/widgets/course_card.dart';
 import 'package:my_project_new/modules/subjects/models/subject.dart';
+import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/blue_circle.dart';
+import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/try_again.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CoursesScreen extends StatelessWidget {
   const CoursesScreen({super.key, required this.subject});
@@ -44,13 +47,28 @@ class CoursesScreen extends StatelessWidget {
                       message: state.message);
                 }
 
-                return ListView.separated(
-                    itemBuilder: (context, index) => CourseCard(
-                          primaryColor: AppColors.appColors[index % 4],
-                        ),
-                    separatorBuilder: (context, index) =>
-                        Divider(height: 5.h, indent: 65.w, endIndent: 65.w),
-                    itemCount: 12);
+                return SmartRefresher(
+                  header: AppRefresherHeader(),
+                  footer: const AppFooter(),
+                  enablePullUp: true,
+                  controller: coursesCubit.refreshController,
+                  onLoading: () {
+                    coursesCubit.getCourses(subjectId: subject.id);
+                  },
+                  onRefresh: () {
+                    coursesCubit.refreshController.loadComplete();
+                    coursesCubit.page = 1;
+                    coursesCubit.getCourses(subjectId: subject.id);
+                  },
+                  child: ListView.separated(
+                      itemBuilder: (context, index) => CourseCard(
+                            course: coursesCubit.courses[index],
+                            primaryColor: AppColors.appColors[index % 4],
+                          ),
+                      separatorBuilder: (context, index) =>
+                          Divider(height: 5.h, indent: 65.w, endIndent: 65.w),
+                      itemCount: coursesCubit.courses.length),
+                );
               },
             ),
           ),

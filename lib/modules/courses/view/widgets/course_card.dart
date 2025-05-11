@@ -8,12 +8,16 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/modules/courses/view/screens/course_details_screen.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({super.key, required this.primaryColor});
+  const CourseCard(
+      {super.key, required this.primaryColor, required this.course});
   final Color primaryColor;
+  final Course course;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -31,7 +35,7 @@ class CourseCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CourseImage(imagePath: Images.course3),
+              CourseImage(imagePath: course.image),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
@@ -47,7 +51,7 @@ class CourseCard extends StatelessWidget {
                       child: Text(
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          "أشعة 2" * 10,
+                          course.name,
                           style: titilliumBold.copyWith(color: primaryColor)),
                     ),
                     Row(
@@ -86,10 +90,7 @@ class CourseImage extends StatelessWidget {
       height: 155.h,
       child: AspectRatio(
         aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
-        child: Image.asset(
-          imagePath,
-          fit: BoxFit.cover,
-        ),
+        child: CachedImage(image: imagePath),
       ),
     );
   }
