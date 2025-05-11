@@ -109,21 +109,27 @@ class _CourseDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _InfoColumn(title: translate('description', context), children: const [
+          ReadMoreText(
+            maxLength: 110,
+            text:
+                "تحتوي المادة على عدة دروس تأسيسية للدخول الصحيح في المادة ومن ثم الدخول في المنهاج وسيكون هناك أسئلة مؤتمتة واختبارات خلف كل درس",
+          ),
+        ]),
         _InfoColumn(
-          title: translate('description', context),
-          value:
-              "تحتوي المادة على عدة دروس تأسيسية للدخول الصحيح في المادة ومن ثم الدخول في المنهاج وسيكون هناك أسئلة مؤتمتة واختبارات خلف كل درس",
+          title: translate('requirements', context),
+          children: const [
+            ReadMoreText(
+                maxLength: 110,
+                text: "كي تستطيع حضور المادة يجب الاشتراك بها أولا .."),
+          ],
         ),
-        _InfoColumn(
-            title: translate('requirements', context),
-            value: "كي تستطيع حضور المادة يجب الاشتراك بها أولا .."),
-        SizedBox(height: 20.h),
-        Text(
-          translate('teacher', context),
-          style: titilliumBold.copyWith(color: AppColors.PRIMARY),
-        ),
-        SizedBox(height: 20.h),
-        const TeacherCard(),
+        _InfoColumn(title: translate('teacher', context), children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+            child: TeacherCard(),
+          ),
+        ])
       ],
     );
   }
@@ -166,7 +172,7 @@ class _CourseHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 45.h),
+      margin: EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
           color: AppColors.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -271,9 +277,8 @@ class _CourseHeader extends StatelessWidget {
 
 class _InfoColumn extends StatelessWidget {
   final String title;
-  final String value;
-
-  const _InfoColumn({required this.title, required this.value});
+  final List<Widget> children;
+  const _InfoColumn({required this.title, required this.children});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -287,9 +292,7 @@ class _InfoColumn extends StatelessWidget {
           title,
           style: titilliumBold.copyWith(color: AppColors.PRIMARY),
         ),
-        children: [
-          ReadMoreText(maxLength: 110, text: value * 5),
-        ],
+        children: children,
       ),
     );
   }
@@ -309,7 +312,7 @@ class _InfoCircle extends StatelessWidget {
       Stack(
         alignment: Alignment.center,
         children: [
-          Image.asset(image, width: 100.w),
+          Image.asset(image, width: 70.w),
           Text(
             value,
             style:

@@ -21,14 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
   late Timer _timer;
   @override
   void initState() {
-    _timer = Timer.periodic(
-      const Duration(seconds: 2),
-      (timer) {
+    _timer = Timer(
+      const Duration(milliseconds: 500),
+      () {
         context.read<LocalizationCubit>().init(context: context);
 
         if (AppSharedPreferences.hasToken) {
-          pushAndRemoveUntiTo(context,
-              toPage: BottomNavScreen(key: bottomNavScreen));
+          pushAndRemoveUntiTo(context, toPage: BottomNavScreen());
         } else {
           pushAndRemoveUntiTo(context, toPage: const GetStartedScreen());
         }

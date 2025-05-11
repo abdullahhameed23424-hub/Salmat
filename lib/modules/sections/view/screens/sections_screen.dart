@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart'; 
+import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/sections/cubit/sections_cubit.dart';
 import 'package:my_project_new/modules/sections/view/widgets/section_card.dart';
@@ -53,7 +53,7 @@ class SectionsScreen extends StatelessWidget {
                   SliverPadding(
                       padding: EdgeInsets.symmetric(vertical: 18.h),
                       sliver: SliverToBoxAdapter(
-                        child: Text(translate("success_reminder", context),
+                        child: Text(sectionsCubit.headerText,
                             style: titilliumSemiBold),
                       )),
                   SliverList.separated(

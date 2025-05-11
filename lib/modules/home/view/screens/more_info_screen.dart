@@ -7,7 +7,9 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
+import 'package:my_project_new/modules/auth/view/screens/profile_screen.dart';
 import 'package:my_project_new/modules/auth/view/screens/settings_screen.dart';
+import 'package:my_project_new/modules/info/view/screens/contact_us_screen.dart';
 import 'package:my_project_new/modules/test/view/screens/completed_tests_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
@@ -22,6 +24,38 @@ class MoreInfoScreen extends StatelessWidget {
   MoreInfoScreen({super.key});
   final List<Map<String, dynamic>> menuItems = [
     {
+      "icon": Icons.person_outline_outlined,
+      "title": "my_info",
+      "onTap": (BuildContext context) {
+        pushTo(
+            context: context,
+            toPage: ProfileScreen(
+              authCubit: AuthCubit()..getProfile(),
+            ));
+      }
+    },
+    {
+      "icon": Icons.subject,
+      "title": "my_subjects",
+      "onTap": (BuildContext context) {
+        pushTo(context: context, toPage: const UserSubjectsScreen());
+      }
+    },
+    {
+      "image": Images.pointsIcon,
+      "title": "my_points",
+      "onTap": (BuildContext context) {
+        pushTo(context: context, toPage: const PointsRecordScreen());
+      }
+    },
+    {
+      "icon": Icons.download_outlined,
+      "title": "downloaded_lessons",
+      "onTap": (BuildContext context) {
+        // pushTo(context: context, toPage: const PointsRecordScreen());
+      }
+    },
+    {
       "image": Images.libraryIcon,
       "title": "library",
       "onTap": (BuildContext context) {
@@ -29,22 +63,8 @@ class MoreInfoScreen extends StatelessWidget {
       }
     },
     {
-      "image": Images.settingsIcon,
-      "title": "subjects",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const UserSubjectsScreen());
-      }
-    },
-    {
-      "image": Images.pointsIcon,
-      "title": "points_record",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const PointsRecordScreen());
-      }
-    },
-    {
       "image": Images.testIcon,
-      "title": "exams",
+      "title": "completed_tests",
       "onTap": (BuildContext context) {
         pushTo(context: context, toPage: const CompletedTestsScreen());
       }
@@ -60,7 +80,7 @@ class MoreInfoScreen extends StatelessWidget {
       "image": Images.settingsIcon,
       "title": "settings",
       "onTap": (BuildContext context) {
-        pushTo(context: context, toPage:  SettingsScreen());
+        pushTo(context: context, toPage: SettingsScreen());
       }
     },
     {
@@ -68,6 +88,13 @@ class MoreInfoScreen extends StatelessWidget {
       "title": "privacy_policy",
       "onTap": (BuildContext context) {
         pushTo(context: context, toPage: const PrivacyPolicyScreen());
+      }
+    },
+    {
+      "icon": Icons.call,
+      "title": "contact_us",
+      "onTap": (BuildContext context) {
+        pushTo(context: context, toPage: const ContactInfoScreen());
       }
     },
     {
@@ -116,17 +143,23 @@ class MoreInfoScreen extends StatelessWidget {
                       },
                       title: Text(translate(menuItems[index]['title'], context),
                           style: titilliumBold),
-                      leading: Image.asset(
-                        menuItems[index]['image'],
-                        height: 35.h,
-                      ),
+                      leading: menuItems[index]['image'] != null
+                          ? Image.asset(
+                              menuItems[index]['image'],
+                              height: 35.h,
+                            )
+                          : Icon(
+                              menuItems[index]['icon'],
+                              color: AppColors.PRIMARY,
+                              size: 35.sp,
+                            ),
                     ),
                   ),
                   if (index != menuItems.length - 1)
                     Divider(
                         indent: 0.1.sw,
                         endIndent: 0.1.sw,
-                        height: 25.h,
+                        height: 12.h,
                         color: AppColors.GRAY)
                 ],
               ),

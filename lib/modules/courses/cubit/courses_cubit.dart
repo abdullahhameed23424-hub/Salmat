@@ -44,9 +44,8 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesSuccessState());
     } on DioException catch (error) {
       emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(GetCoursesErrorState(message: unknownError()));
     }
-    // catch (error) {
-    //   emit(GetCoursesErrorState(message: unknownError()));
-    // }
   }
 }

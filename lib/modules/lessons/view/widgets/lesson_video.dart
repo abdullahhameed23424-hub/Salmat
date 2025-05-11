@@ -33,56 +33,53 @@ class _LessonVideoState extends State<LessonVideo> {
   Widget build(BuildContext context) {
     return Hero(
         tag: " widget.courseScreen.tag", // to do
-        child: Container(
-          color: Colors.black,
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: BlocProvider(
-                lazy: false,
-                create: (context) => videoCubit
-                  ..setStreams([
-                    MyVideo(
-                        link:
-                            "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
-                        value: 0,
-                        quality: "")
-                  ])
-                  ..initFromNetwork2(0, Duration.zero),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: BlocBuilder<VideoCubit, VideoState>(
-                    builder: (context, state) {
-                      if (state is VideoLoadingState) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.PRIMARY,
-                          ),
-                        );
-                      }
-                      if (state is VideoErrorState) {
-                        return TryAgain(
-                          message: state.error,
-                          onTap: () {
-                            videoCubit
-                              ..setStreams([
-                                MyVideo(
-                                    link:
-                                        "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
-                                    value: 0,
-                                    quality: "")
-                              ])
-                              ..initFromNetwork2(0, Duration.zero);
-                          },
-                        );
-                      }
-
-                      return VideoWidget2(
-                        videoCubit: context.read<VideoCubit>(),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: BlocProvider(
+              lazy: false,
+              create: (context) => videoCubit
+                ..setStreams([
+                  MyVideo(
+                      link:
+                          "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
+                      value: 0,
+                      quality: "")
+                ])
+                ..initFromNetwork2(0, Duration.zero),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: BlocBuilder<VideoCubit, VideoState>(
+                  builder: (context, state) {
+                    if (state is VideoLoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.PRIMARY,
+                        ),
                       );
-                    },
-                  ),
+                    }
+                    if (state is VideoErrorState) {
+                      return TryAgain(
+                        message: state.error,
+                        onTap: () {
+                          videoCubit
+                            ..setStreams([
+                              MyVideo(
+                                  link:
+                                      "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_1MB.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
+                                  value: 0,
+                                  quality: "")
+                            ])
+                            ..initFromNetwork2(0, Duration.zero);
+                        },
+                      );
+                    }
+
+                    return VideoWidget2(
+                      videoCubit: context.read<VideoCubit>(),
+                    );
+                  },
                 ),
-              )),
-        ));
+              ),
+            )));
   }
 }

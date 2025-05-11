@@ -26,19 +26,19 @@ class BottomNavBarState extends State<BottomNavBar> {
       backgroundColor: Colors.transparent,
       color: AppColors.SECONDRY,
       buttonBackgroundColor: const Color.fromARGB(255, 243, 243, 243),
-      index: BottomNavScreen.selectedPage,
+      index: selectedPage.value,
       items: List.generate(
         icons.length,
         (index) {
           return NavButton(
             icons: icons,
-            page: BottomNavScreen.selectedPage,
+            page: selectedPage.value,
             index: index,
           );
         },
       ),
       onTap: (index) {
-        if (BottomNavScreen.selectedPage != index) {
+        if (selectedPage.value != index) {
           widget.onChange(index);
           setState(() {});
         }

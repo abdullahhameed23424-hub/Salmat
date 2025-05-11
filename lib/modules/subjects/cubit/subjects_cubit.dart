@@ -17,7 +17,8 @@ class SubjectsCubit extends Cubit<SubjectsState> {
   int page = 1;
   late SubjectsResponse subjectsResponse;
   List<Subject> subjects = [];
-
+  String headerText = '';
+  String headerImage = '';
   Future<void> getSubjects({required int sectionId}) async {
     if (page == 1) {
       emit(GetSubjectsLoadingState());
@@ -38,6 +39,8 @@ class SubjectsCubit extends Cubit<SubjectsState> {
         }
       } else {
         subjects = subjectsResponse.data.seubjects;
+        headerImage = subjectsResponse.exteraData.image;
+        headerText = subjectsResponse.exteraData.headerText;
       }
       page = subjectsResponse.data.currentPage + 1;
 

@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                   } else if (state is LoginSuccessState) {
                     pushAndRemoveUntiTo(context,
                         toPage: BottomNavScreen(
-                          key: bottomNavScreen,
+                    
                         ));
                   }
                 },

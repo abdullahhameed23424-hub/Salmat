@@ -39,11 +39,11 @@ class _LessonsDetailsScreenState extends State<LessonsDetailsScreen>
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarBorderRadius: BorderRadius.zero,
-      backgroundColor: AppColors.BLACK,
       title: "الأشعة 1",
       body: ListView(
         clipBehavior: Clip.none,
         children: <Widget>[
+          // SizedBox(height: 10.h),
           LessonVideo(oneCourseCubit: CoursesCubit()),
           const ServerOptions(),
           Stack(
@@ -53,10 +53,8 @@ class _LessonsDetailsScreenState extends State<LessonsDetailsScreen>
                 clipBehavior: Clip.none,
                 transform: Matrix4.translationValues(0, 85.h, 0),
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
+                  color: Colors.white,
+                ),
                 child: Column(
                   children: [
                     SizedBox(height: 22.h),
@@ -127,6 +125,7 @@ class _LessonTapsState extends State<_LessonTaps> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         LessonButtonsTabbar(
           controller: widget.controller,
@@ -137,11 +136,9 @@ class _LessonTapsState extends State<_LessonTaps> {
           },
         ),
         if (LessonsCubit.selectedButton == 0)
-          _VideoResolutions()
+          _LessonImages()
         else if (LessonsCubit.selectedButton == 1)
           _LessonAttachments()
-        else if (LessonsCubit.selectedButton == 2)
-          _LessonImages(),
       ],
     );
   }
@@ -217,7 +214,7 @@ class _LessonHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.none,
-      // color: Colors.black,
+      color: Colors.white,
       child: Container(
           width: 1.sw,
           height: 105.h,
@@ -251,14 +248,38 @@ class _LessonHeader extends StatelessWidget {
                         color: AppColors.WHITE, fontSize: 14.sp),
                   ),
                   const Spacer(),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Image.asset(Images.whiteShape, width: 100.w),
-                      // Text(translate('paid', context),
-                      //     style:
-                      //         titilliumBold.copyWith(color: AppColors.PRIMARY))
-                    ],
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.white,
+                        context: context,
+                        builder: (context) => Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.black,
+                                  size: 30.sp,
+                                )),
+                            _VideoResolutions(),
+                          ],
+                        ),
+                      );
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(Images.whiteShape, width: 100.w),
+                        Text(translate('download', context),
+                            style: titilliumBold.copyWith(
+                                color: AppColors.PRIMARY))
+                      ],
+                    ),
                   ),
                   SizedBox(width: 8.w)
                 ],
@@ -301,7 +322,9 @@ class _ServerOptionsState extends State<ServerOptions> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: Colors.black),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+      ),
       padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Row(
         children: <Widget>[
@@ -312,8 +335,7 @@ class _ServerOptionsState extends State<ServerOptions> {
                 Text(
                   translate('use_backup_server', context),
                   textAlign: TextAlign.center,
-                  style: titilliumSemiBold.copyWith(
-                      fontSize: 8.sp, color: Colors.white),
+                  style: titilliumBold.copyWith(fontSize: 8.sp),
                 ),
               ],
             ),
@@ -327,11 +349,11 @@ class _ServerOptionsState extends State<ServerOptions> {
               });
             },
             borderRadius: BorderRadius.circular(20),
-            borderColor: Colors.white,
+            borderColor: Colors.grey,
             selectedColor: Colors.white,
             fillColor: AppColors.PRIMARY,
             textStyle: titilliumBold.copyWith(fontSize: 8.sp),
-            color: Colors.white,
+            color: Colors.black,
             constraints: BoxConstraints(
               minHeight: 30.h,
               minWidth: 60.w,

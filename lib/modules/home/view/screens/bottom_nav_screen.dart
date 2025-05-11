@@ -18,18 +18,18 @@ import 'package:my_project_new/widgets/app_shimmer.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/description_shimmer.dart';
 
-GlobalKey<BottomNavScreenState> bottomNavScreen = GlobalKey();
+final ValueNotifier selectedPage = ValueNotifier<int>(1);
 
 class BottomNavScreen extends StatefulWidget {
-  const BottomNavScreen({required super.key});
-  static int selectedPage = 1;
+  const BottomNavScreen({super.key});
+
   @override
   State<BottomNavScreen> createState() => BottomNavScreenState();
 }
 
 class BottomNavScreenState extends State<BottomNavScreen> {
   void changeScreen(int index) {
-    BottomNavScreen.selectedPage = index;
+    selectedPage.value = index;
     setState(() {});
   }
 
@@ -44,43 +44,54 @@ class BottomNavScreenState extends State<BottomNavScreen> {
   ];
 
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey();
+
+  final AuthCubit authCubit = AuthCubit();
+  @override
+  void initState() {
+    print("init getProfile ");
+    authCubit.getProfile();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        key: scaffoldkey,
-        appBar: PreferredSize(
-          preferredSize: Size(1.sw, 90.h),
-          child: _AppBar(scaffoldkey),
-        ),
-        extendBody: true,
-        body: taps[BottomNavScreen.selectedPage]["screen"],
-        bottomNavigationBar: BottomNavBar(
-          onChange: (index) {
-            BottomNavScreen.selectedPage = index;
-            setState(() {});
-          },
-        ));
+    return ValueListenableBuilder(
+        valueListenable: selectedPage,
+        builder: (context, value, child) => Scaffold(
+            backgroundColor: Colors.white,
+            key: scaffoldkey,
+            appBar: PreferredSize(
+              preferredSize: Size(1.sw, 90.h),
+              child: _AppBar(scaffoldkey, authCubit),
+            ),
+            extendBody: true,
+            body: taps[selectedPage.value]["screen"],
+            bottomNavigationBar: BottomNavBar(
+              onChange: (index) {
+                selectedPage.value = index;
+                setState(() {});
+              },
+            )));
   }
 }
 
 class _AppBar extends StatelessWidget {
-  const _AppBar(this.scaffoldkey);
+  const _AppBar(this.scaffoldkey, this.authCubit);
   final GlobalKey<ScaffoldState> scaffoldkey;
-
+  final AuthCubit authCubit;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit()..getProfile(),
+    return BlocProvider.value(
+      value: authCubit,
       child: BlocBuilder<AuthCubit, AuthState>(
+        bloc: authCubit,
         builder: (context, state) {
           final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
 
           return AppBar(
               actions: const [SizedBox.shrink()], // to hide drawer button
               surfaceTintColor: Colors.transparent,
-              shadowColor:
-                  BottomNavScreen.selectedPage != 2 ? Colors.black : null,
+              shadowColor: selectedPage.value != 2 ? Colors.black : null,
               backgroundColor: AppColors.SECONDRY,
               titleSpacing: 10,
               automaticallyImplyLeading: false,
@@ -103,7 +114,6 @@ class _AppBar extends StatelessWidget {
                         pushTo(
                             context: context,
                             toPage: const NotificationsScreen());
-                        // scaffoldkey.currentState?.openEndDrawer();
                       },
                       icon: Badge.count(
                         backgroundColor: AppColors.RED.withAlpha(210),

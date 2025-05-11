@@ -9,6 +9,9 @@ import 'package:my_project_new/modules/subjects/view/widgets/subject_card.dart';
 import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:my_project_new/widgets/no_data.dart';
+import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -40,8 +43,11 @@ class SubjectsScreen extends StatelessWidget {
                     },
                     message: state.message);
               }
+              if (subjectsCubit.subjects.isEmpty) {
+                return SizedBox(height: 1.sh, child: const Nodata());
+              }
               return SmartRefresher(
-                header: AppRefresherHeader(),
+                header: const AppRefresherHeader(),
                 footer: const AppFooter(),
                 enablePullUp: true,
                 controller: subjectsCubit.refreshController,
@@ -58,17 +64,28 @@ class SubjectsScreen extends StatelessWidget {
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 24.h),
-                          Image.asset(Images.subjectHint, width: 1.sw),
+                          Align(
+                              child: CachedImage(
+                                  image: subjectsCubit.headerImage)),
+                          SizedBox(height: 10.h),
+                          ReadMoreText(
+                              text: subjectsCubit.headerText, maxLength: 120),
                           Divider(endIndent: 70.w, indent: 70.w, height: 48.h)
                         ],
                       ),
                     ),
+                    if (subjectsCubit.subjects.isEmpty)
+                      const SliverToBoxAdapter(child: Nodata()),
                     SliverGrid.builder(
                       itemCount: subjectsCubit.subjects.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 30.h, crossAxisCount: 2),
+                          mainAxisSpacing: 20.h,
+                          crossAxisSpacing: 10.w,
+                          childAspectRatio: 0.87,
+                          crossAxisCount: 2),
                       itemBuilder: (context, index) => SubjectCard(
                           subject: subjectsCubit.subjects[index],
                           primaryColor: AppColors.appColors[index % 4]),

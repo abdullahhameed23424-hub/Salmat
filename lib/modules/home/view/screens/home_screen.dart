@@ -44,7 +44,8 @@ class HomeScreen extends StatelessWidget {
               const _OffersLayer(),
               _ViewAll(
                   onTap: () {
-                    bottomNavScreen.currentState?.changeScreen(0);
+                    selectedPage.value =
+                        0; // bottomNavScreen.currentState?.changeScreen(0);
                   },
                   title: translate("sections", context)),
               _SectionsLayer(),
@@ -123,8 +124,8 @@ class _LibraryLayer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      translate("welcome_message", context),
-                      style: titilliumSemiBold,
+                      translate("platform_library", context),
+                      style: titilliumBold,
                       textAlign: TextAlign.center,
                     ),
                     CustomButton(
@@ -190,13 +191,22 @@ class _ViewAll extends StatelessWidget {
                 onPressed: () {
                   onTap();
                 },
-                child: Text(
-                  translate("view_all", context),
-                  style: titilliumBold.copyWith(
-                    color: AppColors.PURPLE_LIGHT,
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.PURPLE_LIGHT,
-                  ),
+                child: Row(
+                  children: [
+                    Text(
+                      translate("view_all", context),
+                      style: titilliumBold.copyWith(
+                        color: AppColors.PURPLE_LIGHT,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.PURPLE_LIGHT,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 20.sp,
+                      color: AppColors.PURPLE_LIGHT,
+                    )
+                  ],
                 ))
           ],
         ),

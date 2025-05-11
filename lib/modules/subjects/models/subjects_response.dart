@@ -1,26 +1,31 @@
 import 'package:my_project_new/modules/subjects/models/subject.dart';
 
 class SubjectsResponse {
-  final _Data data;
+  final Data data;
+  final ExtraData exteraData;
 
-  SubjectsResponse({required this.data});
+  SubjectsResponse({
+    required this.data,
+    required this.exteraData,
+  });
 
   factory SubjectsResponse.fromJson(Map<String, dynamic> json) {
-    return SubjectsResponse(data: _Data.fromJson(json['data']));
+    return SubjectsResponse(
+        exteraData: ExtraData.fromJson(json['extra_data']['info']),
+        data: Data.fromJson(json['data']['original']['data']));
   }
 }
 
-class _Data {
+class Data {
   final int currentPage;
   final List<Subject> seubjects;
   final String image;
-
-  _Data(
+  Data(
       {required this.image,
       required this.currentPage,
       required this.seubjects});
-  factory _Data.fromJson(Map<String, dynamic> json) {
-    return _Data(
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
       image: json['image'] ?? "",
       currentPage: json['current_page'],
       seubjects: json['data'] == null
@@ -28,4 +33,16 @@ class _Data {
           : List<Subject>.from(json['data'].map((x) => Subject.fromJson(x))),
     );
   }
+}
+
+class ExtraData {
+  final String headerText;
+  final String image;
+  ExtraData({
+    required this.headerText,
+    required this.image,
+  });
+
+  factory ExtraData.fromJson(Map<String, dynamic> json) =>
+      ExtraData(headerText: json['header'], image: json['image1']);
 }

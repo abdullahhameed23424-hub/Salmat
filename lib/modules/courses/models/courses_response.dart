@@ -5,7 +5,8 @@ class CoursesResponse {
 
   CoursesResponse({required this.data});
   factory CoursesResponse.fromJson(Map<String, dynamic> json) {
-    return CoursesResponse(data: Data.fromJson(json['data']));
+    return CoursesResponse(
+        data: Data.fromJson(json['data']['original']['data']));
   }
 }
 

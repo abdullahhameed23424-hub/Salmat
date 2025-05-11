@@ -7,6 +7,8 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key, required this.authCubit});
@@ -17,77 +19,92 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(toolbarHeight: 0),
       body: BlocProvider.value(
         value: authCubit,
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.SECONDRY,
-              ),
-              margin: EdgeInsets.symmetric(horizontal: 16.w),
-              padding: EdgeInsets.only(top: 50.h),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 50.w,
-                    backgroundImage:
-                        const AssetImage(Images.ex), // Replace with your image
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            final AuthCubit authCubit = context.read<AuthCubit>();
+            if (state is GetProfileLoadingState) {
+              return const AppLoading();
+            }
+            if (state is GetCodeErrorState) {
+              return TryAgain(
+                  onTap: () {
+                    authCubit.getProfile();
+                  },
+                  message: state.message);
+            }
+            return Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.SECONDRY,
                   ),
-                  SizedBox(height: 8.h),
-                  Text(authCubit.user.fullName,
-                      style: titilliumBold.copyWith(
-                          fontSize: 20.sp, color: AppColors.WHITE)),
-                  SizedBox(height: 8.h),
-                  Text(authCubit.user.education,
-                      style: titilliumBold.copyWith(fontSize: 20.sp)),
-                  SizedBox(height: 54.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  margin: EdgeInsets.symmetric(horizontal: 16.w),
+                  padding: EdgeInsets.only(top: 50.h),
+                  child: Column(
                     children: [
-                      ProfileInfo(
-                          title: translate("dob_label", context),
-                          value: authCubit.user.birthday),
-                      _Divider(),
-                      ProfileInfo(
-                          title: translate('address_label', context),
-                          value: authCubit.user.address),
-                      _Divider(),
-                      ProfileInfo(
-                          title: translate('phone_label', context),
-                          value: authCubit.user.phoneNumber),
+                      CircleAvatar(
+                        radius: 50.w,
+                        backgroundImage: const AssetImage(
+                            Images.ex), // Replace with your image
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(authCubit.user.fullName,
+                          style: titilliumBold.copyWith(
+                              fontSize: 20.sp, color: AppColors.WHITE)),
+                      SizedBox(height: 8.h),
+                      Text(authCubit.user.education,
+                          style: titilliumBold.copyWith(fontSize: 20.sp)),
+                      SizedBox(height: 54.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ProfileInfo(
+                              title: translate("dob_label", context),
+                              value: authCubit.user.birthday),
+                          _Divider(),
+                          ProfileInfo(
+                              title: translate('address_label', context),
+                              value: authCubit.user.address),
+                          _Divider(),
+                          ProfileInfo(
+                              title: translate('phone_label', context),
+                              value: authCubit.user.phoneNumber),
+                        ],
+                      ),
+                      SizedBox(height: 60.h),
                     ],
                   ),
-                  SizedBox(height: 60.h),
-                ],
-              ),
-            ),
-            SizedBox(height: 32.h),
-            Text(translate('other_info_title', context),
-                style: titilliumBold.copyWith(
-                    decoration: TextDecoration.underline)),
-            const SizedBox(height: 10),
-            InfoCard(
-                title: translate('father_name_label', context),
-                value: authCubit.user.fatherName),
-            InfoCard(
-                title: translate('mother_name_label', context),
-                value: authCubit.user.motherName),
-            InfoCard(
-                title: translate('guardian_phone_label', context),
-                value: authCubit.user.familyPhoneNumber),
-            const Spacer(),
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Image.asset(Images.bottomProfile, height: 80.w),
-                  const Spacer(),
-                  Image.asset(Images.profileScreen, height: 100),
-                ],
-              ),
-            ),
-          ],
+                ),
+                SizedBox(height: 32.h),
+                Text(translate('other_info_title', context),
+                    style: titilliumBold.copyWith(
+                        decoration: TextDecoration.underline)),
+                const SizedBox(height: 10),
+                InfoCard(
+                    title: translate('father_name_label', context),
+                    value: authCubit.user.fatherName),
+                InfoCard(
+                    title: translate('mother_name_label', context),
+                    value: authCubit.user.motherName),
+                InfoCard(
+                    title: translate('guardian_phone_label', context),
+                    value: authCubit.user.familyPhoneNumber),
+                const Spacer(),
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Image.asset(Images.bottomProfile, height: 80.w),
+                      const Spacer(),
+                      Image.asset(Images.profileScreen, height: 100),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
