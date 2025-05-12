@@ -22,7 +22,7 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(context: context, toPage: const CourseDetailsScreen());
+        pushTo(context: context, toPage:   CourseDetailsScreen(course: course,));
       },
       child: ZoomIn(
         delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),

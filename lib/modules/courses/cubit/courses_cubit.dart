@@ -23,7 +23,7 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesLoadingState());
     }
     try {
-      Response response = await Network.getData(
+      final Response response = await Network.getData(
         url: "${Urls.sections}/$subjectId?type=courses&page=$page",
       );
       coursesResponse = CoursesResponse.fromJson(response.data);
@@ -46,6 +46,21 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
       emit(GetCoursesErrorState(message: unknownError()));
+    }
+  }
+
+  Future<void> getCourseDetails({required int courseId}) async {
+    emit(GetCourseDetailsLoadingState());
+
+    try {
+      final Response response = await Network.getData(
+          url: "${Urls.sections}/$courseId?type=course_sections");
+
+      emit(GetCourseDetailsSuccessState());
+    } on DioException catch (error) {
+      emit(GetCourseDetailsErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(GetCourseDetailsErrorState(message: unknownError()));
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_project_new/constant/app_colors.dart';
@@ -9,31 +10,56 @@ import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
 import 'package:my_project_new/modules/comments/view/widgets/comment_input_field.dart';
+import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
+import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/modules/courses/view/widgets/course_card.dart';
 import 'package:my_project_new/modules/courses/view/widgets/unit_card.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_card.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
-  const CourseDetailsScreen({super.key});
-
+  const CourseDetailsScreen({super.key, required this.course});
+  final Course course;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: "الأشعة 2",
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        children: [
-          const _CourseHeader(),
-          const _InfoCircles(),
-          SizedBox(height: 20.h),
-          const _CourseDetails(),
-          SizedBox(height: 30.h),
-          const _Units(),
-          SizedBox(height: 30.h),
-          const _ReviewSection()
-        ],
+      title: course.name,
+      body: BlocProvider(
+        create: (context) =>
+            CoursesCubit()..getCourseDetails(courseId: course.id),
+        child: BlocBuilder<CoursesCubit, CoursesState>(
+          builder: (context, state) {
+            final CoursesCubit coursesCubit =
+                BlocProvider.of<CoursesCubit>(context);
+            if (state is GetCourseDetailsLoadingState) {
+              return const AppLoading();
+            }
+            if (state is GetCourseDetailsErrorState) {
+              return TryAgain(
+                  onTap: () {
+                    coursesCubit.getCourseDetails(courseId: course.id);
+                  },
+                  message: state.message);
+            }
+
+            return ListView(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              children: [
+                const _CourseHeader(),
+                const _InfoCircles(),
+                SizedBox(height: 20.h),
+                const _CourseDetails(),
+                SizedBox(height: 30.h),
+                const _Units(),
+                SizedBox(height: 30.h),
+                const _ReviewSection()
+              ],
+            );
+          },
+        ),
       ),
     );
   }

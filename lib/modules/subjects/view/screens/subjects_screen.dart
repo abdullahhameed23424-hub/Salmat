@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:my_project_new/modules/subjects/view/widgets/subject_card.dart';

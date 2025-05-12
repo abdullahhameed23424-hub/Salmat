@@ -53,7 +53,7 @@ class CoursesScreen extends StatelessWidget {
                   return SizedBox(height: 1.sh, child: const Nodata());
                 }
                 return SmartRefresher(
-                  header: AppRefresherHeader(),
+                  header: const AppRefresherHeader(),
                   footer: const AppFooter(),
                   enablePullUp: true,
                   controller: coursesCubit.refreshController,
