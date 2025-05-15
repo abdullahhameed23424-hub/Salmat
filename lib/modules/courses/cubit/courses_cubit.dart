@@ -4,8 +4,10 @@ import 'package:meta/meta.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
+import 'package:my_project_new/modules/courses/models/coures_response.dart';
 import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/modules/courses/models/courses_response.dart';
+import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part 'courses_state.dart';
@@ -49,12 +51,19 @@ class CoursesCubit extends Cubit<CoursesState> {
     }
   }
 
+  late Course couresDetails;
+  List<Unit> units = [];
   Future<void> getCourseDetails({required int courseId}) async {
     emit(GetCourseDetailsLoadingState());
 
     try {
       final Response response = await Network.getData(
           url: "${Urls.sections}/$courseId?type=course_sections");
+
+      final CourseResponse courseResponse =
+          CourseResponse.fromJson(response.data);
+      couresDetails = courseResponse.data.original.coures;
+      units = courseResponse.data.original.data.data;
 
       emit(GetCourseDetailsSuccessState());
     } on DioException catch (error) {

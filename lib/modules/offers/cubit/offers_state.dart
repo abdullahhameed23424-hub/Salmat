@@ -5,12 +5,12 @@ sealed class OffersState {}
 
 final class OffersInitial extends OffersState {}
 
-final class OffersLoadingState extends OffersState {}
+final class GetOffersLoadingState extends OffersState {}
 
-final class OffersSuccessState extends OffersState {}
+final class GetOffersSuccessState extends OffersState {}
 
-final class OffersErrorState extends OffersState {
+final class GetOffersErrorState extends OffersState {
   final String message;
 
-  OffersErrorState({required this.message});
+  GetOffersErrorState({required this.message});
 }

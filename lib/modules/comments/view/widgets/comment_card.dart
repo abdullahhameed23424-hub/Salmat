@@ -4,11 +4,13 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/comments/models/comment.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatelessWidget {
-  final Map<String, dynamic> comment;
+  final Comment comment;
 
   const CommentCard({super.key, required this.comment});
 
@@ -25,7 +27,12 @@ class CommentCard extends StatelessWidget {
               boxShadow: boxShadow,
               color: Colors.white,
               border: Border.all(color: AppColors.GRAY600, width: 2)),
-          child: Image.asset(Images.trainer),
+          child: AspectRatio(
+              aspectRatio: 1,
+              child: CachedImage(
+                image: comment.user.image,
+                boxFit: BoxFit.cover,
+              )),
         ),
         SizedBox(width: 10.w),
         Expanded(
@@ -46,41 +53,22 @@ class CommentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  comment['name'],
+                  comment.user.username,
                   style: titilliumBold,
-                  textDirection: TextDirection.rtl,
+                ),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: Text(
+                    DateFormat('yyyy-MM-dd').format(comment.createdAt),
+                    style: titilliumRegular.copyWith(fontSize: 10.sp),
+                  ),
                 ),
                 SizedBox(height: 8.h),
-                // Text(
-                //   comment['comment'],
-                //   textDirection: TextDirection.rtl,
-                //   style: titilliumSemiBold,
-                // ),
-
                 ReadMoreText(
-                  text: comment['comment'] * 8,
+                  text: comment.body,
                   maxLength: 100,
                 ),
-
                 SizedBox(height: 12.h),
-                Text(
-                  'عرض الردود',
-                  style: titilliumRegular.copyWith(color: AppColors.GRAY600),
-                ),
-                SizedBox(height: 15.h),
-                Row(
-                  children: [
-                    Icon(Icons.thumb_down_outlined, size: 28.sp),
-                    SizedBox(width: 10.w),
-                    Icon(Icons.thumb_up_outlined, size: 28.sp),
-                    const Spacer(),
-                    SizedBox(width: 10.w),
-                    Text('${comment['likes']}  ${translate('likes', context)}',
-                        style: titilliumRegular.copyWith(
-                          color: AppColors.GRAY500,
-                        )),
-                  ],
-                ),
               ],
             ),
           ),

@@ -7,49 +7,48 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
 class UnitCard extends StatelessWidget {
   const UnitCard({
     super.key,
-    required this.index,
+    required this.unit,
   });
-  final int index;
+  final Unit unit;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (index == 0) {
-          pushTo(context: context, toPage: const LessonsScreen());
-        } else {
-          showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                    backgroundColor: AppColors.WHITE,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 30.w, vertical: 10.h),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: <Widget>[
-                          Image.asset(
-                            Images.cantOpenUnit,
-                            width: 320.w,
+        pushTo(context: context, toPage: const LessonsScreen());
+        return;
+        showDialog(
+            context: context,
+            builder: (context) => Dialog(
+                  backgroundColor: AppColors.WHITE,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        Image.asset(
+                          Images.cantOpenUnit,
+                          width: 320.w,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            translate('cannot_open_unit', context),
+                            style: titilliumBold.copyWith(fontSize: 14.sp),
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              translate('cannot_open_unit', context),
-                              style: titilliumBold.copyWith(fontSize: 14.sp),
-                            ),
-                          )
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                  ));
-        }
+                  ),
+                ));
       },
       child: FadeIn(
         duration: const Duration(milliseconds: 400),
@@ -66,14 +65,17 @@ class UnitCard extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Image.asset(index == 0 ? Images.unlockedUnit : Images.lockedUnit,
+              Image.asset(true ? Images.unlockedUnit : Images.lockedUnit,
                   width: 24.w),
               SizedBox(width: 10.w),
-              Text(
-                'الوحدة ${index + 1}',
-                style: titleRegular,
+              Expanded(
+                child: Text(
+                  unit.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: titleRegular,
+                ),
               ),
-              const Spacer(),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Image.asset(Images.unitIcon, width: 42.w),

@@ -6,6 +6,7 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
 import 'package:my_project_new/modules/home/cubit/home_cubit.dart';
 import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
 import 'package:my_project_new/modules/home/view/widgets/home_section_card.dart';
@@ -85,15 +86,12 @@ class _ReviewLayer extends StatelessWidget {
           vertical: 5.h,
           horizontal: 16.w,
         ),
-        child: const Column(
+        child: Column(
           children: [
-            CommentCard(comment: {
-              'name': 'نورمان أحمد',
-              'comment': 'لقد أعجبته كثيراً، شكراً لكم!',
-              'likes': 3,
-            }),
+        
             CommentInputField(
               forPushToCommentsScreen: true,
+              commentsCubit: CommentsCubit(),
             )
           ],
         ),

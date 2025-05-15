@@ -5,12 +5,25 @@ sealed class CommentsState {}
 
 final class CommentsInitial extends CommentsState {}
 
-final class CommentsLoadingState extends CommentsState {}
+final class GetCommentsLoadingState extends CommentsState {}
 
-final class CommentsSuccessState extends CommentsState {}
+final class GetCommentsSuccessState extends CommentsState {}
 
-final class CommentsErrorState extends CommentsState {
+final class GetCommentsErrorState extends CommentsState {
   final String message;
 
-  CommentsErrorState({required this.message});
+  GetCommentsErrorState({required this.message});
 }
+
+final class AddCommentsLoadingState extends CommentsState {}
+
+final class AddCommentsSuccessState extends CommentsState {}
+
+final class AddCommentsErrorState extends CommentsState {
+  final String message;
+
+  AddCommentsErrorState({required this.message});
+}
+
+
+

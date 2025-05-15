@@ -28,22 +28,33 @@ class CachedImage extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: '${Urls.storageUrl}$image',
         fit: boxFit,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-            borderRadius: borderRadius,
-            image: DecorationImage(image: imageProvider, fit: boxFit),
-          ),
-        ),
-        progressIndicatorBuilder: (context, url, progress) => AppShimmer(
-          child: Container(
+        imageBuilder: (context, imageProvider) {
+           
+          return Container(
             decoration: BoxDecoration(
-                color: Colors.grey.shade100, borderRadius: borderRadius),
-          ),
-        ),
-        errorWidget: (context, url, error) => const Icon(
-          Icons.error_outline,
-          color: AppColors.PRIMARY,
-        ),
+              borderRadius: borderRadius,
+              image: DecorationImage(image: imageProvider, fit: boxFit),
+            ),
+          );
+        },
+        progressIndicatorBuilder: (context, url, progress) {
+          return AppShimmer(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade100, borderRadius: borderRadius),
+            ),
+          );
+        },
+        errorListener: (value) {
+          print("imageerror ${value.toString()}");
+        },
+        errorWidget: (context, url, error) {
+          print("imageerror $error  url $url ");
+          return const Icon(
+            Icons.error_outline,
+            color: AppColors.PRIMARY,
+          );
+        },
       ),
     );
   }

@@ -8,15 +8,18 @@ import 'package:my_project_new/constant/dimensions.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
 import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
 import 'package:my_project_new/modules/comments/view/widgets/comment_input_field.dart';
 import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
 import 'package:my_project_new/modules/courses/models/course.dart';
-import 'package:my_project_new/modules/courses/view/widgets/course_card.dart';
+import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/courses/view/widgets/unit_card.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_card.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
@@ -48,12 +51,12 @@ class CourseDetailsScreen extends StatelessWidget {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               children: [
-                const _CourseHeader(),
-                const _InfoCircles(),
+                _CourseHeader(coursesCubit.couresDetails),
+                _InfoCircles(coursesCubit.couresDetails, coursesCubit.units),
                 SizedBox(height: 20.h),
-                const _CourseDetails(),
+                _CourseDetails(course: coursesCubit.couresDetails),
                 SizedBox(height: 30.h),
-                const _Units(),
+                _Units(coursesCubit.units),
                 SizedBox(height: 30.h),
                 const _ReviewSection()
               ],
@@ -76,25 +79,16 @@ class _ReviewSection extends StatelessWidget {
         Text(translate("total_comments", context, args: ["12"]),
             style: titilliumSemiBold.copyWith(color: AppColors.DARK_GRAY)),
         SizedBox(height: 20.h),
-        const CommentCard(comment: {
-          'name': 'نورمان أحمد',
-          'comment': 'لقد أحببته كثيراً، شكراً لكم!',
-          'likes': 3,
-        }),
-        const CommentInputField(forPushToCommentsScreen: true),
+        // const CommentCard( comment: ,),
+          CommentInputField(forPushToCommentsScreen: true,commentsCubit: CommentsCubit(),),
       ],
     );
   }
 }
 
-class _Units extends StatefulWidget {
-  const _Units();
-
-  @override
-  State<_Units> createState() => _UnitsState();
-}
-
-class _UnitsState extends State<_Units> {
+class _Units extends StatelessWidget {
+  const _Units(this.units);
+  final List<Unit> units;
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -120,26 +114,25 @@ class _UnitsState extends State<_Units> {
         ),
       ),
       children: List.generate(
-        3,
-        (index) => UnitCard(index: index),
+        units.length,
+        (index) => UnitCard(unit: units[index]),
       ),
     );
   }
 }
 
 class _CourseDetails extends StatelessWidget {
-  const _CourseDetails();
-
+  final Course course;
+  const _CourseDetails({required this.course});
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _InfoColumn(title: translate('description', context), children: const [
+        _InfoColumn(title: translate('description', context), children: [
           ReadMoreText(
             maxLength: 110,
-            text:
-                "تحتوي المادة على عدة دروس تأسيسية للدخول الصحيح في المادة ومن ثم الدخول في المنهاج وسيكون هناك أسئلة مؤتمتة واختبارات خلف كل درس",
+            text: course.description,
           ),
         ]),
         _InfoColumn(
@@ -151,10 +144,13 @@ class _CourseDetails extends StatelessWidget {
           ],
         ),
         _InfoColumn(title: translate('teacher', context), children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
-            child: TeacherCard(),
-          ),
+          ...List.generate(
+            course.teachers.length,
+            (index) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
+              child: TeacherCard(teacher: course.teachers[index]),
+            ),
+          )
         ])
       ],
     );
@@ -162,8 +158,9 @@ class _CourseDetails extends StatelessWidget {
 }
 
 class _InfoCircles extends StatelessWidget {
-  const _InfoCircles();
-
+  const _InfoCircles(this.course, this.units);
+  final Course course;
+  final List<Unit> units;
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -171,21 +168,21 @@ class _InfoCircles extends StatelessWidget {
         child: _InfoCircle(
           image: Images.unitsCircle,
           title: translate('units', context),
-          value: '12',
+          value: units.length.toString(),
         ),
       ),
       Expanded(
         child: _InfoCircle(
           image: Images.lessonsCircle,
           title: translate("lessons", context),
-          value: '8', // You may want to provide a value here
+          value: course.lessonsCount.toString(),
         ),
       ),
       Expanded(
         child: _InfoCircle(
           image: Images.hoursCircle,
           title: translate("hours", context),
-          value: '20h', // You may want to provide a value here
+          value: "${course.totalLessonsTime}h",
         ),
       ),
     ]);
@@ -193,7 +190,8 @@ class _InfoCircles extends StatelessWidget {
 }
 
 class _CourseHeader extends StatelessWidget {
-  const _CourseHeader();
+  const _CourseHeader(this.course);
+  final Course course;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +208,17 @@ class _CourseHeader extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CourseImage(imagePath: Images.course3),
+              SizedBox(
+                width: 0.78.sw,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CachedImage(
+                    borderRadius: BorderRadius.circular(12),
+                    image: course.image,
+                    boxFit: BoxFit.cover,
+                  ),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 child: Column(
@@ -220,7 +228,7 @@ class _CourseHeader extends StatelessWidget {
                     Text(
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        "تحتوي المادة على عدة دروس تأسيسية للدخول الصحيح ",
+                        course.description,
                         style: titilliumSemiBold),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,7 +236,7 @@ class _CourseHeader extends StatelessWidget {
                         Text(
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            "150.000 SP",
+                            "${course.totalPrice} SP",
                             style: titilliumBold.copyWith(
                                 fontWeight: FontWeight.w900,
                                 fontSize: 18.sp,
@@ -238,35 +246,7 @@ class _CourseHeader extends StatelessWidget {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               context: context,
-                              builder: (context) => SizedBox(
-                                height: 600.h,
-                                child: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16.w, vertical: 16.h),
-                                      child: Text(
-                                        translate(
-                                            'contact_admin_to_buy', context),
-                                        style: titilliumRegular,
-                                      ),
-                                    ),
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          translate("tap_to_contact", context),
-                                          style: titilliumBold.copyWith(
-                                              decoration:
-                                                  TextDecoration.underline),
-                                        )),
-                                    const Spacer(),
-                                    Image.asset(
-                                      Images.contactWhatsapp,
-                                      width: 1.sw,
-                                    )
-                                  ],
-                                ),
-                              ),
+                              builder: (context) => ContactWithAdminDialog(),
                             );
                           },
                           // style: IconButton.styleFrom(padding: const EdgeInsets.all(5)),
