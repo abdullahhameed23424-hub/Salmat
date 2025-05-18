@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
-import 'package:my_project_new/modules/comments/view/screens/comments_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
 
 class CommentInputField extends StatelessWidget {
   const CommentInputField(
       {super.key,
-      this.forPushToCommentsScreen = false,
-      required this.commentsCubit});
+      required this.submitComment,
+      required this.formKey,
+      required this.commentController});
 
-  final bool
-      forPushToCommentsScreen; // to push to comments screen if field clicked in home screen
-
-  final CommentsCubit commentsCubit;
-
+  final void Function() submitComment;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController commentController;
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: commentsCubit.formKey,
+      key: formKey,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         height: 60.h,
@@ -31,13 +27,7 @@ class CommentInputField extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
-                controller: commentsCubit.commentController,
-                onTap: () {
-                  if (forPushToCommentsScreen) {
-                    pushTo(context: context, toPage: CommentsScreen());
-                  }
-                },
-                readOnly: forPushToCommentsScreen,
+                controller: commentController,
                 textDirection: TextDirection.rtl,
                 decoration: const InputDecoration(
                     border: InputBorder.none, hintText: 'اكتب تعليق'),
@@ -45,7 +35,7 @@ class CommentInputField extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  commentsCubit.addComment();
+                  submitComment();
                 },
                 icon: const Icon(Icons.send)),
           ],

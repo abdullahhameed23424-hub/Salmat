@@ -7,6 +7,7 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
+import 'package:my_project_new/modules/comments/view/widgets/comment_input_field_to_push.dart';
 import 'package:my_project_new/modules/home/cubit/home_cubit.dart';
 import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
 import 'package:my_project_new/modules/home/view/widgets/home_section_card.dart';
@@ -52,10 +53,18 @@ class HomeScreen extends StatelessWidget {
               _SectionsLayer(),
               _LibraryLayer(),
               _ViewAll(
-                  onTap: () =>
-                      pushTo(context: context, toPage: CommentsScreen()),
+                  onTap: () {
+                    final CommentsCubit commentsCubit = CommentsCubit();
+                    pushTo(
+                        context: context,
+                        toPage: CommentsScreen(
+                            commentsCubit: commentsCubit,
+                            getComments: () {
+                              commentsCubit.getComments();
+                            }));
+                  },
                   title: translate("comments", context)),
-              const _ReviewLayer(),
+              _ReviewLayer(),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
@@ -76,8 +85,8 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _ReviewLayer extends StatelessWidget {
-  const _ReviewLayer();
-
+  final CommentsCubit commentsCubit = CommentsCubit();
+  _ReviewLayer();
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -88,10 +97,11 @@ class _ReviewLayer extends StatelessWidget {
         ),
         child: Column(
           children: [
-        
-            CommentInputField(
-              forPushToCommentsScreen: true,
-              commentsCubit: CommentsCubit(),
+            CommentInputFieldToPush(
+              commentsCubit: commentsCubit,
+              getComments: () {
+                commentsCubit.getComments();
+              },
             )
           ],
         ),

@@ -155,8 +155,10 @@ class _UserHeader extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(shape: BoxShape.circle),
             child: CachedImage(
+              boxFit: BoxFit.cover,
               image: authCubit.user.image,
               width: 60.w,
+              height: 60.w,
             ),
           ),
           Column(

@@ -1,7 +1,9 @@
 {
-  
-  "comment_added":"تمت إضافة التعليق بنجاح",
+  "comment_added": "تمت إضافة التعليق بنجاح",
   "course": "كورس",
+  "lesson": "الدرس",
+  "no_attachments": "لا يوجد مرفقات",
+  "no_images": "لا يوجد صور",
   "my_info": "معلوماتي الشخصية",
   "downloaded_lessons": "الدروس المحملة",
   "waiting": "قيد الانتظار",

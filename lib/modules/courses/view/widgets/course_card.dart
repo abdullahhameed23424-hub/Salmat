@@ -22,7 +22,11 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(context: context, toPage:   CourseDetailsScreen(course: course,));
+        pushTo(
+            context: context,
+            toPage: CourseDetailsScreen(
+              course: course,
+            ));
       },
       child: ZoomIn(
         delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),
@@ -35,7 +39,13 @@ class CourseCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CourseImage(imagePath: course.image),
+              SizedBox(
+                width: double.infinity,
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CourseImage(imagePath: course.image),
+                ),
+              ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(

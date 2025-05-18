@@ -18,7 +18,7 @@ class AppFooter extends StatelessWidget {
             builder: (context) {
               if (mode == LoadStatus.noMore) {
                 return Padding(
-                  padding: EdgeInsets.only(top: 60.h),
+                  padding: EdgeInsets.only(top: 10.h),
                   child: Text(
                     translate('no_more_data', context),
                     style: titilliumSemiBold,

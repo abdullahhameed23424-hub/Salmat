@@ -9,13 +9,15 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
+import 'package:my_project_new/modules/comments/view/screens/comments_screen.dart';
 import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_input_field.dart';
+import 'package:my_project_new/modules/comments/view/widgets/comment_input_field_to_push.dart';
 import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
 import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/courses/view/widgets/unit_card.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_card.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
@@ -53,12 +55,11 @@ class CourseDetailsScreen extends StatelessWidget {
               children: [
                 _CourseHeader(coursesCubit.couresDetails),
                 _InfoCircles(coursesCubit.couresDetails, coursesCubit.units),
-                SizedBox(height: 20.h),
                 _CourseDetails(course: coursesCubit.couresDetails),
-                SizedBox(height: 30.h),
+                SizedBox(height: 20.h),
                 _Units(coursesCubit.units),
-                SizedBox(height: 30.h),
-                const _ReviewSection()
+                SizedBox(height: 20.h),
+                _ReviewSection(coursesCubit),
               ],
             );
           },
@@ -69,18 +70,67 @@ class CourseDetailsScreen extends StatelessWidget {
 }
 
 class _ReviewSection extends StatelessWidget {
-  const _ReviewSection();
-
+  _ReviewSection(this.coursesCubit);
+  final CoursesCubit coursesCubit;
+  final CommentsCubit commentsCubit = CommentsCubit();
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(translate("total_comments", context, args: ["12"]),
-            style: titilliumSemiBold.copyWith(color: AppColors.DARK_GRAY)),
+        Row(
+          children: <Widget>[
+            Text(
+              translate("total_comments", context, args: [
+                coursesCubit.couresDetails.comments.length.toString()
+              ]),
+              style: titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+            ),
+            const Spacer(),
+            TextButton(
+                onPressed: () {
+                  pushTo(
+                      context: context,
+                      toPage: CommentsScreen(
+                          courseId: coursesCubit.couresDetails.id,
+                          commentsCubit: commentsCubit,
+                          getComments: () {
+                            commentsCubit.getCommentsByCourseId(
+                                courseId: coursesCubit.couresDetails.id);
+                          }));
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      translate("view_all", context),
+                      style: titilliumBold.copyWith(
+                        color: AppColors.PURPLE_LIGHT,
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.PURPLE_LIGHT,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 20.sp,
+                      color: AppColors.PURPLE_LIGHT,
+                    )
+                  ],
+                ))
+          ],
+        ),
         SizedBox(height: 20.h),
-        // const CommentCard( comment: ,),
-          CommentInputField(forPushToCommentsScreen: true,commentsCubit: CommentsCubit(),),
+        if (coursesCubit.couresDetails.comments.isNotEmpty)
+          CommentCard(
+            comment: coursesCubit.couresDetails.comments[0],
+          ),
+        CommentInputFieldToPush(
+          courseId: coursesCubit.couresDetails.id,
+          commentsCubit: commentsCubit,
+          getComments: () {
+            commentsCubit.getCommentsByCourseId(
+                courseId: coursesCubit.couresDetails.id);
+          },
+        ),
       ],
     );
   }
@@ -137,10 +187,8 @@ class _CourseDetails extends StatelessWidget {
         ]),
         _InfoColumn(
           title: translate('requirements', context),
-          children: const [
-            ReadMoreText(
-                maxLength: 110,
-                text: "كي تستطيع حضور المادة يجب الاشتراك بها أولا .."),
+          children: [
+            ReadMoreText(maxLength: 110, text: course.requirements),
           ],
         ),
         _InfoColumn(title: translate('teacher', context), children: [
@@ -197,6 +245,7 @@ class _CourseHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.h),
+      padding: EdgeInsets.only(top: 5.h),
       decoration: BoxDecoration(
           color: AppColors.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -208,8 +257,13 @@ class _CourseHeader extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
+              Container(
                 width: 0.78.sw,
+                decoration: BoxDecoration(
+                  boxShadow: boxShadow,
+                  color: AppColors.WHITE,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: AspectRatio(
                   aspectRatio: 16 / 9,
                   child: CachedImage(

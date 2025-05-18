@@ -1,29 +1,33 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
-class LessonsDetailsScreen extends StatefulWidget {
-  const LessonsDetailsScreen({super.key});
-
+class LessonDetailsScreen extends StatefulWidget {
+  const LessonDetailsScreen({super.key, required this.lesson});
+  final Lesson lesson;
   @override
-  State<LessonsDetailsScreen> createState() => _LessonsDetailsScreenState();
+  State<LessonDetailsScreen> createState() => _LessonDetailsScreenState();
 }
 
-class _LessonsDetailsScreenState extends State<LessonsDetailsScreen>
+class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     with SingleTickerProviderStateMixin {
   late TabController controller;
 
@@ -39,37 +43,58 @@ class _LessonsDetailsScreenState extends State<LessonsDetailsScreen>
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarBorderRadius: BorderRadius.zero,
-      title: "الأشعة 1",
-      body: ListView(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          // SizedBox(height: 10.h),
-          LessonVideo(oneCourseCubit: CoursesCubit()),
-          const ServerOptions(),
-          Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                clipBehavior: Clip.none,
-                transform: Matrix4.translationValues(0, 85.h, 0),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: Column(
+      title: widget.lesson.name,
+      body: BlocProvider(
+        create: (context) =>
+            LessonsCubit()..getLessonDetails(lesson: widget.lesson),
+        child: BlocBuilder<LessonsCubit, LessonsState>(
+          builder: (context, state) {
+            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+            if (state is GetLessonDetailsLoadingState) {
+              return const AppLoading();
+            }
+            if (state is GetLessonDetailsErrorState) {
+              return TryAgain(
+                  onTap: () {
+                    lessonsCubit.getLessonDetails(lesson: widget.lesson);
+                  },
+                  message: state.message);
+            }
+            return ListView(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                LessonVideo(),
+                ServerOptions(),
+                Stack(
+                  alignment: Alignment.topCenter,
                   children: [
-                    SizedBox(height: 22.h),
-                    const _LessonDscription(),
-                    _LessonTaps(controller: controller),
-                    const DoExamButton(),
-                    const NextAndLastLessonButtons(),
+                    Container(
+                      clipBehavior: Clip.none,
+                      transform: Matrix4.translationValues(0, 85.h, 0),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 22.h),
+                          _LessonDscription(
+                              lessonsCubit.lessonDetails.description),
+                          _LessonTaps(
+                              controller: controller,
+                              lessonsCubit: lessonsCubit),
+                          DoExamButton(),
+                          NextAndLastLessonButtons(),
+                        ],
+                      ),
+                    ),
+                    _LessonHeader(lessonsCubit.lessonDetails),
                   ],
                 ),
-              ),
-              const _LessonHeader(),
-            ],
-          ),
-          SizedBox(height: 80.h)
-        ],
+                SizedBox(height: 80.h)
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -113,8 +138,9 @@ class NextAndLastLessonButtons extends StatelessWidget {
 class _LessonTaps extends StatefulWidget {
   const _LessonTaps({
     required this.controller,
+    required this.lessonsCubit,
   });
-
+  final LessonsCubit lessonsCubit;
   final TabController controller;
 
   @override
@@ -136,33 +162,66 @@ class _LessonTapsState extends State<_LessonTaps> {
           },
         ),
         if (LessonsCubit.selectedButton == 0)
-          _LessonImages()
+          _LessonImages(widget.lessonsCubit.lessonDetails)
         else if (LessonsCubit.selectedButton == 1)
-          _LessonAttachments()
+          _LessonAttachments(widget.lessonsCubit.lessonDetails)
       ],
     );
   }
 }
 
 class _LessonImages extends StatelessWidget {
+  final Lesson lesson;
+
+  const _LessonImages(this.lesson);
   @override
   Widget build(BuildContext context) {
+    if (lesson.images.isEmpty) {
+      return SizedBox(
+        height: 180.h,
+        child: Center(
+          child: ZoomIn(
+            child: Text(
+              translate('no_images', context),
+              style: titilliumBold,
+            ),
+          ),
+        ),
+      );
+    }
     return SizedBox(
       height: 180.h,
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
           padding:
               EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h, top: 5),
-          itemCount: 3,
+          itemCount: lesson.images.length,
           separatorBuilder: (context, index) => SizedBox(width: 12.w),
-          itemBuilder: (context, index) => const LessonImageCard()),
+          itemBuilder: (context, index) =>
+              LessonImageCard(imagePath: lesson.images[index])),
     );
   }
 }
 
 class _LessonAttachments extends StatelessWidget {
+  final Lesson lesson;
+
+  const _LessonAttachments(this.lesson);
   @override
   Widget build(BuildContext context) {
+    if (lesson.files.isEmpty) {
+      return SizedBox(
+        height: 180.h,
+        child: Center(
+          child: FadeIn(
+            child: Text(
+              translate('no_attachments', context),
+              style: titilliumBold,
+            ),
+          ),
+        ),
+      );
+    }
     return SizedBox(
       height: 180.h,
       child: GridView.builder(
@@ -170,10 +229,9 @@ class _LessonAttachments extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 10.h, top: 2),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 1, childAspectRatio: 1.2, mainAxisSpacing: 15.h),
-        itemCount: 5,
+        itemCount: lesson.files.length,
         itemBuilder: (BuildContext context, int index) {
-          return const AttachmentCard(
-              imagePath: Images.arabic, label: "ورقة عمل");
+          return AttachmentCard(file: lesson.files[index]);
         },
       ),
     );
@@ -181,8 +239,8 @@ class _LessonAttachments extends StatelessWidget {
 }
 
 class _LessonDscription extends StatelessWidget {
-  const _LessonDscription();
-
+  const _LessonDscription(this.description);
+  final String description;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -196,11 +254,7 @@ class _LessonDscription extends StatelessWidget {
           style: titilliumBold,
         ),
         children: [
-          ReadMoreText(
-              maxLength: 110,
-              text:
-                  "في هذا الفيديو الشيق، نستعرض لكم مقدمة عن أساسيات مادة الأشعة" *
-                      5),
+          ReadMoreText(maxLength: 110, text: description),
         ],
       ),
     );
@@ -208,8 +262,8 @@ class _LessonDscription extends StatelessWidget {
 }
 
 class _LessonHeader extends StatelessWidget {
-  const _LessonHeader();
-
+  const _LessonHeader(this.lesson);
+  final Lesson lesson;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -233,7 +287,7 @@ class _LessonHeader extends StatelessWidget {
             children: <Widget>[
               SizedBox(height: 5.h),
               Text(
-                'الدرس الأول: تأسيس 1',
+                lesson.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: titilliumBold.copyWith(
@@ -243,7 +297,7 @@ class _LessonHeader extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    translate("duration_label", context, args: ['00:16:40']),
+                    translate("duration_label", context, args: [lesson.time]),
                     style: titilliumBold.copyWith(
                         color: AppColors.WHITE, fontSize: 14.sp),
                   ),

@@ -6,16 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/modules/lessons/models/app_file.dart';
 
 class AttachmentCard extends StatelessWidget {
-  final String imagePath;
-  final String label;
   const AttachmentCard({
     super.key,
-    required this.imagePath,
-    required this.label,
+    required this.file,
   });
-
+   
+  final AppFile file;
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
@@ -36,7 +35,7 @@ class AttachmentCard extends StatelessWidget {
                 aspectRatio: 1,
                 child: SizedBox(
                   width: 1.sw,
-                  child: Image.asset(imagePath, fit: BoxFit.contain),
+                  child: Image.asset(file.image, fit: BoxFit.contain),
                 ),
               ),
               Expanded(
@@ -48,11 +47,10 @@ class AttachmentCard extends StatelessWidget {
                       bottomRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                     ),
-                  ),
-                  // padding: const EdgeInsets.symmetric(vertical: 4),
+                  ),  
                   child: Center(
                     child: Text(
-                      label,
+                      file.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,

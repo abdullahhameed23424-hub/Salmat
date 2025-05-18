@@ -1,3 +1,4 @@
+import 'package:my_project_new/modules/comments/models/comment.dart';
 import 'package:my_project_new/modules/teachers/models/teacher.dart';
 import 'package:my_project_new/utils/bool_converter.dart';
 
@@ -12,9 +13,11 @@ class Course {
   final String introVideo;
   final int? parentId;
   final String description;
+  final String requirements;
   final String totalLessonsTime;
   final int lessonsCount;
   final List<Teacher> teachers;
+  final List<Comment> comments;
 
   Course({
     required this.id,
@@ -26,10 +29,12 @@ class Course {
     required this.discount,
     required this.introVideo,
     required this.description,
+    required this.requirements,
     required this.lessonsCount,
     required this.parentId,
     required this.teachers,
     required this.totalLessonsTime,
+    required this.comments,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -37,6 +42,7 @@ class Course {
       id: json['id'],
       parentId: json["parent_id"],
       name: json['name'],
+      requirements: json['requirements'] ?? "",
       image: json['image'] ?? "",
       introVideo: json['introVideo'] ?? "",
       isFree: boolConverter(json['is_free']),
@@ -49,6 +55,9 @@ class Course {
           ? List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)))
           : [],
       totalLessonsTime: getHoursFromTimeString(json["total_lessons_time"]),
+      comments: json["comments"] != null
+          ? List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x)))
+          : [],
     );
   }
 }

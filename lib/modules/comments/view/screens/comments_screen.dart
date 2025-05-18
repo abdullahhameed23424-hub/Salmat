@@ -14,16 +14,35 @@ import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/modern_loading_dialog.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
-class CommentsScreen extends StatelessWidget {
-  CommentsScreen({super.key});
+class CommentsScreen extends StatefulWidget {
+  const CommentsScreen(
+      {super.key,
+      required this.getComments,
+      required this.commentsCubit,
+      this.courseId});
+  final void Function() getComments;
+  final CommentsCubit commentsCubit;
+  final int? courseId;
+  @override
+  State<CommentsScreen> createState() => _CommentsScreenState();
+}
+
+class _CommentsScreenState extends State<CommentsScreen> {
   final GlobalKey<ModernLoadingDialogState> loadingKey =
       GlobalKey<ModernLoadingDialogState>();
+
+  @override
+  void initState() {
+    widget.getComments();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       title: translate('comments', context),
-      body: BlocProvider(
-        create: (context) => CommentsCubit()..getComments(),
+      body: BlocProvider.value(
+        value: widget.commentsCubit,
         child: BlocConsumer<CommentsCubit, CommentsState>(
           listener: (context, state) {
             if (state is AddCommentsLoadingState) {
@@ -47,9 +66,14 @@ class CommentsScreen extends StatelessWidget {
             if (state is GetCommentsErrorState) {
               return TryAgain(
                   onTap: () {
-                    commentsCubit.getComments(); 
+                    if (widget.courseId != null) {
+                      commentsCubit.getCommentsByCourseId(
+                          courseId: widget.courseId!);
+                    } else {
+                      commentsCubit.getComments();
+                    }
                   },
-                  message: state.message); 
+                  message: state.message);
             }
             return Column(
               children: [
@@ -67,9 +91,19 @@ class CommentsScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: CommentInputField(commentsCubit: commentsCubit),
-                )
+                    padding: EdgeInsets.all(16.w),
+                    child: CommentInputField(
+                      commentController: commentsCubit.commentController,
+                      formKey: commentsCubit.formKey,
+                      submitComment: () {
+                        if (widget.courseId != null) {
+                          commentsCubit.addCommentByCourseId(
+                              courseId: widget.courseId!);
+                        } else {
+                          commentsCubit.addComment();
+                        }
+                      },
+                    )),
               ],
             );
           },

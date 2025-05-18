@@ -9,19 +9,17 @@ import 'package:my_project_new/utils/global_functions.dart';
 class LessonImageCard extends StatelessWidget {
   const LessonImageCard({
     super.key,
+    required this.imagePath,
   });
-
+  final String imagePath;
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
       duration: const Duration(milliseconds: 400),
       delay: Duration(milliseconds: 100 * (1 + Random().nextInt(7))),
       child: InkWell(
-        onTap: () => pushTo(
-            context: context,
-            toPage: const ImageViewer(
-                imageUrl:
-                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwlqVwKry2d_Xb54RXjxEGBKP5okLfKCayZUWZ7FheoROo53kisEegIavCtvYySf6Ngxs6LXyZatZgJA-CAgFKF5fWB1pnOH-SlRViAo27JP4QzGVtIzdm-2quNrpviPESF8YEuYAH3Qk/s1600/%25D8%25A3%25D9%2588%25D8%25B1%25D8%25A7%25D9%2582+%25D8%25B9%25D9%2585%25D9%2584+%25D8%25AD%25D8%25AA%25D8%25A7%25D9%2585+%25D8%25AA%25D8%25BA%25D9%2581%25D9%2584_Page_3.jpg")),
+        onTap: () =>
+            pushTo(context: context, toPage: ImageViewer(imageUrl: imagePath)),
         child: AspectRatio(
           aspectRatio: 1,
           child: Container(
@@ -31,11 +29,11 @@ class LessonImageCard extends StatelessWidget {
                 boxShadow: boxShadow,
                 borderRadius: BorderRadiusDirectional.circular(20)),
             child: Hero(
-              tag:
-                  "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwlqVwKry2d_Xb54RXjxEGBKP5okLfKCayZUWZ7FheoROo53kisEegIavCtvYySf6Ngxs6LXyZatZgJA-CAgFKF5fWB1pnOH-SlRViAo27JP4QzGVtIzdm-2quNrpviPESF8YEuYAH3Qk/s1600/%25D8%25A3%25D9%2588%25D8%25B1%25D8%25A7%25D9%2582+%25D8%25B9%25D9%2585%25D9%2584+%25D8%25AD%25D8%25AA%25D8%25A7%25D9%2585+%25D8%25AA%25D8%25BA%25D9%2581%25D9%2584_Page_3.jpg",
+              tag: imagePath,
               child: Image.network(
-                  fit: BoxFit.cover,
-                  "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwlqVwKry2d_Xb54RXjxEGBKP5okLfKCayZUWZ7FheoROo53kisEegIavCtvYySf6Ngxs6LXyZatZgJA-CAgFKF5fWB1pnOH-SlRViAo27JP4QzGVtIzdm-2quNrpviPESF8YEuYAH3Qk/s1600/%25D8%25A3%25D9%2588%25D8%25B1%25D8%25A7%25D9%2582+%25D8%25B9%25D9%2585%25D9%2584+%25D8%25AD%25D8%25AA%25D8%25A7%25D9%2585+%25D8%25AA%25D8%25BA%25D9%2581%25D9%2584_Page_3.jpg"),
+                imagePath,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

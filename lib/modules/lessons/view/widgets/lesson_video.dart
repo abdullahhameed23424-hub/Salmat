@@ -11,10 +11,10 @@ import 'package:my_project_new/widgets/try_again.dart';
 class LessonVideo extends StatefulWidget {
   const LessonVideo({
     super.key,
-    required this.oneCourseCubit,
+    // required this.oneCourseCubit,
   });
 
-  final CoursesCubit oneCourseCubit;
+  // final CoursesCubit oneCourseCubit;
 
   @override
   State<LessonVideo> createState() => _LessonVideoState();

@@ -17,38 +17,14 @@ class UnitCard extends StatelessWidget {
     required this.unit,
   });
   final Unit unit;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(context: context, toPage: const LessonsScreen());
+        pushTo(context: context, toPage: LessonsScreen(unit: unit));
         return;
-        showDialog(
-            context: context,
-            builder: (context) => Dialog(
-                  backgroundColor: AppColors.WHITE,
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: <Widget>[
-                        Image.asset(
-                          Images.cantOpenUnit,
-                          width: 320.w,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            translate('cannot_open_unit', context),
-                            style: titilliumBold.copyWith(fontSize: 14.sp),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ));
+        showDialog(context: context, builder: (context) => LockedUnit());
       },
       child: FadeIn(
         duration: const Duration(milliseconds: 400),
@@ -82,6 +58,39 @@ class UnitCard extends StatelessWidget {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class LockedUnit extends StatelessWidget {
+  const LockedUnit({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: AppColors.WHITE,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            Image.asset(
+              Images.cantOpenUnit,
+              width: 320.w,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Text(
+                textAlign: TextAlign.center,
+                translate('cannot_open_unit', context),
+                style: titilliumBold.copyWith(fontSize: 14.sp),
+              ),
+            )
+          ],
         ),
       ),
     );

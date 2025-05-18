@@ -4,19 +4,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lessons_details_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart'; 
+import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 
 class LessonCard extends StatelessWidget {
   const LessonCard({
     super.key,
+    required this.lesson,
+    required this.index,
   });
 
+  final Lesson lesson;
+  final int index;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(context: context, toPage: const LessonsDetailsScreen());
+        pushTo(context: context, toPage: LessonDetailsScreen(lesson: lesson));
       },
       child: Column(
         children: <Widget>[
@@ -55,7 +61,7 @@ class LessonCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: AppColors.LIGHTGRAY),
                   child: Text(
-                    "الدرس الأول",
+                    "${translate("lesson", context)} ${index + 1}",
                     style: titilliumBold.copyWith(color: AppColors.PRIMARY),
                   ),
                 ),
@@ -103,7 +109,7 @@ class LessonCard extends StatelessWidget {
                   width: 1.sw - 116.w, //1.sw - 40.w - 12.w - (16 * 4).w,
                   child: Text(
                     //////////////////////////// total width , 40 :for image width  and  12.w , 16.w is padding  ,  : 1.sw - 40.w - 12.w - (16 * 4).w,
-                    'تأسيس ${Random().nextInt(5) + 1}',
+                    lesson.name,
                     maxLines: 2,
                     style: titilliumSemiBold,
                     overflow: TextOverflow.ellipsis,
