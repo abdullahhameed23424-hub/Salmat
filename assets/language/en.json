@@ -1,6 +1,7 @@
 {
   "details": "Details",
   "my_info": "My Info",
+  
   "lesson": "Lesson",
   "no_attachments": "No attachments",
   "no_images": "No images",
@@ -116,7 +117,7 @@
   "privacy_policy": "Privacy Policy",
   "about_us": "About Us",
   "app_features": "App Features",
-  "platform_manger": "Platform manger",
+  "platform_manager": "Platform Manager",
   "paid": "Paid",
   "free": "Free",
   "more": "more",

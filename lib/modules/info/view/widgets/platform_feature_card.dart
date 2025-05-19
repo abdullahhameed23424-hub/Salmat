@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/modules/info/view/widgets/corner_border_box.dart';
 
 class PlatformFeatureCard extends StatelessWidget {
   final String number;
   final String text;
-  final String image;
+  final String? image;
 
   const PlatformFeatureCard({
     super.key,
@@ -32,9 +33,15 @@ class PlatformFeatureCard extends StatelessWidget {
             children: [
               Align(
                   alignment: Alignment.topCenter,
-                  child: Image.asset(image, width: 25.w)),
+                  child: (image != null)
+                      ? Image.asset(image!, width: 25.w)
+                      : Text(
+                          number,
+                          style: titleHeader.copyWith(
+                              color: AppColors.PRIMARY, fontFamily: "bagel"),
+                        )),
               Text(
-                text * 5,
+                text,
                 maxLines: 6,
                 style: titilliumRegular,
                 textAlign: TextAlign.center,

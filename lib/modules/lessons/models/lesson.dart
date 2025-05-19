@@ -4,6 +4,7 @@ import 'package:my_project_new/modules/lessons/models/app_file.dart';
 class Lesson {
   final int lessonOrder;
   final int sectionId;
+  final int? examId;
   final int id;
   final int? nextLessonId;
   final String name;
@@ -18,12 +19,13 @@ class Lesson {
   final List<String> images;
 
   final int unitId;
-  Lesson( {
+  Lesson({
+    required this.id,
+    required this.examId,
     required this.images,
     required this.unitId,
     required this.lessonOrder,
     required this.sectionId,
-    required this.id,
     required this.name,
     required this.isFree,
     required this.description,
@@ -40,16 +42,17 @@ class Lesson {
         images: json["images"] != null
             ? List<String>.from(json["images"].map((x) => x))
             : [],
-        unitId: json['section_id'],
         lessonOrder: json["lesson_order"],
+        unitId: json['section_id'],
+        examId: json['exam_id'],
         sectionId: json["section_id"],
         nextLessonId: json["next_lesson_id"],
         id: json["id"],
         name: json["name"],
         isFree: json["is_free"],
         description: json["description"],
-        videoUrl: json["video_url"],
-        videoFile: json["video_file"],
+        videoUrl: json["video_url"] ?? '',
+        videoFile: json["video_file"] ?? "",
         time: json["time"],
         coverImage: json["cover_image"],
         files: json["files"] != null

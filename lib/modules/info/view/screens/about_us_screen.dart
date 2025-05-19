@@ -1,30 +1,71 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
 import 'package:my_project_new/modules/info/view/widgets/contact_row.dart';
 import 'package:my_project_new/modules/info/view/widgets/platform_feature_card.dart';
 import 'package:my_project_new/modules/info/view/widgets/platform_owner_card.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/swaping_point.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
-class AboutUsScreen extends StatelessWidget {
-  const AboutUsScreen({super.key});
+class AboutUsScreen extends StatefulWidget {
+  const AboutUsScreen({super.key, required this.infoCubit});
+
+  final InfoCubit infoCubit;
+
+  @override
+  State<AboutUsScreen> createState() => _AboutUsScreenState();
+}
+
+class _AboutUsScreenState extends State<AboutUsScreen> {
+  @override
+  void initState() {
+    if (widget.infoCubit.state is InfoInitial) {
+      widget.infoCubit.getInfo();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
         title: translate("about_us", context),
-        body: SingleChildScrollView(
-            child: Column(children: <Widget>[_ImagesSlider(), _Info()])));
+        body: BlocProvider.value(
+          value: widget.infoCubit,
+          child: BlocBuilder<InfoCubit, InfoState>(builder: (context, state) {
+            final InfoCubit infoCubit = context.read<InfoCubit>();
+            if (state is GetInfoLoadingState) {
+              return const AppLoading();
+            }
+            if (state is GetInfoErrorState) {
+              return TryAgain(
+                  onTap: () {
+                    infoCubit.getInfo();
+                  },
+                  message: state.message);
+            }
+            return SingleChildScrollView(
+                child: Column(children: <Widget>[
+              _ImagesSlider(infoCubit: infoCubit),
+              _Info(infoCubit: infoCubit)
+            ]));
+          }),
+        ));
   }
 }
 
 class _ImagesSlider extends StatefulWidget {
+  final InfoCubit infoCubit;
+
+  const _ImagesSlider({required this.infoCubit});
   @override
   State<_ImagesSlider> createState() => _ImagesSliderState();
 }
@@ -60,19 +101,17 @@ class _ImagesSliderState extends State<_ImagesSlider> {
                 Image.asset(Images.aboutUsFirst, width: 1.sw),
                 ConnectSlide(
                   backgroundImage: Images.aboutUsLinks1,
-                  child: ContactUsLinks1(),
+                  child: ContactUsLinks1(infoCubit: widget.infoCubit),
                 ),
                 ConnectSlide(
                   backgroundImage: Images.aboutUsLinks2,
-                  child: ContactUsLinks2(),
+                  child: ContactUsLinks2(infoCubit: widget.infoCubit),
                 ),
               ]),
         ),
         SizedBox(height: 3.h),
         SwappingPoint(
-            length: 5, //widget.infoCubit.whoUsImage.length,
-            pageController: controller,
-            currentIndex: _currentindex),
+            length: 3, pageController: controller, currentIndex: _currentindex),
       ],
     );
   }
@@ -99,6 +138,9 @@ class ConnectSlide extends StatelessWidget {
 }
 
 class _Info extends StatelessWidget {
+  final InfoCubit infoCubit;
+
+  const _Info({required this.infoCubit});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -113,44 +155,32 @@ class _Info extends StatelessWidget {
             height: 25.h,
             endIndent: 190.w,
           ),
-          Text.rich(
-            TextSpan(
-              children: [
-                const TextSpan(text: 'مرحباً بكم في تطبيق '),
-                TextSpan(
-                  text: 'سلامات',
-                  style: titilliumRegular.copyWith(color: AppColors.PRIMARY),
-                ),
-                const TextSpan(
-                    text:
-                        ' بإدارة الأستاذ جعفر، وجهتكم الموثوقة نحو عالم المعرفة والتعلم! نحن هنا لنقدم لكم تجربة تعليمية فريدة تجمع بين الابتكار والتفاعل، حيث نؤمن أن التعليم هو مفتاح النجاح في الحياة..'),
-              ],
-            ),
-            style: titilliumRegular,
-          ),
+          Text(infoCubit.infoResponse.aboutUs.description,
+              style: titilliumRegular),
           SizedBox(height: 30.h),
           Text(translate('app_features', context),
               style: titilliumBold.copyWith(color: AppColors.PRIMARY)),
           SizedBox(height: 20.h),
           GridView.builder(
+            itemCount: infoCubit.infoResponse.features.texts.length,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 4,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 0.9,
                 crossAxisCount: 2,
                 mainAxisSpacing: 25.h),
             itemBuilder: (context, index) => PlatformFeatureCard(
-              image: Images.numbers[index % 4],
-              number: '1',
-              text: 'محتوى تعليمي مقسم إلى وحدات صغيرة وسهلة الفهم',
+              image: index < 5 ? Images.numbers[index] : null,
+              number: (index + 1).toString(),
+              text: infoCubit.infoResponse.features.texts[index],
             ),
           ),
           SizedBox(height: 20.h),
-          Text(translate('platform_owner', context),
+          Text(translate('platform_manager', context),
               style: titilliumBold.copyWith(color: AppColors.PRIMARY)),
           SizedBox(height: 20.h),
-          const PlatformOwnerCard(),
+          PlatformManagerCard(
+              platformManager: infoCubit.infoResponse.platformManager),
           SizedBox(height: 40.h),
         ],
       ),
@@ -159,7 +189,9 @@ class _Info extends StatelessWidget {
 }
 
 class ContactUsLinks1 extends StatelessWidget {
-  const ContactUsLinks1({super.key});
+  const ContactUsLinks1({super.key, required this.infoCubit});
+
+  final InfoCubit infoCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -178,13 +210,13 @@ class ContactUsLinks1 extends StatelessWidget {
           SizedBox(height: 5.h),
           ContactRow(
               icon: SvgPicture.asset(Images.whatsapp, width: 24.sp),
-              text: '098877441155'),
+              text: infoCubit.infoResponse.contact.whatsapp),
           ContactRow(
               icon: Icon(Icons.facebook, color: Colors.blue),
-              text: 'Facebook.com'),
+              text: infoCubit.infoResponse.contact.facebook),
           ContactRow(
               icon: Icon(Icons.telegram, color: AppColors.PRIMARY),
-              text: '@Salamat_20'),
+              text: infoCubit.infoResponse.contact.telegram),
         ],
       ),
     );
@@ -192,7 +224,9 @@ class ContactUsLinks1 extends StatelessWidget {
 }
 
 class ContactUsLinks2 extends StatelessWidget {
-  const ContactUsLinks2({super.key});
+  const ContactUsLinks2({super.key, required this.infoCubit});
+
+  final InfoCubit infoCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -211,19 +245,19 @@ class ContactUsLinks2 extends StatelessWidget {
           SizedBox(height: 5.h),
           ContactRow(
               icon: SvgPicture.asset(Images.insta, width: 24.sp),
-              text: 'instgram.com'),
+              text: infoCubit.infoResponse.contact.instagram),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.linkedin,
                 width: 24.sp,
               ),
-              text: 'linkedin.com'),
+              text: infoCubit.infoResponse.contact.linkedin),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.youtube,
                 width: 24.sp,
               ),
-              text: 'youtube.com'),
+              text: infoCubit.infoResponse.contact.youtube),
         ],
       ),
     );

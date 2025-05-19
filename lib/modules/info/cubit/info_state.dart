@@ -5,12 +5,12 @@ sealed class InfoState {}
 
 final class InfoInitial extends InfoState {}
 
-final class InfoLoadingState extends InfoState {}
+final class GetInfoLoadingState extends InfoState {}
 
-final class InfoSuccessState extends InfoState {}
+final class GetInfoSuccessState extends InfoState {}
 
-final class InfoErrorState extends InfoState {
+final class GetInfoErrorState extends InfoState {
   final String message;
 
-  InfoErrorState({required this.message});
+  GetInfoErrorState({required this.message});
 }

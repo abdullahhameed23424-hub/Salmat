@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
@@ -9,10 +8,10 @@ import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/modules/auth/view/screens/profile_screen.dart';
 import 'package:my_project_new/modules/auth/view/screens/settings_screen.dart';
+import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
 import 'package:my_project_new/modules/info/view/screens/contact_us_screen.dart';
 import 'package:my_project_new/modules/test/view/screens/completed_tests_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
-
 import 'package:my_project_new/modules/info/view/screens/about_us_screen.dart';
 import 'package:my_project_new/modules/info/view/screens/privacy_policy_screen.dart';
 import 'package:my_project_new/modules/library/view/screens/library_screen.dart';
@@ -22,6 +21,11 @@ import 'package:my_project_new/modules/teachers/view/screens/teachers_screen.dar
 
 class MoreInfoScreen extends StatelessWidget {
   MoreInfoScreen({super.key});
+
+  static final InfoCubit infoCubit = InfoCubit();
+  
+  // we declare the infoCubit as static to use it in all the screens to call the api once
+
   final List<Map<String, dynamic>> menuItems = [
     {
       "icon": Icons.person_outline_outlined,
@@ -87,21 +91,24 @@ class MoreInfoScreen extends StatelessWidget {
       "image": Images.privacyPolicy,
       "title": "privacy_policy",
       "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const PrivacyPolicyScreen());
+        pushTo(
+            context: context,
+            toPage: PrivacyPolicyScreen(infoCubit: infoCubit));
       }
     },
     {
       "icon": Icons.call,
       "title": "contact_us",
       "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const ContactInfoScreen());
+        pushTo(
+            context: context, toPage: ContactInfoScreen(infoCubit: infoCubit));
       }
     },
     {
       "image": Images.aboutUs,
       "title": "about_us",
       "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const AboutUsScreen());
+        pushTo(context: context, toPage: AboutUsScreen(infoCubit: infoCubit));
       }
     },
   ];

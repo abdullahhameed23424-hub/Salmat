@@ -14,6 +14,8 @@ import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabba
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
+import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
@@ -82,7 +84,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                           _LessonTaps(
                               controller: controller,
                               lessonsCubit: lessonsCubit),
-                          DoExamButton(),
+                          if (lessonsCubit.lessonDetails.examId != null)
+                            DoExamButton(onTap: () {
+                              pushTo(
+                                  context: context,
+                                  toPage: TestScreen(
+                                      examId:
+                                          lessonsCubit.lessonDetails.examId!));
+                            }),
                           NextAndLastLessonButtons(),
                         ],
                       ),

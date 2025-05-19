@@ -16,6 +16,9 @@ class Urls {
   static const String platformComments = "comments/platform";
   static const String sectionComments = "comments/section";
   static const String library = "library";
+  static const String exams = "exams";
+  static const String infos = "infos";
+  static const studentExams = 'student-exams';
 
   static const String checkVerificationCode = "check/verification";
   static const String restPassword = "reset-password";

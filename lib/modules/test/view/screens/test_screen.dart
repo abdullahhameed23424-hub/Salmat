@@ -5,17 +5,19 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/test/cubit/exam_cubit.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
 import 'package:my_project_new/modules/test/view/widgets/test_headar.dart';
 import 'package:my_project_new/modules/test/view/widgets/final_result_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/questions_list.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class TestScreen extends StatelessWidget {
-  const TestScreen({super.key});
-
+  const TestScreen({super.key, required this.examId});
+  final int examId;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -23,10 +25,22 @@ class TestScreen extends StatelessWidget {
       backgroundColor: AppColors.SECONDRY,
       appBarBorderRadius: BorderRadius.zero,
       body: BlocProvider(
-        create: (context) => ExamCubit(),
-        child: BlocBuilder<ExamCubit, ExamState>(
+        create: (context) => TestCubit()..getTest(examId),
+        child: BlocBuilder<TestCubit, TestState>(
           builder: (context, state) {
-            final ExamCubit examCubit = context.read<ExamCubit>();
+            final TestCubit examCubit = context.read<TestCubit>();
+            if (state is GetTestLoadingState) {
+              return const AppLoading();
+            }
+            if (state is GetTestErrorState) {
+              return TryAgain(
+                message: state.message,
+                onTap: () {
+                  examCubit.getTest(examId);
+                },
+              );
+            }
+
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -38,8 +52,10 @@ class TestScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: CustomScrollView(
                 slivers: [
-                  const HeaderImage(),
-                  const CountersSqures(),
+                  ExamHeader(
+                    description: examCubit.test.description,
+                  ),
+                  CountersSqures(testCubit: examCubit),
                   QuestionsList(examCubit: examCubit),
                   if (examCubit.isSubmitted) const FinalResultCard(score: 70),
                   SubmitButton(
@@ -60,7 +76,7 @@ class SubmitButton extends StatelessWidget {
     super.key,
     required this.examCubit,
   });
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -71,7 +87,7 @@ class SubmitButton extends StatelessWidget {
           backgroundColor: AppColors.LIGHTGRAY,
           buttonStyle: titilliumBold.copyWith(color: AppColors.PRIMARY),
           onPressed: () {
-            examCubit.submitExam();
+            examCubit.submitExam(examCubit.test.id);
           },
           label: 'تحقق من الإجابات',
         ),

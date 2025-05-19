@@ -6,8 +6,8 @@ import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
 class DoExamButton extends StatefulWidget {
-  const DoExamButton({super.key});
-
+  const DoExamButton({super.key, required this.onTap});
+  final void Function() onTap;
   @override
   State<DoExamButton> createState() => _DoExamButtonState();
 }
@@ -47,7 +47,7 @@ class _DoExamButtonState extends State<DoExamButton>
             onTapUp: _onTapUp,
             onTapCancel: _onTapCancel,
             onTap: () {
-              pushTo(context: context, toPage: const TestScreen());
+              widget.onTap();
             },
             child: AnimatedScale(
               scale: _scale,

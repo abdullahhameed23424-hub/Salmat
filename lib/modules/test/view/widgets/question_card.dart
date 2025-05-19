@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/test/cubit/exam_cubit.dart';
-import 'package:my_project_new/modules/test/models/question.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
+import 'package:my_project_new/modules/test/models/test_response.dart';
 
 class QuestionCard extends StatefulWidget {
   const QuestionCard(
@@ -13,9 +13,10 @@ class QuestionCard extends StatefulWidget {
       this.padding,
       this.color});
   final Question question;
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
   final EdgeInsets? padding;
   final Color? color;
+
   @override
   State<QuestionCard> createState() => _QuestionCardState();
 }
@@ -42,9 +43,9 @@ class _QuestionCardState extends State<QuestionCard> {
               Color? tileColor;
 
               if (widget.examCubit.isSubmitted) {
-                if (optionIndex == widget.question.correctAnswerIndex) {
+                if (widget.question.options[optionIndex].isTrue) {
                   tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
-                } else if (widget.question.selectedOptionIndex == optionIndex) {
+                } else if (widget.question.options[optionIndex].isChosen) {
                   tileColor = AppColors.PURPLE_LIGHT.withAlpha(200);
                 }
               }
@@ -58,21 +59,21 @@ class _QuestionCardState extends State<QuestionCard> {
                 child: CheckboxListTile(
                   checkColor: AppColors.PRIMARY,
                   fillColor: WidgetStatePropertyAll(AppColors.LIGHTGRAY),
-                  value: widget.question.selectedOptionIndex == optionIndex,
+                  value: widget.question.options[optionIndex].isChosen,
                   onChanged: (value) {
                     if (widget.examCubit.isSubmitted) {
                       return;
                     }
                     setState(() {
                       if (value!) {
-                        widget.question.selectedOptionIndex = optionIndex;
+                        widget.question.options[optionIndex].isChosen = true;
                       } else {
-                        widget.question.selectedOptionIndex = null;
+                        widget.question.options[optionIndex].isChosen = false;
                       }
                     });
                   },
                   title: Text(
-                    widget.question.options[optionIndex],
+                    widget.question.options[optionIndex].name,
                     style: titilliumRegular,
                   ),
                 ),

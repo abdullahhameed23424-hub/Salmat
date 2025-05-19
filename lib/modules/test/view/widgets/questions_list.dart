@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/modules/test/cubit/exam_cubit.dart';
-import 'package:my_project_new/modules/test/models/question.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
+import 'package:my_project_new/modules/test/models/test_response.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_icon.dart';
 
@@ -11,7 +11,7 @@ class QuestionsList extends StatelessWidget {
     required this.examCubit,
   });
 
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class QuestionForm extends StatefulWidget {
   });
 
   final Question question;
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
 
   @override
   State<QuestionForm> createState() => _QuestionFormState();

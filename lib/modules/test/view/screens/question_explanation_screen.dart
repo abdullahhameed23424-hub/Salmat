@@ -4,15 +4,16 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/test/cubit/exam_cubit.dart';
-import 'package:my_project_new/modules/test/models/question.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
+import 'package:my_project_new/modules/test/models/option.dart';
+import 'package:my_project_new/modules/test/models/test_response.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/explanation_video.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 
 class QuestionExplanationScreen extends StatelessWidget {
   const QuestionExplanationScreen({super.key, required this.examCubit});
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -70,9 +71,30 @@ class QuestionExplanationScreen extends StatelessWidget {
                 QuestionCard(
                     padding: EdgeInsets.all(8.w),
                     question: Question(
-                      correctAnswerIndex: 1,
+                      id: 1,
+                      pageNumber: 1,
+                      degree: 1,
+                      video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                      image: 'https://via.placeholder.com/150',
+                      chosenAndTrue: true,
                       text: 'المقدار 2x(x+3)-(x+3) يساوي:' * 3,
-                      options: ['2(x+1)(x+3)' * 3, '2x+3' * 2, 'x(2x+3)' * 5],
+                      options: [
+                        Option(
+                            id: 1,
+                            name: '2(x+1)(x+3)',
+                            isTrue: true,
+                            isChosen: true),
+                        Option(
+                            id: 2,
+                            name: '2x+3',
+                            isTrue: false,
+                            isChosen: false),
+                        Option(
+                            id: 3,
+                            name: 'x(2x+3)',
+                            isTrue: false,
+                            isChosen: false),
+                      ],
                     ),
                     examCubit: examCubit),
                 SizedBox(height: 10.h),

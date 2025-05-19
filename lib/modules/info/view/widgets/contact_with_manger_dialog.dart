@@ -4,16 +4,18 @@ import 'package:flutter_svg/svg.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/info/view/screens/about_us_screen.dart';
+import 'package:my_project_new/modules/info/models/info_response.dart';
 import 'package:my_project_new/modules/info/view/widgets/contact_row.dart';
 
 class ContactWithMangerDialog extends StatelessWidget {
-  const ContactWithMangerDialog({super.key});
-
-  static void show(context) {
+  const ContactWithMangerDialog({super.key, required this.platformManager});
+  final PlatformManaGer platformManager;
+  static void show(context, {required PlatformManaGer platformManager}) {
     showDialog(
       context: context,
-      builder: (context) => const ContactWithMangerDialog(),
+      builder: (context) => ContactWithMangerDialog(
+        platformManager: platformManager,
+      ),
     );
   }
 
@@ -28,7 +30,7 @@ class ContactWithMangerDialog extends StatelessWidget {
           child: Row(
             children: [
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,23 +47,23 @@ class ContactWithMangerDialog extends StatelessWidget {
                           Images.whatsapp,
                           width: 28.sp,
                         ),
-                        text: '098877441155'),
+                        text: platformManager.whatsapp),
                     ContactRow(
                         icon: Icon(
                             size: 30.sp, Icons.facebook, color: Colors.blue),
-                        text: 'Facebook.com'),
+                        text: platformManager.facebook),
                     ContactRow(
                         icon: Icon(
                             size: 30.sp,
                             Icons.telegram,
                             color: AppColors.PRIMARY),
-                        text: '@Salamat_20'),
+                        text: platformManager.telegram),
                     ContactRow(
                         icon: SvgPicture.asset(
                           Images.youtube,
                           width: 30.sp,
                         ),
-                        text: 'Youtube.com'),
+                        text: platformManager.youtube),
                   ],
                 ),
               ),

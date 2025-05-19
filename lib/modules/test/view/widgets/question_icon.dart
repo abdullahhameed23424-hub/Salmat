@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/test/cubit/exam_cubit.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/screens/question_explanation_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
@@ -11,7 +11,7 @@ class QuestionIcon extends StatelessWidget {
     super.key,
     required this.examCubit,
   });
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
   @override
   Widget build(BuildContext context) {
     if (examCubit.isSubmitted) {
@@ -44,7 +44,7 @@ class _OnlyIcon extends StatelessWidget {
 }
 
 class _QuestionMarkButton extends StatelessWidget {
-  final ExamCubit examCubit;
+  final TestCubit examCubit;
 
   const _QuestionMarkButton({required this.examCubit});
   @override
