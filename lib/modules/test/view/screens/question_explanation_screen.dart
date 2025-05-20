@@ -72,7 +72,6 @@ class QuestionExplanationScreen extends StatelessWidget {
                     padding: EdgeInsets.all(8.w),
                     question: Question(
                       id: 1,
-                      pageNumber: 1,
                       degree: 1,
                       video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                       image: 'https://via.placeholder.com/150',

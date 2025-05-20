@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:my_project_new/modules/test/models/result.dart';
 
 class FinalResultCard extends StatelessWidget {
-  final double score;
-
+  final Result result;
   const FinalResultCard({
     super.key,
-    required this.score,
+    required this.result,
   });
 
   @override
@@ -38,19 +38,19 @@ class FinalResultCard extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 100.w,
+                padding: EdgeInsets.symmetric(horizontal: 10.w),
                 height: double.infinity,
                 decoration: BoxDecoration(
-                  color: score < 60
-                      ? AppColors.PURPLE_LIGHT
-                      : AppColors.LIGHT_GREEN,
+                  color: result.pass == true
+                      ? AppColors.LIGHT_GREEN
+                      : AppColors.PURPLE_LIGHT,
                   borderRadius: BorderRadiusDirectional.horizontal(
                     end: Radius.circular(15.r),
                   ),
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  score.toStringAsFixed(2),
+                  "${result.examStudentDegree} / ${result.examDegree}",
                   style: titilliumBold.copyWith(
                     color: Colors.white,
                     fontSize: 16.sp,

@@ -6,8 +6,16 @@ import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
 class DoExamButton extends StatefulWidget {
-  const DoExamButton({super.key, required this.onTap});
+  const DoExamButton(
+      {super.key,
+      required this.onTap,
+      this.color,
+      required this.label,
+      this.isPassed});
   final void Function() onTap;
+  final Color? color;
+  final String label;
+  final bool? isPassed;
   @override
   State<DoExamButton> createState() => _DoExamButtonState();
 }
@@ -56,7 +64,7 @@ class _DoExamButtonState extends State<DoExamButton>
                 padding:
                     EdgeInsets.symmetric(horizontal: 30.w, vertical: 7.5.h),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: widget.color ?? Colors.white,
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: const [
                     BoxShadow(
@@ -71,7 +79,7 @@ class _DoExamButtonState extends State<DoExamButton>
                   children: [
                     Image.asset(Images.test, width: 50.w, height: 50.w),
                     SizedBox(width: 10.w),
-                    Text('إجراء الاختبار', style: titilliumBold),
+                    Text(widget.label, style: titilliumBold),
                   ],
                 ),
               ),

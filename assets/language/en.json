@@ -1,7 +1,15 @@
 {
   "details": "Details",
   "my_info": "My Info",
-  
+  "close": "Close",
+  "passed": "Passed",
+  "failed": "Failed ):",
+  "exam_degree": "Exam Degree",
+  "pass_percentage": "Pass Percentage",
+  "your_score": "Your Score",
+  "student_degree": "Student Degree",
+  "view_exam": "View Exam",
+  "do_exam": "Do Exam",
   "lesson": "Lesson",
   "no_attachments": "No attachments",
   "no_images": "No images",

@@ -65,14 +65,17 @@ class TestTimer extends StatefulWidget {
 }
 
 class _TestTimerState extends State<TestTimer> {
-  late Timer _timer;
+  Timer? _timer;
   int _remainingSeconds = 0;
 
   @override
   void initState() {
     super.initState();
-    _remainingSeconds = widget.testCubit.test.minutes * 60;
-    _startTimer();
+
+    _remainingSeconds = widget.testCubit.testTime;
+    if (widget.testCubit.isSolving) {
+      _startTimer();
+    }
   }
 
   void _startTimer() {
@@ -81,7 +84,7 @@ class _TestTimerState extends State<TestTimer> {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;
         } else {
-          _timer.cancel();
+          _timer?.cancel();
         }
       });
     });
@@ -89,7 +92,7 @@ class _TestTimerState extends State<TestTimer> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 

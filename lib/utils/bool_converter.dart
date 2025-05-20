@@ -18,3 +18,9 @@ String stringOrZero(dynamic str) {
   if (str == null) return "0";
   return str.toString();
 }
+
+String stringOrEmpty(dynamic str) {
+  // take number and return it as string or ''
+  if (str == null) return "";
+  return str.toString();
+}

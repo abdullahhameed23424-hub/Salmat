@@ -14,6 +14,7 @@ import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabba
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
@@ -62,6 +63,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   },
                   message: state.message);
             }
+
+            final bool isPassed =
+                lessonsCubit.lessonDetails.test?.result.pass == true;
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
@@ -85,14 +89,19 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                               controller: controller,
                               lessonsCubit: lessonsCubit),
                           if (lessonsCubit.lessonDetails.examId != null)
-                            DoExamButton(onTap: () {
-                              pushTo(
-                                  context: context,
-                                  toPage: TestScreen(
-                                      examId:
-                                          lessonsCubit.lessonDetails.examId!));
-                            }),
-                          NextAndLastLessonButtons(),
+                            DoExamButton(
+                                color: isPassed ? AppColors.LIGHT_GREEN : null,
+                                label: isPassed
+                                    ? translate('view_exam', context)
+                                    : translate('do_exam', context),
+                                onTap: () {
+                                  pushTo(
+                                      context: context,
+                                      toPage: TestScreen(
+                                          examId: lessonsCubit
+                                              .lessonDetails.examId!));
+                                }),
+                          NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
                         ],
                       ),
                     ),
@@ -112,10 +121,27 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 class NextAndLastLessonButtons extends StatelessWidget {
   const NextAndLastLessonButtons({
     super.key,
+    required this.lessonsCubit,
   });
 
+  final LessonsCubit lessonsCubit;
   @override
   Widget build(BuildContext context) {
+    int? nextLessonId = lessonsCubit.lessonDetails.nextLessonId;
+
+    bool openNextlesson =
+        lessonsCubit.lessonDetails.test?.result.pass != null &&
+            nextLessonId == null;
+
+
+
+
+
+
+
+
+
+
     return Container(
       decoration: BoxDecoration(
           color: AppColors.LIGHTGRAY, borderRadius: BorderRadius.circular(50)),
@@ -123,13 +149,30 @@ class NextAndLastLessonButtons extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 7.h),
       child: Row(
         children: <Widget>[
-          Expanded(
-              child: CustomButton(
-                  backgroundColor: AppColors.SECONDRY,
-                  buttonStyle:
-                      titilliumBold.copyWith(color: AppColors.DARK_GRAY),
-                  label: translate('next_lesson', context),
-                  onPressed: () {})),
+          Expanded(child: Builder(builder: (context) {
+            if (lessonsCubit.lessonDetails.nextLessonId == -1) {
+              return const SizedBox();
+            }
+
+if(lessonsCubit.lessonDetails.test==null){
+
+}
+            if (lessonsCubit.state is OpenNextLessonLoadingState) {
+              return const AppLoading();
+            }
+
+            return CustomButton(
+                backgroundColor: AppColors.SECONDRY,
+                buttonStyle: titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+                label: translate('next_lesson', context),
+                onPressed: openNextlesson
+                    ? () {
+                        lessonsCubit.openNextLesson(
+                            lessonsCubit.lessonDetails.unitId,
+                            lessonsCubit.lessonDetails.id);
+                      }
+                    : null);
+          })),
           SizedBox(width: 35.w),
           Expanded(
               child: CustomButton(

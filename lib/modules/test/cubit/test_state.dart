@@ -21,13 +21,16 @@ final class StartExamSuccessState extends TestState {}
 
 final class StartExamErrorState extends TestState {
   final String message;
-   
-  StartExamErrorState({required this.message });
+
+  StartExamErrorState({required this.message});
 }
 
 final class SubmitExamLoadingState extends TestState {}
 
-final class SubmitExamSuccessState extends TestState {}
+final class SubmitExamSuccessState extends TestState {
+  final Result result;
+  SubmitExamSuccessState({required this.result});
+}
 
 final class SubmitExamErrorState extends TestState {
   final String message;

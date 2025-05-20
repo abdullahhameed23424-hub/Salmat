@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/models/option.dart';
+import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
 import 'package:my_project_new/modules/test/view/widgets/final_result_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
@@ -41,7 +42,7 @@ class CompletedTestDetailsScreen extends StatelessWidget {
                     padding: EdgeInsets.all(12.w),
                     question: Question(
                       id: 1,
-                      pageNumber: 1,
+                     
                       degree: 1,
                       video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                       image: 'https://via.placeholder.com/150',
@@ -65,9 +66,15 @@ class CompletedTestDetailsScreen extends StatelessWidget {
                             isChosen: false),
                       ],
                     ),
-                    examCubit: TestCubit()..isSubmitted = true),
+                    examCubit: TestCubit()..isSolving = true),
               ),
-              const FinalResultCard(score: 20)
+              FinalResultCard(
+                  result: Result(
+                      studentDegree: '20',
+                      examDegree: '100',
+                      examStudentDegree: '20',
+                      examPassPercentage: '70',
+                      pass: true))
             ],
           ),
         ));

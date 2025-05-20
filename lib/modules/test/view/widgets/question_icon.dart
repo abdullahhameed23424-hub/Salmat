@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
@@ -14,7 +15,7 @@ class QuestionIcon extends StatelessWidget {
   final TestCubit examCubit;
   @override
   Widget build(BuildContext context) {
-    if (examCubit.isSubmitted) {
+    if (!examCubit.isSolving) {
       return _QuestionMarkButton(examCubit: examCubit);
     }
 
@@ -60,14 +61,16 @@ class _QuestionMarkButton extends StatelessWidget {
                 examCubit: examCubit,
               ));
         },
-        child: Container(
-            clipBehavior: Clip.hardEdge,
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-                border: Border.all(color: AppColors.SECONDRY, width: 2),
-                color: Colors.white,
-                shape: BoxShape.circle),
-            child: Image.asset(Images.questionMark, width: 35.w)),
+        child: ElasticIn(
+          child: Container(
+              clipBehavior: Clip.hardEdge,
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.SECONDRY, width: 2),
+                  color: Colors.white,
+                  shape: BoxShape.circle),
+              child: Image.asset(Images.questionMark, width: 35.w)),
+        ),
       ),
     );
   }

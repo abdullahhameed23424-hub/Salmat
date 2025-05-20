@@ -5,7 +5,7 @@ import 'package:my_project_new/constant/custom_themes.dart';
 
 class CustomButton extends StatelessWidget {
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback ?onPressed;
   final TextStyle? buttonStyle;
   final Size? size;
   final Color? backgroundColor;

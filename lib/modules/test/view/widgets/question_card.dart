@@ -40,12 +40,15 @@ class _QuestionCardState extends State<QuestionCard> {
           ...List.generate(
             widget.question.options.length,
             (optionIndex) {
+              final bool isChosen =
+                  widget.question.options[optionIndex].isChosen;
+              final bool isTrue = widget.question.options[optionIndex].isTrue;
               Color? tileColor;
 
-              if (widget.examCubit.isSubmitted) {
-                if (widget.question.options[optionIndex].isTrue) {
+              if (!widget.examCubit.isSolving) {
+                if (isTrue) {
                   tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
-                } else if (widget.question.options[optionIndex].isChosen) {
+                } else if (isChosen && !isTrue) {
                   tileColor = AppColors.PURPLE_LIGHT.withAlpha(200);
                 }
               }
@@ -57,20 +60,17 @@ class _QuestionCardState extends State<QuestionCard> {
                   color: tileColor,
                 ),
                 child: CheckboxListTile(
-                  checkColor: AppColors.PRIMARY,
-                  fillColor: WidgetStatePropertyAll(AppColors.LIGHTGRAY),
+                  checkColor: AppColors.LIGHTGRAY,
+                  fillColor: WidgetStatePropertyAll(
+                      isChosen ? AppColors.PRIMARY : AppColors.LIGHTGRAY),
                   value: widget.question.options[optionIndex].isChosen,
                   onChanged: (value) {
-                    if (widget.examCubit.isSubmitted) {
+                    if (!widget.examCubit.isSolving) {
                       return;
                     }
-                    setState(() {
-                      if (value!) {
-                        widget.question.options[optionIndex].isChosen = true;
-                      } else {
-                        widget.question.options[optionIndex].isChosen = false;
-                      }
-                    });
+                    widget.examCubit
+                        .onOptionTaped(widget.question, optionIndex, value!);
+                    setState(() {});
                   },
                   title: Text(
                     widget.question.options[optionIndex].name,

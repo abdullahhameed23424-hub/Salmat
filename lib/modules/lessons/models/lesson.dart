@@ -1,9 +1,10 @@
-import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/lessons/models/app_file.dart';
+import 'package:my_project_new/modules/test/models/test.dart';
+import 'package:my_project_new/utils/bool_converter.dart';
 
 class Lesson {
   final int lessonOrder;
-  final int sectionId;
+  
   final int? examId;
   final int id;
   final int? nextLessonId;
@@ -17,7 +18,7 @@ class Lesson {
   final bool isOpen;
   final List<AppFile> files;
   final List<String> images;
-
+  final Test? test;
   final int unitId;
   Lesson({
     required this.id,
@@ -25,8 +26,7 @@ class Lesson {
     required this.images,
     required this.unitId,
     required this.lessonOrder,
-    required this.sectionId,
-    required this.name,
+     required this.name,
     required this.isFree,
     required this.description,
     required this.videoUrl,
@@ -36,16 +36,30 @@ class Lesson {
     required this.isOpen,
     required this.files,
     required this.nextLessonId,
+    required this.test,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) => Lesson(
+  factory Lesson.fromJson(Map<String, dynamic> json) {
+    final bool? isOpen =
+        json['is_open'] != null ? boolConverter(json["is_open"]) : null;
+
+    final bool isFree = boolConverter(json["is_free"]);
+    bool tempIsOpen;
+    if (isOpen == null) {
+      tempIsOpen = isFree;
+    } else {
+      tempIsOpen = isOpen;
+    }
+
+    return Lesson(
+        test: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
         images: json["images"] != null
             ? List<String>.from(json["images"].map((x) => x))
             : [],
         lessonOrder: json["lesson_order"],
         unitId: json['section_id'],
         examId: json['exam_id'],
-        sectionId: json["section_id"],
+       
         nextLessonId: json["next_lesson_id"],
         id: json["id"],
         name: json["name"],
@@ -58,6 +72,6 @@ class Lesson {
         files: json["files"] != null
             ? List<AppFile>.from(json["files"].map((x) => AppFile.fromJson(x)))
             : [],
-        isOpen: json["is_open"],
-      );
+        isOpen: tempIsOpen);
+  }
 }

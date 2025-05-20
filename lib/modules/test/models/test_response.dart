@@ -15,7 +15,7 @@ class TestResponse {
 
 class Question {
   final int id;
-  final int pageNumber;
+ 
   final String text;
   final int degree;
   final String video;
@@ -25,8 +25,7 @@ class Question {
   final bool chosenAndTrue;
 
   Question({
-    required this.id,
-    required this.pageNumber,
+    required this.id, 
     required this.text,
     required this.degree,
     required this.video,
@@ -37,7 +36,7 @@ class Question {
 
   factory Question.fromJson(Map<String, dynamic> json) => Question(
         id: json["id"],
-        pageNumber: json["page_number"],
+      
         text: json["text"],
         degree: json["degree"],
         video: json["video"] ?? "",
@@ -45,42 +44,6 @@ class Question {
         options:
             List<Option>.from(json["options"].map((x) => Option.fromJson(x))),
         chosenAndTrue: json["chosen_and_true"],
-      );
-}
-
-class Result {
-  final dynamic pass;
-  final dynamic passPercentage;
-  final dynamic studentPercentage;
-  final dynamic totalDegree;
-  final dynamic studentDegree;
-  final dynamic attemptsCount;
-  final int examDegree;
-  final int examPassPercentage;
-  final dynamic examStudentDegree;
-
-  Result({
-    required this.pass,
-    required this.passPercentage,
-    required this.studentPercentage,
-    required this.totalDegree,
-    required this.studentDegree,
-    required this.attemptsCount,
-    required this.examDegree,
-    required this.examPassPercentage,
-    required this.examStudentDegree,
-  });
-
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        pass: json["pass"],
-        passPercentage: json["pass_percentage"],
-        studentPercentage: json["student_percentage"],
-        totalDegree: json["total_degree"],
-        studentDegree: json["student_degree"],
-        attemptsCount: json["attempts_count"],
-        examDegree: json["exam_degree"],
-        examPassPercentage: json["exam_pass_percentage"],
-        examStudentDegree: json["exam_student_degree"],
       );
 }
 

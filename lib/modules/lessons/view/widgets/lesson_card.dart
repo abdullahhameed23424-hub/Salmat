@@ -21,9 +21,15 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        pushTo(context: context, toPage: LessonDetailsScreen(lesson: lesson));
-      },
+      splashColor: AppColors.PRIMARY,
+      borderRadius: BorderRadius.circular(15),
+      onTap: lesson.isOpen
+          ? () {
+              pushTo(
+                  context: context,
+                  toPage: LessonDetailsScreen(lesson: lesson));
+            }
+          : null,
       child: Column(
         children: <Widget>[
           Row(
@@ -105,15 +111,16 @@ class LessonCard extends StatelessWidget {
               children: <Widget>[
                 Image.asset(Images.lessonIcon, width: 40.w),
                 SizedBox(width: 12.w),
-                SizedBox(
-                  width: 1.sw - 116.w, //1.sw - 40.w - 12.w - (16 * 4).w,
+                Expanded(
                   child: Text(
-                    //////////////////////////// total width , 40 :for image width  and  12.w , 16.w is padding  ,  : 1.sw - 40.w - 12.w - (16 * 4).w,
                     lesson.name,
                     maxLines: 2,
                     style: titilliumSemiBold,
                     overflow: TextOverflow.ellipsis,
                   ),
+                ),
+                Icon(
+                  lesson.isOpen ? Icons.lock_open_rounded : Icons.lock_rounded,
                 )
               ],
             ),

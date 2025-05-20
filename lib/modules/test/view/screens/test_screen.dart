@@ -7,9 +7,11 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
+import 'package:my_project_new/modules/test/view/widgets/result_dialog.dart';
 import 'package:my_project_new/modules/test/view/widgets/test_headar.dart';
 import 'package:my_project_new/modules/test/view/widgets/final_result_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/questions_list.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
@@ -26,10 +28,22 @@ class TestScreen extends StatelessWidget {
       appBarBorderRadius: BorderRadius.zero,
       body: BlocProvider(
         create: (context) => TestCubit()..getTest(examId),
-        child: BlocBuilder<TestCubit, TestState>(
+        child: BlocConsumer<TestCubit, TestState>(
+          listener: (context, state) {
+            if (state is StartExamSuccessState) {
+            } else if (state is SubmitExamErrorState) {
+              customSnackBar(context, success: 0, message: state.message);
+            }
+            if (state is SubmitExamSuccessState) {
+              ResultDialog.show(context, state.result);
+            }
+          },
           builder: (context, state) {
             final TestCubit examCubit = context.read<TestCubit>();
             if (state is GetTestLoadingState) {
+              return const AppLoading();
+            }
+            if (state is StartExamLoadingState) {
               return const AppLoading();
             }
             if (state is GetTestErrorState) {
@@ -37,6 +51,15 @@ class TestScreen extends StatelessWidget {
                 message: state.message,
                 onTap: () {
                   examCubit.getTest(examId);
+                },
+              );
+            }
+
+            if (state is StartExamErrorState) {
+              return TryAgain(
+                message: state.message,
+                onTap: () {
+                  examCubit.createExam(examId);
                 },
               );
             }
@@ -52,15 +75,15 @@ class TestScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: CustomScrollView(
                 slivers: [
-                  ExamHeader(
-                    description: examCubit.test.description,
-                  ),
+                  ExamHeader(description: examCubit.test.description),
                   CountersSqures(testCubit: examCubit),
                   QuestionsList(examCubit: examCubit),
-                  if (examCubit.isSubmitted) const FinalResultCard(score: 70),
-                  SubmitButton(
-                    examCubit: examCubit,
-                  ),
+                  if (!examCubit.isSolving)
+                    FinalResultCard(result: examCubit.test.result),
+                  if (state is SubmitExamLoadingState)
+                    const SliverToBoxAdapter(child: AppLoading())
+                  else if (examCubit.isSolving)
+                    SubmitButton(examCubit: examCubit),
                 ],
               ),
             );
