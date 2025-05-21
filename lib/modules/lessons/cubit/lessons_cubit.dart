@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -6,6 +8,7 @@ import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/models/lessons_response.dart';
+import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
 
 part 'lessons_state.dart';
 
@@ -43,21 +46,24 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   late Lesson lessonDetails;
-  Future<void> getLessonDetails({required Lesson lesson}) async {
+  Future<void> getLessonDetails(
+      {required int lessonId, required int unitId}) async {
     emit(GetLessonDetailsLoadingState());
     try {
       final response = await Network.getData(
-          url: "${Urls.sections}/${lesson.unitId}/lessons/${lesson.id}");
+          url: "${Urls.sections}/$unitId/lessons/$lessonId");
 
       lessonDetails = Lesson.fromJson(response.data['data']);
+      setNextLessonButtonStatus(lessonDetails);
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
       emit(GetLessonDetailsErrorState(message: unknownError()));
     }
-  } 
-  Future<void> openNextLesson(int coursseId, int lessonId) async {
+  }
+
+  Future<void> _openNextLesson(int coursseId, int lessonId) async {
     emit(OpenNextLessonLoadingState());
     try {
       final Response response = await Network.postData(
@@ -68,6 +74,29 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(OpenNextLessonErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
       emit(OpenNextLessonErrorState(message: unknownError()));
+    }
+  }
+
+  void openNextLessons() async {
+    if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE) {
+      _openNextLesson(lessonDetails.unitId, lessonDetails.nextLessonId!);
+    } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
+      getLessonDetails(
+          lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
+    }
+  }
+
+  NextLessonButtonStatus _buttonStatus = NextLessonButtonStatus.DISABLED;
+  NextLessonButtonStatus get buttonStatus => _buttonStatus;
+  void setNextLessonButtonStatus(Lesson lesson) {
+    if (lesson.nextLessonId == -1) {
+      _buttonStatus = NextLessonButtonStatus.DISABLED;
+    } else if (lesson.nextLessonId != null) {
+      _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
+    } else if (lesson.test?.result.pass == false) {
+      _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
+    } else {
+      _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;
     }
   }
 }

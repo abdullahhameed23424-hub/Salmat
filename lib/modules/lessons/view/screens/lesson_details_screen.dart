@@ -8,6 +8,7 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
@@ -48,8 +49,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
       appBarBorderRadius: BorderRadius.zero,
       title: widget.lesson.name,
       body: BlocProvider(
-        create: (context) =>
-            LessonsCubit()..getLessonDetails(lesson: widget.lesson),
+        create: (context) => LessonsCubit()
+          ..getLessonDetails(
+              lessonId: widget.lesson.id, unitId: widget.lesson.unitId),
         child: BlocBuilder<LessonsCubit, LessonsState>(
           builder: (context, state) {
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
@@ -59,7 +61,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             if (state is GetLessonDetailsErrorState) {
               return TryAgain(
                   onTap: () {
-                    lessonsCubit.getLessonDetails(lesson: widget.lesson);
+                    lessonsCubit.getLessonDetails(
+                        lessonId: widget.lesson.id,
+                        unitId: widget.lesson.unitId);
                   },
                   message: state.message);
             }
@@ -127,21 +131,6 @@ class NextAndLastLessonButtons extends StatelessWidget {
   final LessonsCubit lessonsCubit;
   @override
   Widget build(BuildContext context) {
-    int? nextLessonId = lessonsCubit.lessonDetails.nextLessonId;
-
-    bool openNextlesson =
-        lessonsCubit.lessonDetails.test?.result.pass != null &&
-            nextLessonId == null;
-
-
-
-
-
-
-
-
-
-
     return Container(
       decoration: BoxDecoration(
           color: AppColors.LIGHTGRAY, borderRadius: BorderRadius.circular(50)),
@@ -150,13 +139,6 @@ class NextAndLastLessonButtons extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Expanded(child: Builder(builder: (context) {
-            if (lessonsCubit.lessonDetails.nextLessonId == -1) {
-              return const SizedBox();
-            }
-
-if(lessonsCubit.lessonDetails.test==null){
-
-}
             if (lessonsCubit.state is OpenNextLessonLoadingState) {
               return const AppLoading();
             }
@@ -165,13 +147,12 @@ if(lessonsCubit.lessonDetails.test==null){
                 backgroundColor: AppColors.SECONDRY,
                 buttonStyle: titilliumBold.copyWith(color: AppColors.DARK_GRAY),
                 label: translate('next_lesson', context),
-                onPressed: openNextlesson
-                    ? () {
-                        lessonsCubit.openNextLesson(
-                            lessonsCubit.lessonDetails.unitId,
-                            lessonsCubit.lessonDetails.id);
-                      }
-                    : null);
+                onPressed:
+                    lessonsCubit.buttonStatus != NextLessonButtonStatus.DISABLED
+                        ? () {
+                            lessonsCubit.openNextLessons();
+                          }
+                        : null);
           })),
           SizedBox(width: 35.w),
           Expanded(
