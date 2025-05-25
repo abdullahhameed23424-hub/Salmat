@@ -14,3 +14,14 @@ final class TeachersErrorState extends TeachersState {
 
   TeachersErrorState({required this.message});
 }
+
+
+final class GetTeachersLoading extends TeachersState {}
+
+final class GetTeachersSuccess extends TeachersState {}
+
+final class GetTeachersError extends TeachersState {
+  final String message;
+
+  GetTeachersError({required this.message});
+}

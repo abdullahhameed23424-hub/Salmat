@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
+import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 import 'package:my_project_new/modules/video/cubit/video_state.dart';
 import 'package:my_project_new/modules/video/models/my_viedeo.dart';
@@ -11,10 +12,10 @@ import 'package:my_project_new/widgets/try_again.dart';
 class LessonVideo extends StatefulWidget {
   const LessonVideo({
     super.key,
-    // required this.oneCourseCubit,
+    required this.lesson,
   });
 
-  // final CoursesCubit oneCourseCubit;
+  final Lesson lesson;
 
   @override
   State<LessonVideo> createState() => _LessonVideoState();
@@ -32,7 +33,7 @@ class _LessonVideoState extends State<LessonVideo> {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: " widget.courseScreen.tag", // to do
+        tag: " ${widget.lesson.videoFile}", // to do
         child: ClipRRect(
             borderRadius: BorderRadius.circular(0),
             child: BlocProvider(
@@ -40,12 +41,11 @@ class _LessonVideoState extends State<LessonVideo> {
               create: (context) => videoCubit
                 ..setStreams([
                   MyVideo(
-                      link:
-                          "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
+                      link: "${Urls.storageUrl}${widget.lesson.videoFile}",
                       value: 0,
                       quality: "")
                 ])
-                ..initFromNetwork2(0, Duration.zero),
+                ..initFromNetwork2(0, Duration.zero) ,
               child: AspectRatio(
                 aspectRatio: 16 / 9,
                 child: BlocBuilder<VideoCubit, VideoState>(

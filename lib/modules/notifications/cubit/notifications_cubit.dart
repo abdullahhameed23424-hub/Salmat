@@ -50,8 +50,9 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       emit(GetNotificationsSuccessState());
     } on DioException catch (error) {
       emit(GetNotificationsErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      emit(GetNotificationsErrorState(message: unknownError()));
     }
+    // catch (error) {
+    //   emit(GetNotificationsErrorState(message: unknownError()));
+    // }
   }
 }

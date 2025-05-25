@@ -1,9 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/notifications/models/notification.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/no_data.dart';
@@ -36,20 +34,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           builder: (context, state) {
             final NotificationsCubit cubit = context.read<NotificationsCubit>();
 
-            // return ListView.separated(
-            //   separatorBuilder: (context, index) => SizedBox(height: 10.h),
-            //   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 20.h),
-            //   physics: const BouncingScrollPhysics(),
-            //   itemCount: 10,
-            //   itemBuilder: (context, index) => NotificationCard(
-            //       notification: AppNotification(
-            //           title: "لقد تم الاشتراك بكورس الرياضيات بنجاح",
-            //           body: "",
-            //           state: 0,
-            //           data: [],
-            //           clickable: true,
-            //           createdAt: DateTime.now())),
-            // );
             if (state is GetNotificationsLoadingState) {
               return const AppLoading();
             }
@@ -72,7 +56,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               onRefresh: () async {
                 cubit.page = 1;
 
-                await cubit.getNotifications();
+                await cubit.getNotifications(markRead: 1);
                 cubit.refreshController.loadComplete();
               },
               enablePullUp: true,
@@ -87,8 +71,3 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ));
   }
 }
-
-
-
-
- 

@@ -73,7 +73,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
-                LessonVideo(),
+                LessonVideo(lesson: lessonsCubit.lessonDetails),
                 ServerOptions(),
                 Stack(
                   alignment: Alignment.topCenter,

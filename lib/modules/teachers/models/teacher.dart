@@ -31,7 +31,7 @@ class Teacher {
         isHidden: json["is_hidden"],
         image: json["image"],
         courses: json["courses"] != null
-            ? List<Course>.from(json["courses"].map((x) => x))
+            ? List<Course>.from(json["courses"].map((x) => Course.fromJson(x)))
             : [],
       );
 }

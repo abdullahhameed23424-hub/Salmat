@@ -9,6 +9,7 @@ import 'package:my_project_new/modules/offers/view/widgets/offer_card.dart';
 import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/no_data.dart';
 import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -34,6 +35,9 @@ class OffersScreen extends StatelessWidget {
                     offersCubit.getOffers();
                   },
                   message: state.message);
+            }
+            if (offersCubit.offers.isEmpty) {
+              return const Nodata();
             }
             return SmartRefresher(
               controller: offersCubit.refreshController,

@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; 
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/modules/notifications/models/notification.dart';
@@ -51,15 +50,14 @@ class NotificationCard extends StatelessWidget {
                     children: [
                       Align(
                         alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                            " ${DateFormat('dd/MM/yyyy hh:MM a').format(notification.createdAt)} ",
+                        child: Text(notification.createdAt,
                             style: titilliumBold.copyWith(fontSize: 12.sp)),
                       ),
                       const Spacer(),
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: Image.asset(
-                          color: Random().nextBool() ? Colors.green : null,
+                          color: notification.hasRead ? Colors.green : null,
                           Images.checkMark,
                           width: 22.w,
                         ),
@@ -70,7 +68,7 @@ class NotificationCard extends StatelessWidget {
                     endIndent: 140.w,
                   ),
                   ReadMoreText(
-                    text: notification.title * 10,
+                    text: notification.title,
                     maxLength: 60,
                   ),
                 ],
