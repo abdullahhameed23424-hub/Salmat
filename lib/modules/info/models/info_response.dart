@@ -25,23 +25,20 @@ class InfoResponse {
 }
 
 class AboutUs {
-  final String image;
+  // final String image;
   final String description;
 
   AboutUs({
-    required this.image,
+    // required this.image,
     required this.description,
   });
 
   factory AboutUs.fromJson(Map<String, dynamic> json) => AboutUs(
-        image: json["image"],
+        // image: json["image"],
         description: json["description"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "image": image,
-        "description": description,
-      };
+ 
 }
 
 class Contact {

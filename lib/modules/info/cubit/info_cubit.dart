@@ -11,8 +11,7 @@ part 'info_state.dart';
 class InfoCubit extends Cubit<InfoState> {
   InfoCubit() : super(InfoInitial());
 
-  
-  late   InfoResponse infoResponse;
+  late InfoResponse infoResponse;
 
   Future<void> getInfo() async {
     emit(GetInfoLoadingState());

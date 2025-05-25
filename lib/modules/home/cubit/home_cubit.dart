@@ -26,9 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
     emit(GetHomeLoadingState());
 
     try {
-      Response response = await Network.getData(
-        url: Urls.home,
-      );
+      Response response = await Network.getData(url: Urls.home);
 
       homeResponse = HomeResponse.fromJson(response.data);
       emit(GetHomeSuccessState());

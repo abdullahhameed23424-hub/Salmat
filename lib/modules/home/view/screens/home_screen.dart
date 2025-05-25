@@ -16,8 +16,6 @@ import 'package:my_project_new/utils/global_functions.dart';
 
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/comments/view/screens/comments_screen.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_input_field.dart';
 import 'package:my_project_new/modules/offers/view/screens/offers_screen.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
@@ -29,13 +27,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(),
+      create: (context) => HomeCubit()..getHomeInfo(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           final HomeCubit homeCubit = context.read<HomeCubit>();
           if (state is GetHomeLoadingState) {
-            return AppLoading();
+            return const AppLoading();
           }
+
           return CustomScrollView(
             slivers: [
               _ViewAll(

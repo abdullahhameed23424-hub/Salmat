@@ -8,14 +8,15 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 
 class RecoverAccountSheet extends StatelessWidget {
-  const RecoverAccountSheet({super.key});
+  const RecoverAccountSheet({super.key, required this.onCall});
+  final void Function() onCall;
 
-  static void show(context) {
+  static void show(context, {required void Function() onCall}) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return const RecoverAccountSheet();
+        return RecoverAccountSheet(onCall: onCall);
       },
     );
   }
@@ -52,10 +53,7 @@ class RecoverAccountSheet extends StatelessWidget {
                     right: 5.w,
                     bottom: 130.h,
                     child: InkWell(
-                      onTap: () {
-                        EasyLauncher.call(number: "0987654321");
-                        Navigator.pop(context);
-                      },
+                      onTap: onCall,
                       child: SizedBox(width: 145.w, height: 110.h),
                     ))
               ],

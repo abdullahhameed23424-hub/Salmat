@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,7 @@ import 'package:my_project_new/core/validators/username_validator.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/modules/auth/view/widgets/create_account_sheet.dart';
+import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/modules/auth/view/widgets/recover_account_sheet.dart';
 import 'package:my_project_new/modules/auth/view/widgets/row_text_button.dart';
@@ -17,6 +19,7 @@ import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart'
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/widgets/custom_textfield.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -25,115 +28,168 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: BlocProvider(
-          create: (context) => AuthCubit(),
-          child: Column(
-            children: [
-              const _Header(),
-              BlocConsumer<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state is LoginErrorState) {
-                    customSnackBar(context, success: 0, message: state.message);
-                  } else if (state is LoginSuccessState) {
-                    pushAndRemoveUntiTo(context,
-                        toPage: BottomNavScreen(
-                    
-                        ));
-                  }
-                },
-                builder: (context, state) {
-                  final AuthCubit authCubit = context.read<AuthCubit>();
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => AuthCubit()),
+          BlocProvider(create: (context) => InfoCubit()..getInfo()),
+        ],
+        child: BlocBuilder<InfoCubit, InfoState>(
+          builder: (context, state) {
+            final infoCubit = context.read<InfoCubit>();
+            if (state is GetInfoLoadingState) {
+              return SizedBox(height: 1.sh, child: const AppLoading());
+            }
+            if (state is GetInfoErrorState) {
+              return SizedBox(
+                height: 1.sh,
+                child: TryAgain(
+                    onTap: () {
+                      infoCubit.getInfo();
+                    },
+                    message: state.message),
+              );
+            }
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  const _Header(),
+                  BlocConsumer<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is LoginErrorState) {
+                        customSnackBar(context,
+                            success: 0, message: state.message);
+                      } else if (state is LoginSuccessState) {
+                        pushAndRemoveUntiTo(context,
+                            toPage: const BottomNavScreen());
+                      }
+                    },
+                    builder: (context, state) {
+                      final AuthCubit authCubit = context.read<AuthCubit>();
 
-                  return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-                    child: Form(
-                      key: authCubit.formKey,
-                      child: Column(
-                        children: [
-                          FadeIn(
-                            delay: const Duration(milliseconds: 400),
-                            child: CustomTextField(
-                              onFieldSubmitted: (_) {
-                                FocusScope.of(context)
-                                    .requestFocus(authCubit.passwordFocusNode);
-                              },
-                              controller: authCubit.userNameController,
-                              validator: UsernameValidator.validate,
-                              label: translate("username", context),
-                              keyboardtype: TextInputType.name,
-                            ),
-                          ),
-                          SizedBox(height: 15.h),
-                          FadeIn(
-                            delay: const Duration(milliseconds: 600),
-                            child: CustomTextField(
-                              focusNode: authCubit.passwordFocusNode,
-                              onFieldSubmitted: (_) {
-                                authCubit.login();
-                              },
-                              isPassword: true,
-                              validator: PasswordValidator.validate,
-                              controller: authCubit.passwordController,
-                              label: translate("password", context),
-                              keyboardtype: TextInputType.visiblePassword,
-                            ),
-                          ),
-                          SizedBox(height: 20.h),
-                          if (state is LoginLoadingState)
-                            const AppLoading()
-                          else
-                            FadeIn(
-                              delay: const Duration(milliseconds: 800),
-                              child: CustomButton(
-                                label: translate("login", context),
-                                onPressed: () {
-                                  authCubit.login();
-                                },
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 20.w, vertical: 20.h),
+                        child: Form(
+                          key: authCubit.formKey,
+                          child: Column(
+                            children: [
+                              FadeIn(
+                                delay: const Duration(milliseconds: 400),
+                                child: CustomTextField(
+                                  onFieldSubmitted: (_) {
+                                    FocusScope.of(context).requestFocus(
+                                        authCubit.passwordFocusNode);
+                                  },
+                                  controller: authCubit.userNameController,
+                                  validator: UsernameValidator.validate,
+                                  label: translate("username", context),
+                                  keyboardtype: TextInputType.name,
+                                ),
                               ),
-                            ),
-                          SizedBox(height: 10.h),
-                          FadeIn(
-                            delay: const Duration(milliseconds: 900),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                  padding: EdgeInsets.zero),
-                              onPressed: () {
-                          
-                              },
-                              child: Text(
-                                translate("forgot_password", context),
-                                style: TextStyle(
-                                    color: AppColors.SECONDRY, fontSize: 14.sp),
+                              SizedBox(height: 15.h),
+                              FadeIn(
+                                delay: const Duration(milliseconds: 600),
+                                child: CustomTextField(
+                                  focusNode: authCubit.passwordFocusNode,
+                                  onFieldSubmitted: (_) {
+                                    authCubit.login();
+                                  },
+                                  isPassword: true,
+                                  validator: PasswordValidator.validate,
+                                  controller: authCubit.passwordController,
+                                  label: translate("password", context),
+                                  keyboardtype: TextInputType.visiblePassword,
+                                ),
                               ),
-                            ),
+                              SizedBox(height: 20.h),
+                              if (state is LoginLoadingState)
+                                const AppLoading()
+                              else
+                                FadeIn(
+                                  delay: const Duration(milliseconds: 800),
+                                  child: CustomButton(
+                                    label: translate("login", context),
+                                    onPressed: () {
+                                      authCubit.login();
+                                    },
+                                  ),
+                                ),
+                              SizedBox(height: 10.h),
+                              FadeIn(
+                                delay: const Duration(milliseconds: 900),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                      padding: EdgeInsets.zero),
+                                  onPressed: () {
+                                    if (RegExp(r'^[0-9]{10,15}$').hasMatch(
+                                        infoCubit.infoResponse.contact.phone)) {
+                                      EasyLauncher.call(
+                                          number: infoCubit
+                                              .infoResponse.contact.phone);
+                                    }
+                                  },
+                                  child: Text(
+                                    translate("forgot_password", context),
+                                    style: TextStyle(
+                                        color: AppColors.SECONDRY,
+                                        fontSize: 14.sp),
+                                  ),
+                                ),
+                              ),
+                              RowTextButton(
+                                  transform:
+                                      Matrix4.translationValues(0, -10.h, 0),
+                                  title:
+                                      translate('dont_have_account', context),
+                                  buttonText:
+                                      translate('create_account', context),
+                                  onClick: () {
+                                    CreateAccountSheet.show(
+                                      context,
+                                      onCall: () {
+                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
+                                            infoCubit
+                                                .infoResponse.contact.phone)) {
+                                          EasyLauncher.call(
+                                              number: infoCubit
+                                                  .infoResponse.contact.phone);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                    );
+                                  }),
+                              RowTextButton(
+                                  transform:
+                                      Matrix4.translationValues(0, -20.h, 0),
+                                  title: translate(
+                                      'account_locked_question', context),
+                                  buttonText:
+                                      translate('account_recovery', context),
+                                  onClick: () {
+                                    RecoverAccountSheet.show(
+                                      context,
+                                      onCall: () {
+                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
+                                            infoCubit
+                                                .infoResponse.contact.phone)) {
+                                          EasyLauncher.call(
+                                              number: infoCubit
+                                                  .infoResponse.contact.phone);
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                    );
+                                  }),
+                            ],
                           ),
-                          RowTextButton(
-                              transform: Matrix4.translationValues(
-                                  0, -10.h, 0),  
-                              title: translate('dont_have_account', context),
-                              buttonText: translate('create_account', context),
-                              onClick: () {
-                                CreateAccountSheet.show(context);
-                              }),
-                          RowTextButton(
-                              transform: Matrix4.translationValues(0, -20.h, 0),
-                              title:
-                                  translate('account_locked_question', context),
-                              buttonText:
-                                  translate('account_recovery', context),
-                              onClick: () {
-                                RecoverAccountSheet.show(context);
-                              }),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

@@ -8,15 +8,15 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 
 class CreateAccountSheet extends StatelessWidget {
-  const CreateAccountSheet({super.key});
-
-  static void show(context) {
+  const CreateAccountSheet({super.key, required this.onCall});
+  final void Function() onCall;
+  static void show(context, {required void Function() onCall}) {
     showModalBottomSheet(
       isScrollControlled: true,
       backgroundColor: const Color(0Xff67ACCB),
       context: context,
       builder: (context) {
-        return const CreateAccountSheet();
+        return CreateAccountSheet(onCall: onCall);
       },
     );
   }
@@ -55,10 +55,7 @@ class CreateAccountSheet extends StatelessWidget {
                     left: 0,
                     bottom: 134.h,
                     child: InkWell(
-                      onTap: () {
-                        EasyLauncher.call(number: "0987654321");
-                        Navigator.pop(context);
-                      },
+                      onTap: onCall,
                       child: SizedBox(width: 145.w, height: 105.h),
                     ))
               ],

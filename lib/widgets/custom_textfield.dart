@@ -28,7 +28,7 @@ class CustomTextField extends StatefulWidget {
   final void Function()? onEditingComplete;
   final String? hinttext;
   final String label;
-  final FocusNode? focusNode; 
+  final FocusNode? focusNode;
   final bool enabled;
   const CustomTextField({
     Key? key,
@@ -54,7 +54,7 @@ class CustomTextField extends StatefulWidget {
     this.onEditingComplete,
     this.hinttext,
     required this.label,
-    this.focusNode, 
+    this.focusNode,
     this.enabled = true,
   }) : super(key: key);
 
@@ -87,7 +87,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: widget.isPassword ? showPassword : false,
           maxLines: widget.maxlines,
           onTap: widget.ontap,
-          style: titilliumRegular.copyWith(color: AppColors.PRIMARY),
+          style: titilliumRegular.copyWith(fontSize: 18.sp),
           readOnly: widget.readOnly,
           decoration: InputDecoration(
             fillColor: widget.color,
