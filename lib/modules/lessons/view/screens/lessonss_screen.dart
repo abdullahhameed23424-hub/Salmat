@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_card.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/try_again.dart';
@@ -54,8 +57,26 @@ class LessonsScreen extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                     sliver: SliverList.separated(
-                      itemBuilder: (context, index) => LessonCard(
-                          lesson: lessonsCubit.lessons[index], index: index),
+                      itemBuilder: (context, index) {
+                        final Lesson lesson = lessonsCubit.lessons[index];
+                        return LessonCard(
+                            onTap: lesson.isOpen
+                                ? () async {
+                                    final Map<String, dynamic>? params =
+                                        await pushTo(
+                                            context: context,
+                                            toPage: LessonDetailsScreen(
+                                                lesson: lesson));
+                                    if (params != null &&
+                                        params['next_unit_id'] != null) {
+                                      lessonsCubit.getLessons(
+                                          unitId: params['next_unit_id']);
+                                    }
+                                  }
+                                : null,
+                            lesson: lessonsCubit.lessons[index],
+                            index: index);
+                      },
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 15.h),
                       itemCount: lessonsCubit.lessons.length,

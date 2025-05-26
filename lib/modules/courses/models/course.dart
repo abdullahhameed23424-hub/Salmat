@@ -50,7 +50,7 @@ class Course {
       totalPrice: stringOrZero(json['totalPrice']),
       discount: stringOrZero(json['discount']),
       description: json['description'] ?? "",
-      lessonsCount: json["lessons_count"],
+      lessonsCount: json["lessons_count"] ?? 0,
       teachers: json["teachers"] != null
           ? List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)))
           : [],

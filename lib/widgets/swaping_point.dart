@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 
-class SwappingPoint extends StatelessWidget {
-  const SwappingPoint({
+class SwappingPoints extends StatelessWidget {
+  const SwappingPoints({
     super.key,
     required this.length,
     required this.pageController,

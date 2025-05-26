@@ -10,26 +10,21 @@ import 'package:my_project_new/modules/lessons/view/screens/lesson_details_scree
 import 'package:my_project_new/utils/global_functions.dart';
 
 class LessonCard extends StatelessWidget {
-  const LessonCard({
-    super.key,
-    required this.lesson,
-    required this.index,
-  });
+  const LessonCard(
+      {super.key,
+      required this.lesson,
+      required this.onTap,
+      required this.index});
 
   final Lesson lesson;
   final int index;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: AppColors.PRIMARY,
       borderRadius: BorderRadius.circular(15),
-      onTap: lesson.isOpen
-          ? () {
-              pushTo(
-                  context: context,
-                  toPage: LessonDetailsScreen(lesson: lesson));
-            }
-          : null,
+      onTap:onTap,
       child: Column(
         children: <Widget>[
           Row(

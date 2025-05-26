@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/courses/view/screens/courses_screen.dart';
+import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/models/subject.dart';
+import 'package:my_project_new/modules/subjects/view/screens/subjects_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 
 class HomeSectionCard extends StatelessWidget {
   const HomeSectionCard({
     super.key,
-    required this.index,
+    required this.section,
   });
-  final int index;
+  final Section section;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(
-            context: context,
-            toPage: CoursesScreen(
-              subject:
-                  Subject(courseCount: 0, name: "name", image: "image", id: 0),
-            ));
+        pushTo(context: context, toPage: SubjectsScreen(section: section));
       },
       child: Stack(
         children: [
@@ -45,16 +42,19 @@ class HomeSectionCard extends StatelessWidget {
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.SECONDRY.withAlpha(200)),
-                    child: Image.asset(
-                      index.isEven ? Images.course : Images.course2,
-                      height: 100.h,
+                        color: AppColors.SECONDRY.withAlpha(100)),
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: CachedImage(
+                        image: section.image,
+                        height: 100.h,
+                      ),
                     ),
                   ),
                   Text(
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    'دورات تدريبية' * 8,
+                    section.name,
                     style: titilliumBold.copyWith(fontSize: 14.sp),
                   )
                 ],

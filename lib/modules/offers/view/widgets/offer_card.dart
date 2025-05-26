@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/apis/urls.dart';
@@ -15,51 +16,69 @@ class OfferCard extends StatelessWidget {
   final Offer offer;
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 180.h,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.PRIMARY.withOpacity(0.4),
-                  offset: const Offset(0, 0.5),
-                  blurRadius: 1.5,
-                  spreadRadius: 1,
-                )
-              ],
-              image: DecorationImage(
-                  image: CachedNetworkImageProvider(
-                      "${Urls.storageUrl}${offer.image}"),
-                  fit: BoxFit.cover),
-              color: AppColors.SECONDRY,
-              borderRadius: BorderRadius.circular(10)),
-          foregroundDecoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(10)),
-        ),
-        Container(
-          alignment: AlignmentDirectional.centerStart,
-          width: double.infinity,
-          height: 180.h,
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-              color: Colors.transparent,
-              borderRadius: BorderRadius.circular(10)),
-          child: (offer.description != "")
-              ? Text(
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  offer.description,
-                  style: titilliumBold.copyWith(
-                    color: Colors.white,
-                    shadows: textShadow,
-                  ),
-                )
-              : const SizedBox.shrink(),
-        ),
-      ],
+    return InkWell(
+      onTap: () {
+        if (offer.link != "") {
+          try {
+            EasyLauncher.url(
+              url: offer.link,
+              mode: Mode.platformDefault,
+            );
+          } catch (_) {
+            debugPrint("unavailable link");
+          }
+        }
+      },
+      child: Stack(
+        children: [
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              width: 1.sw,
+              decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.PRIMARY.withOpacity(0.4),
+                      offset: const Offset(0, 0.5),
+                      blurRadius: 1.5,
+                      spreadRadius: 1,
+                    )
+                  ],
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(
+                          "${Urls.storageUrl}${offer.image}"),
+                      fit: BoxFit.cover),
+                  color: AppColors.SECONDRY,
+                  borderRadius: BorderRadius.circular(10)),
+              foregroundDecoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Container(
+              alignment: AlignmentDirectional.centerStart,
+              width: 1.sw,
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(10)),
+              child: (offer.description != "")
+                  ? Text(
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      offer.description,
+                      style: titilliumBold.copyWith(
+                        color: Colors.white,
+                        shadows: textShadow,
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

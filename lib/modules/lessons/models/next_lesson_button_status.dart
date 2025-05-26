@@ -5,4 +5,6 @@ enum NextLessonButtonStatus {
   OPEN_AND_MOVE,
   DISABLED,
   DO_TEST_FIRST,
+  OPEN_NEXT_UNIT,
+  COURSE_END,
 }

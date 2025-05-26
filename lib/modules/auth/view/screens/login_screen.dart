@@ -121,12 +121,10 @@ class LoginScreen extends StatelessWidget {
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero),
                                   onPressed: () {
-                                    if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                        infoCubit.infoResponse.contact.phone)) {
-                                      EasyLauncher.call(
-                                          number: infoCubit
-                                              .infoResponse.contact.phone);
-                                    }
+                                    ContactAdminDialog.show(
+                                        context,
+                                        infoCubit
+                                            .infoResponse.adminContact.phone);
                                   },
                                   child: Text(
                                     translate("forgot_password", context),
@@ -148,11 +146,11 @@ class LoginScreen extends StatelessWidget {
                                       context,
                                       onCall: () {
                                         if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit
-                                                .infoResponse.contact.phone)) {
+                                            infoCubit.infoResponse.adminContact
+                                                .phone)) {
                                           EasyLauncher.call(
-                                              number: infoCubit
-                                                  .infoResponse.contact.phone);
+                                              number: infoCubit.infoResponse
+                                                  .adminContact.phone);
                                         }
                                         Navigator.pop(context);
                                       },
@@ -170,11 +168,11 @@ class LoginScreen extends StatelessWidget {
                                       context,
                                       onCall: () {
                                         if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit
-                                                .infoResponse.contact.phone)) {
+                                            infoCubit.infoResponse.adminContact
+                                                .phone)) {
                                           EasyLauncher.call(
-                                              number: infoCubit
-                                                  .infoResponse.contact.phone);
+                                              number: infoCubit.infoResponse
+                                                  .adminContact.phone);
                                         }
                                         Navigator.pop(context);
                                       },
@@ -227,6 +225,89 @@ class _Header extends StatelessWidget {
                   )),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class ContactAdminDialog extends StatelessWidget {
+  final String phoneNumber;
+
+  const ContactAdminDialog({super.key, required this.phoneNumber});
+
+  static Future<void> show(BuildContext context, String phoneNumber) async {
+    await showDialog(
+      context: context,
+      builder: (context) => FadeInDown(
+          duration: const Duration(milliseconds: 400),
+          child: ContactAdminDialog(phoneNumber: phoneNumber)),
+    );
+  }
+
+  Future<void> _makePhoneCall(BuildContext context) async {
+    if (RegExp(r'^[0-9]{10,15}$').hasMatch(phoneNumber)) {
+      EasyLauncher.call(number: phoneNumber);
+    }
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      title: Text(
+        translate('contact_admin_title', context),
+        style: titleRegular.copyWith(color: AppColors.PRIMARY),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.admin_panel_settings,
+              size: 56, color: AppColors.PRIMARY),
+          const SizedBox(height: 20),
+          Text(
+            translate('contact_admin_message', context),
+            style: titilliumRegular.copyWith(color: AppColors.BLACK),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            phoneNumber,
+            style: titilliumBold.copyWith(color: AppColors.PRIMARY),
+          ),
+        ],
+      ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: AppColors.PRIMARY,
+            textStyle: titilliumSemiBold,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          ),
+          onPressed: () => Navigator.pop(context),
+          child: Text(translate('close', context)),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.phone, color: Colors.white),
+          label: Text(
+            translate('call_button', context),
+            style: titilliumSemiBold.copyWith(color: Colors.white),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.PRIMARY,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 4,
+            shadowColor: AppColors.PRIMARY.withOpacity(0.4),
+          ),
+          onPressed: () => _makePhoneCall(context),
         ),
       ],
     );

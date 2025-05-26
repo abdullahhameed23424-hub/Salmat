@@ -6,6 +6,7 @@ import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/modules/comments/models/comment.dart';
 import 'package:my_project_new/modules/home/models/home_response.dart';
 import 'package:my_project_new/modules/offers/models/offer.dart';
+import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/models/subject.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -21,6 +22,10 @@ class HomeCubit extends Cubit<HomeState> {
 
   late HomeResponse homeResponse;
   final RefreshController refreshController = RefreshController();
+  List<Section> sections = [];
+  List<Offer> offers = [];
+  List<Comment> platformComments = [];
+  String libraryImage = "";
 
   Future<void> getHomeInfo() async {
     emit(GetHomeLoadingState());
@@ -29,12 +34,20 @@ class HomeCubit extends Cubit<HomeState> {
       Response response = await Network.getData(url: Urls.home);
 
       homeResponse = HomeResponse.fromJson(response.data);
+
+      sections = homeResponse.data.sections.sections;
+      offers = homeResponse.data.offers;
+      platformComments = homeResponse.data.platformComments;
+      libraryImage = homeResponse.data.libraryInfo?.image ?? "";
+
       emit(GetHomeSuccessState());
     } on DioException catch (error) {
       emit(GetHomeErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      emit(GetHomeErrorState(message: unknownError()));
-    } finally {
+    }
+    // catch (error) {
+    //   emit(GetHomeErrorState(message: unknownError()));
+    // }
+    finally {
       refreshController.refreshCompleted();
     }
   }

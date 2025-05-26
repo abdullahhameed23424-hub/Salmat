@@ -1,13 +1,15 @@
+import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:my_project_new/modules/lessons/models/app_file.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/utils/bool_converter.dart';
 
 class Lesson {
   final int lessonOrder;
-  
+
   final int? examId;
   final int id;
   final int? nextLessonId;
+  final int? nextUnitId;
   final String name;
   final bool isFree;
   final String description;
@@ -20,13 +22,15 @@ class Lesson {
   final List<String> images;
   final Test? test;
   final int unitId;
+  final Unit? unit;
   Lesson({
     required this.id,
+    required this.nextUnitId,
     required this.examId,
     required this.images,
     required this.unitId,
     required this.lessonOrder,
-     required this.name,
+    required this.name,
     required this.isFree,
     required this.description,
     required this.videoUrl,
@@ -37,6 +41,7 @@ class Lesson {
     required this.files,
     required this.nextLessonId,
     required this.test,
+    required this.unit,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
@@ -52,6 +57,7 @@ class Lesson {
     }
 
     return Lesson(
+        unit: json["parent_section"] != null ? Unit.fromJson(json["parent_section"]) : null,
         test: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
         images: json["images"] != null
             ? List<String>.from(json["images"].map((x) => x))
@@ -59,7 +65,7 @@ class Lesson {
         lessonOrder: json["lesson_order"],
         unitId: json['section_id'],
         examId: json['exam_id'],
-       
+        nextUnitId: json["next_section_id"],
         nextLessonId: json["next_lesson_id"],
         id: json["id"],
         name: json["name"],

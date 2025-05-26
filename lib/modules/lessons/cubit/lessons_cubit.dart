@@ -78,8 +78,9 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   void openNextLessons() async {
-    if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE) {
-      _openNextLesson(lessonDetails.unitId, lessonDetails.nextLessonId!);
+    if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE ||
+        buttonStatus == NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+      _openNextLesson(lessonDetails.unitId, lessonDetails.id);
     } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
       getLessonDetails(
           lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
@@ -87,10 +88,15 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   NextLessonButtonStatus _buttonStatus = NextLessonButtonStatus.DISABLED;
+
   NextLessonButtonStatus get buttonStatus => _buttonStatus;
   void setNextLessonButtonStatus(Lesson lesson) {
     if (lesson.nextLessonId == -1) {
-      _buttonStatus = NextLessonButtonStatus.DISABLED;
+      if (lesson.nextUnitId == -1) {
+        _buttonStatus = NextLessonButtonStatus.COURSE_END;
+      } else if (lesson.nextUnitId != null) {
+        _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
+      }
     } else if (lesson.nextLessonId != null) {
       _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
     } else if (lesson.test?.result.pass == false) {

@@ -24,7 +24,7 @@ class Urls {
   static const String checkVerificationCode = "check/verification";
   static const String restPassword = "reset-password";
   static const String getVerificationCode = "send/verification-code";
-  static const String home = "home";
+  static const String home = "home/mobile";
 
   static String notifications({required int read, required int page}) =>
       'notifications?paginate=1&page=$page&mark_read=$read';

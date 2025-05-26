@@ -110,7 +110,7 @@ class _ImagesSliderState extends State<_ImagesSlider> {
               ]),
         ),
         SizedBox(height: 3.h),
-        SwappingPoint(
+        SwappingPoints(
             length: 3, pageController: controller, currentIndex: _currentindex),
       ],
     );

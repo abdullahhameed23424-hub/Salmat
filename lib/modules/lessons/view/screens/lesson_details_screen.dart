@@ -15,7 +15,6 @@ import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabba
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
-import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
@@ -46,13 +45,26 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+      backgroundColor: Colors.white,
       appBarBorderRadius: BorderRadius.zero,
       title: widget.lesson.name,
       body: BlocProvider(
         create: (context) => LessonsCubit()
           ..getLessonDetails(
               lessonId: widget.lesson.id, unitId: widget.lesson.unitId),
-        child: BlocBuilder<LessonsCubit, LessonsState>(
+        child: BlocConsumer<LessonsCubit, LessonsState>(
+          listener: (context, state) {
+            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+            if (state is OpenNextLessonErrorState) {
+              customSnackBar(context, success: 0, message: state.message);
+            } else if (state is OpenNextLessonSuccessState &&
+                lessonsCubit.buttonStatus ==
+                    NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+              Navigator.pop(context,
+                  {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+              customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+            }
+          },
           builder: (context, state) {
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
             if (state is GetLessonDetailsLoadingState) {
@@ -75,44 +87,30 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
               children: <Widget>[
                 LessonVideo(lesson: lessonsCubit.lessonDetails),
                 ServerOptions(),
-                Stack(
-                  alignment: Alignment.topCenter,
+                _LessonHeader(lessonsCubit.lessonDetails),
+                Column(
                   children: [
-                    Container(
-                      clipBehavior: Clip.none,
-                      transform: Matrix4.translationValues(0, 85.h, 0),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 22.h),
-                          _LessonDscription(
-                              lessonsCubit.lessonDetails.description),
-                          _LessonTaps(
-                              controller: controller,
-                              lessonsCubit: lessonsCubit),
-                          if (lessonsCubit.lessonDetails.examId != null)
-                            DoExamButton(
-                                color: isPassed ? AppColors.LIGHT_GREEN : null,
-                                label: isPassed
-                                    ? translate('view_exam', context)
-                                    : translate('do_exam', context),
-                                onTap: () {
-                                  pushTo(
-                                      context: context,
-                                      toPage: TestScreen(
-                                          examId: lessonsCubit
-                                              .lessonDetails.examId!));
-                                }),
-                          NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
-                        ],
-                      ),
-                    ),
-                    _LessonHeader(lessonsCubit.lessonDetails),
+                    SizedBox(height: 22.h),
+                    _LessonDscription(lessonsCubit.lessonDetails.description),
+                    _LessonTaps(
+                        controller: controller, lessonsCubit: lessonsCubit),
+                    if (lessonsCubit.lessonDetails.examId != null)
+                      DoExamButton(
+                          color: isPassed ? AppColors.LIGHT_GREEN : null,
+                          label: isPassed
+                              ? translate('view_exam', context)
+                              : translate('do_exam', context),
+                          onTap: () {
+                            pushTo(
+                                context: context,
+                                toPage: TestScreen(
+                                    examId:
+                                        lessonsCubit.lessonDetails.examId!));
+                          }),
+                    NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
                   ],
                 ),
-                SizedBox(height: 80.h)
+                SizedBox(height: 40.h)
               ],
             );
           },
@@ -143,16 +141,42 @@ class NextAndLastLessonButtons extends StatelessWidget {
               return const AppLoading();
             }
 
-            return CustomButton(
-                backgroundColor: AppColors.SECONDRY,
-                buttonStyle: titilliumBold.copyWith(color: AppColors.DARK_GRAY),
-                label: translate('next_lesson', context),
-                onPressed:
-                    lessonsCubit.buttonStatus != NextLessonButtonStatus.DISABLED
-                        ? () {
-                            lessonsCubit.openNextLessons();
-                          }
-                        : null);
+            if (lessonsCubit.buttonStatus ==
+                NextLessonButtonStatus.COURSE_END) {
+              return CustomButton(
+                  backgroundColor: AppColors.SECONDRY,
+                  buttonStyle:
+                      titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+                  label: translate('next_lesson', context),
+                  onPressed: () {
+                    customSnackBar(context,
+                        success: 0, message: translate('course_end', context));
+                  });
+            } else if (lessonsCubit.buttonStatus ==
+                NextLessonButtonStatus.DO_TEST_FIRST) {
+              return CustomButton(
+                  backgroundColor: AppColors.SECONDRY,
+                  buttonStyle:
+                      titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+                  label: translate('next_lesson', context),
+                  onPressed: () {
+                    customSnackBar(context,
+                        success: 0,
+                        message: translate('do_test_first', context));
+                  });
+            } else {
+              return CustomButton(
+                  backgroundColor: AppColors.SECONDRY,
+                  buttonStyle:
+                      titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+                  label: translate('next_lesson', context),
+                  onPressed: (lessonsCubit.buttonStatus !=
+                          NextLessonButtonStatus.DISABLED)
+                      ? () {
+                          lessonsCubit.openNextLessons();
+                        }
+                      : null);
+            }
           })),
           SizedBox(width: 35.w),
           Expanded(

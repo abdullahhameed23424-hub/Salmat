@@ -117,7 +117,9 @@ class _AppBar extends StatelessWidget {
                       },
                       icon: Badge.count(
                         backgroundColor: AppColors.RED.withAlpha(210),
-                        count: 12,
+                        isLabelVisible:
+                            authCubit.notificationCount > 0, //to do test
+                        count: authCubit.notificationCount,
                         child: const Icon(
                           Icons.notifications,
                           color: AppColors.WHITE,

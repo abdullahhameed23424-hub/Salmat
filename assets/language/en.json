@@ -1,7 +1,13 @@
 {
+
+  "contact_admin_title": "Contact Admin",
+  "contact_admin_message": "For assistance, contact the admin:",
+    "call_button": "Call",
   "details": "Details",
   "my_info": "My Info",
   "close": "Close",
+  "course_end": "Course End (:",
+  "do_test_first": "Do test first",
   "passed": "Passed",
   "failed": "Failed ):",
   "exam_degree": "Exam Degree",

@@ -6,13 +6,14 @@ class InfoResponse {
 
   final Features features;
   final AboutUs aboutUs;
-
+  final AdminContact adminContact;
   InfoResponse({
     required this.privacyPolicy,
     required this.platformManager,
     required this.contact,
     required this.features,
     required this.aboutUs,
+    required this.adminContact,
   });
 
   factory InfoResponse.fromJson(Map<String, dynamic> json) => InfoResponse(
@@ -21,25 +22,23 @@ class InfoResponse {
         contact: Contact.fromJson(json["contact"]),
         features: Features.fromJson(json["features"]),
         aboutUs: AboutUs.fromJson(json["about_us"]),
+        adminContact: AdminContact.fromJson(json["admin_contact"]),
       );
 }
 
-class AboutUs {
-  // final String image;
+class AboutUs { 
   final String description;
 
-  AboutUs({
-    // required this.image,
+  AboutUs({ 
     required this.description,
   });
 
   factory AboutUs.fromJson(Map<String, dynamic> json) => AboutUs(
-        // image: json["image"],
         description: json["description"],
       );
-
- 
 }
+ 
+ 
 
 class Contact {
   final String whatsapp;
@@ -172,5 +171,17 @@ class PrivacyPolicy {
 
   factory PrivacyPolicy.fromJson(Map<String, dynamic> json) => PrivacyPolicy(
         text: json["text"],
+      );
+}
+
+class AdminContact {
+  final String email;
+  final String phone;
+
+  AdminContact({required this.email, required this.phone});
+  
+  factory AdminContact.fromJson(Map<String, dynamic> json) => AdminContact(
+        email: json["email"],
+        phone: json["phone"],
       );
 }

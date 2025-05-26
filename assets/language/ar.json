@@ -1,7 +1,12 @@
 {
+  "contact_admin_title": "اتصل بالمسؤول",
+  "contact_admin_message": "للمساعدة، اتصل بالمسؤول:",
+  "call_button": "اتصال",
   "comment_added": "تمت إضافة التعليق بنجاح",
   "course": "كورس",
   "close": "إغلاق",
+  "course_end": "انتهى الكورس (:",
+  "do_test_first": "قم بإجراء الاختبار أولا",
   "passed": "مجتاز",
   "failed": "لقد فشلت ):",
   "view_exam": "عرض الاختبار",
