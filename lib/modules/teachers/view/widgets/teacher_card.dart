@@ -22,7 +22,9 @@ class TeacherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(context: context, toPage: const TeacherDetailsScreen());
+        pushTo(
+            context: context,
+            toPage: TeacherDetailsScreen(teacherId: teacher.id));
       },
       child: FadeInRight(
         delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),
@@ -85,13 +87,13 @@ class TeacherCard extends StatelessWidget {
                             10.h,
                             0),
                         child: CustomButton(
-                          size: Size(140.w, 40.h),
-                          padding: EdgeInsets.all(6.w),
-                          buttonStyle: titilliumBold.copyWith(
-                              fontSize: 14.sp, color: AppColors.WHITE),
-                          label: translate('details', context),
-                          onPressed: () {},
-                        ),
+                            disabledBackgroundColor: AppColors.PRIMARY,
+                            size: Size(140.w, 40.h),
+                            padding: EdgeInsets.all(6.w),
+                            buttonStyle: titilliumBold.copyWith(
+                                fontSize: 14.sp, color: AppColors.WHITE),
+                            label: translate('details', context),
+                            onPressed: null),
                       ),
                     )
                   ],

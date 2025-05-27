@@ -12,9 +12,10 @@ class CustomButton extends StatelessWidget {
   final BorderSide? border;
   final BorderRadiusGeometry? borderRadius;
   final EdgeInsetsGeometry? padding;
-
+  final Color? disabledBackgroundColor;
   
-  const CustomButton({
+  const CustomButton({  
+    this.disabledBackgroundColor,
     super.key,
     required this.label,
     this.buttonStyle,
@@ -30,9 +31,10 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
+      
       style: ElevatedButton.styleFrom(
         elevation: 2,
-
+        disabledBackgroundColor: disabledBackgroundColor  ,
         minimumSize: size ?? Size(0.92.sw, 60.h),
         backgroundColor: backgroundColor ?? AppColors.PRIMARY,
         padding:

@@ -28,8 +28,7 @@ class CourseCard extends StatelessWidget {
               course: course,
             ));
       },
-      child: ZoomIn(
-        delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),
+      child: FadeIn(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
           decoration: BoxDecoration(

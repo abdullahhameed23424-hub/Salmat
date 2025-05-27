@@ -54,7 +54,9 @@ class Course {
       teachers: json["teachers"] != null
           ? List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)))
           : [],
-      totalLessonsTime: getHoursFromTimeString(json["total_lessons_time"]),
+      totalLessonsTime: json["total_lessons_time"] != null
+          ? getHoursFromTimeString(json["total_lessons_time"])
+          : "0",
       comments: json["comments"] != null
           ? List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x)))
           : [],

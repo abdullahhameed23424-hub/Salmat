@@ -185,7 +185,16 @@ class NextAndLastLessonButtons extends StatelessWidget {
                   buttonStyle:
                       titilliumBold.copyWith(color: AppColors.DARK_GRAY),
                   label: translate('previous_lesson', context),
-                  onPressed: () {})),
+                  onPressed: (lessonsCubit.lessonDetails.previousLessonId !=
+                              null &&
+                          lessonsCubit.lessonDetails.previousLessonId != -1)
+                      ? () {
+                          lessonsCubit.getLessonDetails(
+                              lessonId:
+                                  lessonsCubit.lessonDetails.previousLessonId!,
+                              unitId: lessonsCubit.lessonDetails.unitId);
+                        }
+                      : null)),
         ],
       ),
     );

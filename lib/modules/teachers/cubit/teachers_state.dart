@@ -25,3 +25,13 @@ final class GetTeachersError extends TeachersState {
 
   GetTeachersError({required this.message});
 }
+
+final class GetTeacherDetailsLoading extends TeachersState {}
+
+final class GetTeacherDetailsSuccess extends TeachersState {}
+
+final class GetTeacherDetailsError extends TeachersState {
+  final String message;
+
+  GetTeacherDetailsError({required this.message});
+}

@@ -50,4 +50,22 @@ class TeachersCubit extends Cubit<TeachersState> {
       emit(GetTeachersError(message: unknownError()));
     }
   }
+
+  late Teacher teacherDetails;
+  Future<void> getTeacherDetails({required int teacherId}) async {
+    emit(GetTeacherDetailsLoading());
+    try {
+      final response =
+          await Network.getData(url: "${Urls.teachers}/$teacherId");
+      final Teacher teacherDetailsResponse =
+          Teacher.fromJson(response.data['data']);
+      teacherDetails = teacherDetailsResponse;
+      emit(GetTeacherDetailsSuccess());
+    } on DioException catch (error) {
+      emit(GetTeacherDetailsError(message: exceptionsHandle(error: error)));
+    }
+    catch (error) {
+      emit(GetTeacherDetailsError(message: unknownError()));
+    }
+  }
 }

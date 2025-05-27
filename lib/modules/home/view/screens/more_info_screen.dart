@@ -23,7 +23,7 @@ class MoreInfoScreen extends StatelessWidget {
   MoreInfoScreen({super.key});
 
   static final InfoCubit infoCubit = InfoCubit();
-  
+
   // we declare the infoCubit as static to use it in all the screens to call the api once
 
   final List<Map<String, dynamic>> menuItems = [
@@ -145,6 +145,8 @@ class MoreInfoScreen extends StatelessWidget {
                             const BorderSide(color: Colors.black12, width: 0.5),
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
                       onTap: () {
                         menuItems[index]['onTap'](context);
                       },

@@ -170,7 +170,7 @@ class _Info extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 25.h),
             itemBuilder: (context, index) => PlatformFeatureCard(
-              image: index < 5 ? Images.numbers[index] : null,
+              image: index < 4 ? Images.numbers[index] : null,
               number: (index + 1).toString(),
               text: infoCubit.infoResponse.features.texts[index],
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 
 class TeacherCourseCard extends StatelessWidget {
   final String imagePath;
@@ -28,9 +29,11 @@ class TeacherCourseCard extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Image.asset(
-                imagePath,
-                fit: BoxFit.contain,
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CachedImage(
+                  image: imagePath,
+                ),
               ),
             ),
           ),

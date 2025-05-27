@@ -58,9 +58,10 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      emit(GetLessonDetailsErrorState(message: unknownError()));
     }
+    // catch (error) {
+    //   emit(GetLessonDetailsErrorState(message: unknownError()));
+    // }
   }
 
   Future<void> _openNextLesson(int coursseId, int lessonId) async {

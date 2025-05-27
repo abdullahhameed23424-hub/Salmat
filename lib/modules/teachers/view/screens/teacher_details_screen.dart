@@ -1,50 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/teachers/cubit/teachers_cubit.dart';
+import 'package:my_project_new/modules/teachers/models/teacher.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/info_item.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_course_card.dart';
 import 'package:my_project_new/utils/clipper.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/blue_circle.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class TeacherDetailsScreen extends StatelessWidget {
-  const TeacherDetailsScreen({super.key});
-
+  const TeacherDetailsScreen({super.key, required this.teacherId});
+  final int teacherId;
   @override
   Widget build(BuildContext context) {
     Divider divider = Divider(indent: 80.w, endIndent: 80.w, height: 40.h);
     return AppScaffold(
         appBarBorderRadius: BorderRadius.zero,
         title: translate("about_teacher", context),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              const _Header(),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14.w),
+        body: BlocProvider(
+          create: (context) =>
+              TeachersCubit()..getTeacherDetails(teacherId: teacherId),
+          child: BlocBuilder<TeachersCubit, TeachersState>(
+            builder: (context, state) {
+              final TeachersCubit teachersCubit = context.read<TeachersCubit>();
+              if (state is GetTeacherDetailsLoading) {
+                return const AppLoading();
+              }
+              if (state is GetTeacherDetailsError) {
+                return TryAgain(
+                    onTap: () {
+                      teachersCubit.getTeacherDetails(teacherId: teacherId);
+                    },
+                    message: state.message);
+              }
+
+              return SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    TeacherDetails(divider: divider),
-                    divider,
-                    const _CoursesLayer(),
+                    _Header(teacher: teachersCubit.teacherDetails),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 14.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TeacherDetails(
+                              divider: divider,
+                              teacher: teachersCubit.teacherDetails),
+                          divider,
+                          _CoursesLayer(
+                            teacher: teachersCubit.teacherDetails,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
+              );
+            },
           ),
         ));
   }
 }
 
 class _CoursesLayer extends StatelessWidget {
-  const _CoursesLayer();
-
+  const _CoursesLayer({required this.teacher});
+  final Teacher teacher;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,7 +88,7 @@ class _CoursesLayer extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 20.h),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: 6,
+          itemCount: teacher.courses.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 16.w,
@@ -67,8 +97,8 @@ class _CoursesLayer extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             return TeacherCourseCard(
-              imagePath: index.isEven ? Images.course3 : Images.course4,
-              label: "الأشعة $index",
+              imagePath: teacher.courses[index].image,
+              label: teacher.courses[index].name,
               footerColor: AppColors.appColors[index % 4],
             );
           },
@@ -82,24 +112,23 @@ class TeacherDetails extends StatelessWidget {
   const TeacherDetails({
     super.key,
     required this.divider,
+    required this.teacher,
   });
 
   final Divider divider;
-
+  final Teacher teacher;
   @override
   Widget build(BuildContext context) {
     return ReadMoreText(
       maxLength: 100,
-      text:
-          'حاصل على إجازة في الرياضيات من جامعة دمشق، يتمتع بخبرة تزيد عن عشر سنوات في مجال التدريس... ' *
-              5,
+      text: teacher.description,
     );
   }
 }
 
 class _Header extends StatelessWidget {
-  const _Header();
-
+  const _Header({required this.teacher});
+  final Teacher teacher;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -124,14 +153,14 @@ class _Header extends StatelessWidget {
                         SizedBox(height: 20.h),
                         SizedBox(
                             child: Text(
-                          " محمد أحمد جوخدار",
+                          teacher.username,
                           style: titilliumBold,
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         )),
                         SizedBox(
-                          child: Text("مدرس ثانوي رياضيات",
+                          child: Text(teacher.job,
                               maxLines: 1,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
@@ -139,7 +168,13 @@ class _Header extends StatelessWidget {
                                   color: AppColors.WHITE)),
                         ),
                         SizedBox(height: 10.h),
-                        Image.asset(Images.mathPi, width: 50.w)
+                        SizedBox(
+                          width: 50.w,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: CachedImage(image: teacher.logo),
+                          ),
+                        )
                       ],
                     ),
                   ),
