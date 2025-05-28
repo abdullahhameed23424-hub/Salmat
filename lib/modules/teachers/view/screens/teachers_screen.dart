@@ -36,7 +36,7 @@ class TeachersScreen extends StatelessWidget {
                   message: state.message);
             }
             if (teachersCubit.teachers.isEmpty) {
-              return const Nodata.NoData();
+              return const NoData ();
             }
             return SmartRefresher(
                 controller: teachersCubit.refreshController,

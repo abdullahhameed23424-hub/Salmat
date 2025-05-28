@@ -37,7 +37,7 @@ class OffersScreen extends StatelessWidget {
                   message: state.message);
             }
             if (offersCubit.offers.isEmpty) {
-              return const Nodata.NoData();
+              return const NoData();
             }
             return SmartRefresher(
               controller: offersCubit.refreshController,

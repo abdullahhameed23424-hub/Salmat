@@ -40,7 +40,7 @@ class BooksScreen extends StatelessWidget {
             }
 
             if (cubit.libraryBooks.isEmpty) {
-              return const Nodata.NoData();
+              return const NoData();
             }
             return Stack(
               children: [
