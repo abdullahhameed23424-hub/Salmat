@@ -5,16 +5,17 @@ import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 
-class Nodata extends StatefulWidget {
-  const Nodata({
+class NoData extends StatefulWidget {
+  const NoData({
     super.key,
+    this.title,
   });
-
+  final String? title;
   @override
-  State<Nodata> createState() => _NodataState();
+  State<NoData> createState() => _NoDataState();
 }
 
-class _NodataState extends State<Nodata> with SingleTickerProviderStateMixin {
+class _NoDataState extends State<NoData> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   @override
@@ -51,7 +52,8 @@ class _NodataState extends State<Nodata> with SingleTickerProviderStateMixin {
           const SizedBox(
             width: double.infinity,
           ),
-          Text(translate('no_data', context), style: titilliumBold)
+          Text(widget.title ?? translate('no_data', context),
+              style: titilliumBold)
         ],
       ),
     );

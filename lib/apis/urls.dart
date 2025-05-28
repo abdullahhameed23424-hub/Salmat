@@ -20,6 +20,7 @@ class Urls {
   static const String infos = "infos";
   static const String studentExams = 'student-exams';
   static const String teachers = 'teachers';
+  static const String comments = 'comments';
 
   static const String checkVerificationCode = "check/verification";
   static const String restPassword = "reset-password";

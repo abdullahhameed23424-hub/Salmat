@@ -1,4 +1,8 @@
 {
+  "delete_comment": "حذف التعليق",
+  "delete_comment_content": "هل أنت متأكد من حذف هذا التعليق؟",
+  "comment_deleted": "تم حذف التعليق بنجاح",
+  "no_comments": "لا يوجد تعليقات",
   "contact_admin_title": "اتصل بالمسؤول",
   "contact_admin_message": "للمساعدة، اتصل بالمسؤول:",
   "call_button": "اتصال",

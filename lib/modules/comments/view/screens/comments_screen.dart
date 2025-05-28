@@ -11,7 +11,9 @@ import 'package:my_project_new/modules/comments/view/widgets/comment_input_field
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/delete_dialog.dart';
 import 'package:my_project_new/widgets/modern_loading_dialog.dart';
+import 'package:my_project_new/widgets/no_data.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class CommentsScreen extends StatefulWidget {
@@ -75,20 +77,37 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   },
                   message: state.message);
             }
+
             return Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: commentsCubit.comments.length,
-                    itemBuilder: (context, index) {
-                      return FadeInLeft(
-                          delay: Duration(
-                              milliseconds: 50 + 50 * Random().nextInt(6)),
-                          child: CommentCard(
-                              comment: commentsCubit.comments[index]));
-                    },
-                  ),
+                  child: commentsCubit.comments.isEmpty
+                      ? NoData(title: translate('no_comments', context))
+                      : ListView.builder(
+                          padding: const EdgeInsets.all(16),
+                          itemCount: commentsCubit.comments.length,
+                          itemBuilder: (context, index) {
+                            return FadeInLeft(
+                                delay: Duration(
+                                    milliseconds:
+                                        50 + 50 * Random().nextInt(6)),
+                                child: CommentCard(
+                                    commentsCubit: commentsCubit,
+                                    onDelete: () {
+                                      DeleteDialog.show(context,
+                                          title: translate(
+                                              "delete_comment", context),
+                                          content: translate(
+                                              "delete_comment_content",
+                                              context), onConfirm: () {
+                                        commentsCubit.deleteComment(
+                                            commentId: commentsCubit
+                                                .comments[index].id);
+                                      });
+                                    },
+                                    comment: commentsCubit.comments[index]));
+                          },
+                        ),
                 ),
                 Padding(
                     padding: EdgeInsets.all(16.w),

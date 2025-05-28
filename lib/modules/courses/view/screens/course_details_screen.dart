@@ -22,6 +22,7 @@ import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
+import 'package:my_project_new/widgets/delete_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
@@ -69,10 +70,17 @@ class CourseDetailsScreen extends StatelessWidget {
   }
 }
 
-class _ReviewSection extends StatelessWidget {
-  _ReviewSection(this.coursesCubit);
+class _ReviewSection extends StatefulWidget {
+  const _ReviewSection(this.coursesCubit);
   final CoursesCubit coursesCubit;
+
+  @override
+  State<_ReviewSection> createState() => _ReviewSectionState();
+}
+
+class _ReviewSectionState extends State<_ReviewSection> {
   final CommentsCubit commentsCubit = CommentsCubit();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -82,7 +90,7 @@ class _ReviewSection extends StatelessWidget {
           children: <Widget>[
             Text(
               translate("total_comments", context, args: [
-                coursesCubit.couresDetails.comments.length.toString()
+                widget.coursesCubit.couresDetails.comments.length.toString()
               ]),
               style: titilliumBold.copyWith(color: AppColors.DARK_GRAY),
             ),
@@ -92,11 +100,11 @@ class _ReviewSection extends StatelessWidget {
                   pushTo(
                       context: context,
                       toPage: CommentsScreen(
-                          courseId: coursesCubit.couresDetails.id,
+                          courseId: widget.coursesCubit.couresDetails.id,
                           commentsCubit: commentsCubit,
                           getComments: () {
                             commentsCubit.getCommentsByCourseId(
-                                courseId: coursesCubit.couresDetails.id);
+                                courseId: widget.coursesCubit.couresDetails.id);
                           }));
                 },
                 child: Row(
@@ -119,16 +127,31 @@ class _ReviewSection extends StatelessWidget {
           ],
         ),
         SizedBox(height: 20.h),
-        if (coursesCubit.couresDetails.comments.isNotEmpty)
+        if (widget.coursesCubit.couresDetails.comments.isNotEmpty)
           CommentCard(
-            comment: coursesCubit.couresDetails.comments[0],
+            commentsCubit: commentsCubit,
+            comment: widget.coursesCubit.couresDetails.comments[0],
+            onDelete: () {
+              DeleteDialog.show(context,
+                  title: translate("delete_comment", context),
+                  content: translate("delete_comment_content", context),
+                  onConfirm: () async {
+                await commentsCubit.deleteComment(
+                    commentId:
+                        widget.coursesCubit.couresDetails.comments.first.id);
+                if (commentsCubit.state is DeleteCommentsSuccessState) {
+                  widget.coursesCubit.couresDetails.comments.removeAt(0);
+                  setState(() {});
+                }
+              });
+            },
           ),
         CommentInputFieldToPush(
-          courseId: coursesCubit.couresDetails.id,
+          courseId: widget.coursesCubit.couresDetails.id,
           commentsCubit: commentsCubit,
           getComments: () {
             commentsCubit.getCommentsByCourseId(
-                courseId: coursesCubit.couresDetails.id);
+                courseId: widget.coursesCubit.couresDetails.id);
           },
         ),
       ],

@@ -24,8 +24,11 @@ import 'package:my_project_new/modules/offers/view/screens/offers_screen.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:my_project_new/widgets/delete_dialog.dart';
+import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/swaping_point.dart';
 import 'package:my_project_new/widgets/try_again.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,42 +52,49 @@ class HomeScreen extends StatelessWidget {
             );
           }
 
-          return CustomScrollView(
-            slivers: [
-              _OffersLayer(offers: homeCubit.offers),
-              SliverToBoxAdapter(
-                child: _ViewAll(
-                    onTap: () {
-                      selectedPage.value = 0;
-                    },
-                    title: translate("sections", context)),
-              ),
-              _SectionsLayer(sections: homeCubit.sections),
-              _LibraryLayer(libraryImage: homeCubit.libraryImage),
-              SliverToBoxAdapter(
-                child: _ViewAll(
-                    onTap: () {
-                      final CommentsCubit commentsCubit = CommentsCubit();
-                      pushTo(
-                          context: context,
-                          toPage: CommentsScreen(
-                              commentsCubit: commentsCubit,
-                              getComments: () {
-                                commentsCubit.getComments();
-                              }));
-                    },
-                    title: translate("comments", context)),
-              ),
-              _ReviewLayer(comments: homeCubit.platformComments),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-                  child: Image.asset(Images.homeCompanyLogo, width: 1.sw),
+          return SmartRefresher(
+            header: AppRefresherHeader(),
+            controller: homeCubit.refreshController,
+            onRefresh: () {
+              homeCubit.getHomeInfo();
+            },
+            child: CustomScrollView(
+              slivers: [
+                _OffersLayer(offers: homeCubit.offers),
+                SliverToBoxAdapter(
+                  child: _ViewAll(
+                      onTap: () {
+                        selectedPage.value = 0;
+                      },
+                      title: translate("sections", context)),
                 ),
-              ),
-              SliverToBoxAdapter(child: SizedBox(height: 100.h))
-            ],
+                _SectionsLayer(sections: homeCubit.sections),
+                _LibraryLayer(libraryImage: homeCubit.libraryImage),
+                SliverToBoxAdapter(
+                  child: _ViewAll(
+                      onTap: () {
+                        final CommentsCubit commentsCubit = CommentsCubit();
+                        pushTo(
+                            context: context,
+                            toPage: CommentsScreen(
+                                commentsCubit: commentsCubit,
+                                getComments: () {
+                                  commentsCubit.getComments();
+                                }));
+                      },
+                      title: translate("comments", context)),
+                ),
+                _ReviewLayer(comments: homeCubit.platformComments),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+                    child: Image.asset(Images.homeCompanyLogo, width: 1.sw),
+                  ),
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: 100.h))
+              ],
+            ),
           );
         },
       ),
@@ -92,10 +102,17 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _ReviewLayer extends StatelessWidget {
-  final CommentsCubit commentsCubit = CommentsCubit();
+class _ReviewLayer extends StatefulWidget {
   final List<Comment> comments;
   _ReviewLayer({required this.comments});
+
+  @override
+  State<_ReviewLayer> createState() => _ReviewLayerState();
+}
+
+class _ReviewLayerState extends State<_ReviewLayer> {
+  final CommentsCubit commentsCubit = CommentsCubit();
+
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
@@ -107,8 +124,24 @@ class _ReviewLayer extends StatelessWidget {
         child: Column(
           children: [
             ...List.generate(
-              comments.take(3).length,
-              (index) => CommentCard(comment: comments[index]),
+              widget.comments.take(3).length,
+              (index) => CommentCard(
+                  commentsCubit: commentsCubit,
+                  onDelete: () {
+                    DeleteDialog.show(context,
+                        title: translate("delete_comment", context),
+                        content: translate("delete_comment_content", context),
+                        onConfirm: () async {
+                      await commentsCubit.deleteComment(
+                          commentId: widget.comments[index].id);
+
+                      if (commentsCubit.state is DeleteCommentsSuccessState) {
+                        widget.comments.removeAt(index);
+                        setState(() {});  
+                      }
+                    });
+                  },
+                  comment: widget.comments[index]),
             ),
             CommentInputFieldToPush(
               commentsCubit: commentsCubit,
@@ -137,7 +170,6 @@ class _LibraryLayer extends StatelessWidget {
             boxShadow: boxShadow,
             borderRadius: BorderRadius.circular(20)),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             SizedBox(
               width: 1.sw - 155.w - 28.w,
@@ -146,11 +178,8 @@ class _LibraryLayer extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      translate("platform_library", context),
-                      style: titilliumBold,
-                      textAlign: TextAlign.center,
-                    ),
+                    Text(translate("platform_library", context),
+                        style: titilliumBold, textAlign: TextAlign.center),
                     CustomButton(
                       borderRadius: BorderRadius.circular(10),
                       label: translate("go", context),
@@ -169,6 +198,7 @@ class _LibraryLayer extends StatelessWidget {
                 aspectRatio: 1,
                 child: CachedImage(
                   image: libraryImage,
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),

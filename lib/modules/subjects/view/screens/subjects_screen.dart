@@ -43,7 +43,7 @@ class SubjectsScreen extends StatelessWidget {
                     message: state.message);
               }
               if (subjectsCubit.subjects.isEmpty) {
-                return SizedBox(height: 1.sh, child: const Nodata());
+                return SizedBox(height: 1.sh, child: const NoData.NoData());
               }
               return SmartRefresher(
                 header: const AppRefresherHeader(),
@@ -77,7 +77,7 @@ class SubjectsScreen extends StatelessWidget {
                       ),
                     ),
                     if (subjectsCubit.subjects.isEmpty)
-                      const SliverToBoxAdapter(child: Nodata()),
+                      const SliverToBoxAdapter(child: NoData.NoData()),
                     SliverGrid.builder(
                       itemCount: subjectsCubit.subjects.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

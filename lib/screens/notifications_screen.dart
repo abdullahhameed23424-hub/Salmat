@@ -46,7 +46,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             }
 
             if (cubit.notifications.isEmpty) {
-              return const Nodata();
+              return const Nodata.NoData();
             }
             return SmartRefresher(
               controller: cubit.refreshController,

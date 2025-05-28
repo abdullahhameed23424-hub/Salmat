@@ -27,3 +27,11 @@ final class AddCommentsErrorState extends CommentsState {
 
 
 
+final class DeleteCommentsLoadingState extends CommentsState {}
+
+final class DeleteCommentsSuccessState extends CommentsState {}
+
+final class DeleteCommentsErrorState extends CommentsState {
+  final String message;
+  DeleteCommentsErrorState({required this.message});
+}

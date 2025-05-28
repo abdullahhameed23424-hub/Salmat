@@ -91,6 +91,9 @@ class LessonsCubit extends Cubit<LessonsState> {
   NextLessonButtonStatus _buttonStatus = NextLessonButtonStatus.DISABLED;
 
   NextLessonButtonStatus get buttonStatus => _buttonStatus;
+
+
+  
   void setNextLessonButtonStatus(Lesson lesson) {
     if (lesson.nextLessonId == -1) {
       if (lesson.nextUnitId == -1) {

@@ -45,9 +45,8 @@ class SectionsCubit extends Cubit<SectionsState> {
       emit(GetSectionsSuccessState());
     } on DioException catch (error) {
       emit(GetSectionsErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(GetSectionsErrorState(message: unknownError()));
     }
-    // catch (error) {
-    //   emit(GetSectionsErrorState(message: unknownError()));
-    // }
   }
 }

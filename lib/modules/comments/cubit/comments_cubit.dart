@@ -85,12 +85,26 @@ class CommentsCubit extends Cubit<CommentsState> {
           data: {"body": commentController.text.trim()});
       getCommentsByCourseId(courseId: courseId);
       commentController.clear();
-      
+
       emit(AddCommentsSuccessState());
     } on DioException catch (error) {
       emit(AddCommentsErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
       emit(AddCommentsErrorState(message: unknownError()));
+    }
+  }
+
+  Future<void> deleteComment({required int commentId}) async {
+    emit(DeleteCommentsLoadingState());
+    try {
+      await Network.deleteData(url: "${Urls.comments}/$commentId");
+      comments.removeWhere((element) => element.id == commentId);
+
+      emit(DeleteCommentsSuccessState());
+    } on DioException catch (error) {
+      emit(DeleteCommentsErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(DeleteCommentsErrorState(message: unknownError()));
     }
   }
 }

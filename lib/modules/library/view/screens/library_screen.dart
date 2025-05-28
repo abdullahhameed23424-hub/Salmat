@@ -38,7 +38,7 @@ class LibraryScreen extends StatelessWidget {
               );
             }
             if (cubit.librarySections.isEmpty) {
-              return const Nodata();
+              return const Nodata.NoData();
             }
             return SmartRefresher(
               controller: cubit.refreshController,

@@ -3,12 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/teachers/cubit/teachers_cubit.dart';
 import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/modules/teachers/view/widgets/info_item.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_course_card.dart';
 import 'package:my_project_new/utils/clipper.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
@@ -194,56 +192,18 @@ class _Header extends StatelessWidget {
                     border: Border.all(color: AppColors.PRIMARY),
                     color: AppColors.WHITE,
                     shape: BoxShape.circle),
-                child: Image.asset(Images.trainer, width: 145.w)),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CachedImage(
+                    image: teacher.image,
+                    boxFit: BoxFit.cover,
+                  ),
+                )),
           ),
           Positioned(bottom: 23.h, left: -7, child: BlueCircle(diagram: 38.w)),
           Positioned(bottom: 0, left: -24, child: BlueCircle(diagram: 38.w))
         ],
       ),
-    );
-  }
-}
-
-class _LocationAndPhoneRow extends StatelessWidget {
-  const _LocationAndPhoneRow();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      spacing: 10.h,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        InfoItem(
-          icon: Icons.location_on_outlined,
-          text: 'دمشق، المهاجرين',
-        ),
-        InfoItem(
-          icon: Icons.phone_outlined,
-          text: '0974156247',
-        ),
-      ],
-    );
-  }
-}
-
-class _BirthAndEmailRow extends StatelessWidget {
-  const _BirthAndEmailRow();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      spacing: 10.h,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        InfoItem(
-          icon: Icons.cake_outlined,
-          text: '12-12-2000',
-        ),
-        InfoItem(
-          icon: Icons.email_outlined,
-          text: 'mhd123@gmail.com',
-        ),
-      ],
     );
   }
 }

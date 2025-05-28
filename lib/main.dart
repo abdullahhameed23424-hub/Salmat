@@ -30,6 +30,7 @@ void main() async {
   // AppSharedPreferences.removeToken;
 
   print("token is: ${AppSharedPreferences.getToken}");
+  print("userID is: ${AppSharedPreferences.getUserID}");
   print("has token is: ${AppSharedPreferences.hasToken}");
   runApp(const MyApp());
 }

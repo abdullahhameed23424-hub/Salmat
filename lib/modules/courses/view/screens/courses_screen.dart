@@ -48,7 +48,7 @@ class CoursesScreen extends StatelessWidget {
                 }
 
                 if (coursesCubit.courses.isEmpty) {
-                  return SizedBox(height: 1.sh, child: const Nodata());
+                  return SizedBox(height: 1.sh, child: const Nodata.NoData());
                 }
                 return SmartRefresher(
                   header: const AppRefresherHeader(),

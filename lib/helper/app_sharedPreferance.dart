@@ -9,6 +9,17 @@ class AppSharedPreferences {
   static bool get hasToken => CacheHelper.contains(token);
   static void get removeToken => CacheHelper.removeData(key: token);
 
+  static String userID = 'userID';
+  static String get getUserID => CacheHelper.getData(key: userID) ?? "no userID";
+  static saveUserID(String value) =>
+      CacheHelper.saveData(key: userID, value: value);
+  static bool get hasUserID => CacheHelper.contains(userID);
+  static void get removeUserID => CacheHelper.removeData(key: userID);
+
+
+
+
+
   // ignore: constant_identifier_names
   static const String LOCALE = 'locale';
   static String get getLocale => CacheHelper.getData(key: LOCALE) ?? "ar";

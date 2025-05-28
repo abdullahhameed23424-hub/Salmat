@@ -41,6 +41,8 @@ class AuthCubit extends Cubit<AuthState> {
 
         await AppSharedPreferences.saveToken(
             response.data['data']['user']['token']);
+        await AppSharedPreferences.saveUserID(
+            response.data['data']['user']['id'].toString());
         await Network.init();
 
         emit(LoginSuccessState());

@@ -1,4 +1,4 @@
-package com.icr.job
+package com.icr.slamat
 
 import io.flutter.embedding.android.FlutterActivity
 
