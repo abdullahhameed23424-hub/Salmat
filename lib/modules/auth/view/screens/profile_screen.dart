@@ -8,6 +8,7 @@ import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -43,10 +44,19 @@ class ProfileScreen extends StatelessWidget {
                   padding: EdgeInsets.only(top: 50.h),
                   child: Column(
                     children: [
-                      CircleAvatar(
-                        radius: 50.w,
-                        backgroundImage: const AssetImage(
-                            Images.ex), // Replace with your image
+                      Container(
+                        width: 100.w,
+                        height: 100.w,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.WHITE,
+                          border: Border.all(color: AppColors.PRIMARY),
+                        ),
+                        child: CachedImage(
+                          image: authCubit.user.image,
+                          boxFit: BoxFit.cover,
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       Text(authCubit.user.fullName,

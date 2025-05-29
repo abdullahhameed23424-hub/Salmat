@@ -85,7 +85,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
-                LessonVideo(lesson: lessonsCubit.lessonDetails),
+                // LessonVideo(lesson: lessonsCubit.lessonDetails),
                 ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(
@@ -129,6 +129,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
   final LessonsCubit lessonsCubit;
   @override
   Widget build(BuildContext context) {
+    print(" lessonsCubit.buttonStatus: ${lessonsCubit.buttonStatus}");
     return Container(
       decoration: BoxDecoration(
           color: AppColors.LIGHTGRAY, borderRadius: BorderRadius.circular(50)),
@@ -155,7 +156,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
             } else if (lessonsCubit.buttonStatus ==
                 NextLessonButtonStatus.DO_TEST_FIRST) {
               return CustomButton(
-                  backgroundColor: AppColors.SECONDRY,
+                  backgroundColor: Colors.grey.shade300,
                   buttonStyle:
                       titilliumBold.copyWith(color: AppColors.DARK_GRAY),
                   label: translate('next_lesson', context),
@@ -163,6 +164,16 @@ class NextAndLastLessonButtons extends StatelessWidget {
                     customSnackBar(context,
                         success: 0,
                         message: translate('do_test_first', context));
+                  });
+            } else if (lessonsCubit.buttonStatus ==
+                NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+              return CustomButton(
+                  backgroundColor: AppColors.SECONDRY,
+                  buttonStyle:
+                      titilliumBold.copyWith(color: AppColors.DARK_GRAY),
+                  label: translate('next_unit', context),
+                  onPressed: () {
+                    lessonsCubit.openNextLessons();
                   });
             } else {
               return CustomButton(

@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart'; 
+import 'package:my_project_new/constant/app_colors.dart';
+import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/dimensions.dart';
 
 bool isNotValidEmail(String email) {
@@ -31,10 +32,8 @@ void showBottomSheet(BuildContext context, Widget widget) {
   );
 }
 
-void customSnackBar(
-  BuildContext context,  {  
-    required int success,
-    required String message}) {
+void customSnackBar(BuildContext context,
+    {required int success, required String message}) {
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
   ScaffoldMessenger.of(context).showSnackBar(
@@ -50,7 +49,7 @@ void customSnackBar(
           child: Text(
             message,
             textAlign: TextAlign.center,
-            style: titilliumBold,
+            style: titilliumBold.copyWith(color: AppColors.WHITE),
           ),
         )),
   );
@@ -62,8 +61,7 @@ Future<dynamic> pushTo(
       .push(MaterialPageRoute(builder: (context) => toPage));
 }
 
-void pushAndRemoveUntiTo(
-   BuildContext context,  {  required Widget toPage}) {
+void pushAndRemoveUntiTo(BuildContext context, {required Widget toPage}) {
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (context) => toPage),
     (route) => false,
@@ -75,5 +73,3 @@ void pushReplacement({required BuildContext context, required Widget toPage}) {
     MaterialPageRoute(builder: (context) => toPage),
   );
 }
-
- 

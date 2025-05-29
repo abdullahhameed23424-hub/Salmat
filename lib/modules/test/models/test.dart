@@ -14,7 +14,7 @@ class Test {
   final List<Question> questions;
   final Result result;
   final StudentExam studentExam;
-  final int attemptCount;
+  final int? attemptCount;
   final bool isSubscribed;
   final dynamic remainingTime;
   Test(
@@ -48,6 +48,6 @@ class Test {
             json["questions"].map((x) => Question.fromJson(x))),
         result: Result.fromJson(json["result"]),
         studentExam: StudentExam.fromJson(json["studentExam"]),
-        attemptCount: json["attempt_count"] ?? 0,
+        attemptCount: json["attempt_count"],
       );
 }

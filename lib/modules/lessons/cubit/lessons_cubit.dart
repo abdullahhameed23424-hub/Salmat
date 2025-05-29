@@ -79,21 +79,39 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   void openNextLessons() async {
-    if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE ||
-        buttonStatus == NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-      _openNextLesson(lessonDetails.unitId, lessonDetails.id);
-    } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
-      getLessonDetails(
-          lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
-    }
+    // if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE ||
+    //     buttonStatus == NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+
+    _openNextLesson(lessonDetails.unitId, lessonDetails.id);
+
+    // } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
+    //   getLessonDetails(
+    //       lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
+    // }
   }
 
   NextLessonButtonStatus _buttonStatus = NextLessonButtonStatus.DISABLED;
 
   NextLessonButtonStatus get buttonStatus => _buttonStatus;
 
+  // void setNextLessonButtonStatus(Lesson lesson) {
+  //   if (lesson.nextLessonId == -1) {
+  //     if (lesson.nextUnitId == -1) {
+  //       _buttonStatus = NextLessonButtonStatus.COURSE_END;
+  //     } else if (lesson.nextUnitId != null) {
+  //       _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
+  //     }
+  //   }
 
-  
+  //    else if (lesson.nextLessonId != null) {
+  //     _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
+  //   } else if (lesson.test?.result.pass == false) {
+  //     _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
+  //   } else {
+  //     _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;
+  //   }
+  // }
+
   void setNextLessonButtonStatus(Lesson lesson) {
     if (lesson.nextLessonId == -1) {
       if (lesson.nextUnitId == -1) {
@@ -101,9 +119,13 @@ class LessonsCubit extends Cubit<LessonsState> {
       } else if (lesson.nextUnitId != null) {
         _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
       }
-    } else if (lesson.nextLessonId != null) {
-      _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
-    } else if (lesson.test?.result.pass == false) {
+    }
+
+    //  else if (lesson.nextLessonId != null) {
+    //   _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
+    // }
+
+    else if (lesson.test?.result.pass == null) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {
       _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;

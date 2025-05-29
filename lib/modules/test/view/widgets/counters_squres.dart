@@ -39,7 +39,9 @@ class CountersSqures extends StatelessWidget {
                 Expanded(
                   child: TestInfo(
                     text: translate('attempt_count', context),
-                    value: testCubit.test.attemptCount.toString(),
+                    value: testCubit.test.attemptCount != null
+                        ? testCubit.test.attemptCount.toString()
+                        : "0",
                   ),
                 ),
                 Expanded(

@@ -3,6 +3,7 @@
   "delete_comment_content": "هل أنت متأكد من حذف هذا التعليق؟",
   "comment_deleted": "تم حذف التعليق بنجاح",
   "no_comments": "لا يوجد تعليقات",
+  "next_unit": "الوحدة التالية",
   "contact_admin_title": "اتصل بالمسؤول",
   "contact_admin_message": "للمساعدة، اتصل بالمسؤول:",
   "call_button": "اتصال",
