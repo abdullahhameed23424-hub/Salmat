@@ -4,6 +4,8 @@ import 'package:my_project_new/utils/bool_converter.dart';
 
 class Test {
   final int id;
+  final int lessonId;
+  final int unitId;
   final String description;
   final int degree;
   final String name;
@@ -14,11 +16,13 @@ class Test {
   final List<Question> questions;
   final Result result;
   final StudentExam studentExam;
-  final int? attemptCount;
+  final int attemptCount;
   final bool isSubscribed;
   final dynamic remainingTime;
   Test(
       {required this.id,
+      required this.lessonId,
+      required this.unitId,
       required this.description,
       required this.degree,
       required this.name,
@@ -34,6 +38,8 @@ class Test {
       required this.remainingTime});
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
+        lessonId: json["lesson_id"] ?? 0,
+        unitId: json["unit_id"] ?? 0,
         remainingTime: json["remaining_time"],
         isSubscribed: boolConverter(json["is_subscribed"]),
         isSolving: boolConverter(json["is_solving"]),
@@ -44,10 +50,12 @@ class Test {
         minutes: json["minutes"],
         passPercentage: json["pass_percentage"],
         questionsCount: json["questions_count"],
-        questions: List<Question>.from(
-            json["questions"].map((x) => Question.fromJson(x))),
+        questions: json["questions"] != null
+            ? List<Question>.from(
+                json["questions"].map((x) => Question.fromJson(x)))
+            : [],
         result: Result.fromJson(json["result"]),
         studentExam: StudentExam.fromJson(json["studentExam"]),
-        attemptCount: json["attempt_count"],
+        attemptCount: json["attempts_count"] ?? 0,
       );
 }

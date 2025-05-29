@@ -11,14 +11,17 @@ class ResultDialog extends StatelessWidget {
   const ResultDialog({
     super.key,
     required this.result,
+    required this.onTryAgainInFailed,
   });
 
   final Result result;
-
-  static void show(BuildContext context, Result result) {
+  final void Function() onTryAgainInFailed;
+  static void show(BuildContext context,
+      {required Result result, required void Function() onTryAgainInFailed}) {
     showDialog(
       context: context,
-      builder: (_) => ResultDialog(result: result),
+      builder: (_) =>
+          ResultDialog(result: result, onTryAgainInFailed: onTryAgainInFailed),
     );
   }
 
@@ -58,17 +61,26 @@ class ResultDialog extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             _buildRow(translate('exam_degree', context), result.examDegree),
-            _buildRow(translate('pass_percentage', context),
-                '${result.examPassPercentage}%'),
             _buildRow(
                 translate('your_score', context), result.examStudentDegree),
+            _buildRow(translate('pass_percentage', context),
+                '${result.examPassPercentage}%'),
             SizedBox(height: 24.h),
+            if (result.pass != true)
+              CustomButton(
+                  borderRadius: BorderRadius.circular(12.r),
+                  label: translate('try_again', context),
+                  onPressed: () {
+                    onTryAgainInFailed();
+                  }),
+            SizedBox(height: 16.h),
             CustomButton(
               onPressed: () => Navigator.pop(context),
               label: translate('close', context),
-              backgroundColor: AppColors.PRIMARY,
-              buttonStyle: titilliumBold.copyWith(color: AppColors.WHITE),
+              backgroundColor: AppColors.WHITE,
+              buttonStyle: titilliumBold.copyWith(color: AppColors.PRIMARY),
               borderRadius: BorderRadius.circular(12.r),
+              border: const BorderSide(color: AppColors.PRIMARY),
             ),
           ],
         ),

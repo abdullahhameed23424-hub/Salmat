@@ -19,7 +19,9 @@ import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/confirmation_dialog.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:my_project_new/widgets/modern_loading_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
@@ -42,6 +44,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     super.initState();
   }
 
+  final GlobalKey<ModernLoadingDialogState> _loadingDialogKey =
+      GlobalKey<ModernLoadingDialogState>();
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -63,6 +67,20 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
               Navigator.pop(context,
                   {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
               customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+            } else if (state is SkipTestLoadingState) {
+              ModernLoadingDialog.show(context, _loadingDialogKey);
+            } else if (state is SkipTestSuccessState) {
+              if (_loadingDialogKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              lessonsCubit.getLessonDetails(
+                  lessonId: state.nextLessonId,
+                  unitId: lessonsCubit.lessonDetails.unitId);
+            } else if (state is SkipTestErrorState) {
+              if (_loadingDialogKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              customSnackBar(context, success: 0, message: state.message);
             }
           },
           builder: (context, state) {
@@ -79,9 +97,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   },
                   message: state.message);
             }
-
+            final bool thereIsTest = lessonsCubit.lessonDetails.examId != null;
             final bool isPassed =
-                lessonsCubit.lessonDetails.test?.result.pass == true;
+                thereIsTest && lessonsCubit.lessonDetails.test!.result.pass;
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
@@ -94,7 +112,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                     _LessonDscription(lessonsCubit.lessonDetails.description),
                     _LessonTaps(
                         controller: controller, lessonsCubit: lessonsCubit),
-                    if (lessonsCubit.lessonDetails.examId != null)
+                    if (lessonsCubit.lessonDetails.examId != null) ...[
                       DoExamButton(
                           color: isPassed ? AppColors.LIGHT_GREEN : null,
                           label: isPassed
@@ -107,6 +125,30 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                     examId:
                                         lessonsCubit.lessonDetails.examId!));
                           }),
+                      SizedBox(height: 15.h),
+                      if (!isPassed &&
+                          thereIsTest &&
+                          lessonsCubit.lessonDetails.test!.attemptCount > 0)
+                        CustomButton(
+                            backgroundColor: AppColors.PURPLE_LIGHT,
+                            label: translate(
+                                'skip_test_and_show_answers', context),
+                            onPressed: () async {
+                              final bool? shouldSkip =
+                                  await ConfirmationDialog.show(
+                                context: context,
+                                title: translate('skip_exam', context),
+                                message:
+                                    translate('skip_exam_message', context),
+                              );
+
+                              if (shouldSkip == true) {
+                                lessonsCubit.skipTest(
+                                    lessonId: lessonsCubit.lessonDetails.id,
+                                    unitId: lessonsCubit.lessonDetails.unitId);
+                              }
+                            }),
+                    ],
                     NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
                   ],
                 ),
@@ -129,7 +171,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
   final LessonsCubit lessonsCubit;
   @override
   Widget build(BuildContext context) {
-    print(" lessonsCubit.buttonStatus: ${lessonsCubit.buttonStatus}");
+    print("lessonsCubit.buttonStatus: ${lessonsCubit.buttonStatus}");
     return Container(
       decoration: BoxDecoration(
           color: AppColors.LIGHTGRAY, borderRadius: BorderRadius.circular(50)),

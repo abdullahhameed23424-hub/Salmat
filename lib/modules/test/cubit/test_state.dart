@@ -37,3 +37,5 @@ final class SubmitExamErrorState extends TestState {
 
   SubmitExamErrorState({required this.message});
 }
+
+final class ShowAnswersSuccessState extends TestState {}

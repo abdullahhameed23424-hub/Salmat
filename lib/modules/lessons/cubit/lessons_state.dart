@@ -36,3 +36,15 @@ final class OpenNextLessonErrorState extends LessonsState {
   final String message;
   OpenNextLessonErrorState({required this.message});
 }
+
+final class SkipTestLoadingState extends LessonsState {}
+
+final class SkipTestSuccessState extends LessonsState {
+  final int nextLessonId;
+  SkipTestSuccessState({required this.nextLessonId});
+}
+
+final class SkipTestErrorState extends LessonsState {
+  final String message;
+  SkipTestErrorState({required this.message});
+}

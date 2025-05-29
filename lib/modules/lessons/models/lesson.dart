@@ -24,7 +24,7 @@ class Lesson {
 
   final List<MyVideo> myVideos;
   final String? audio;
-  final Test? test;
+  final Test ? test;
   final int unitId;
   final Unit? unit;
   Lesson({

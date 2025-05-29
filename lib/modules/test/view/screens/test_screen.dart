@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
 import 'package:my_project_new/modules/test/view/widgets/result_dialog.dart';
@@ -26,20 +28,32 @@ class TestScreen extends StatelessWidget {
       title: translate('test', context),
       backgroundColor: AppColors.SECONDRY,
       appBarBorderRadius: BorderRadius.zero,
-      body: BlocProvider(
-        create: (context) => TestCubit()..getTest(examId),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => TestCubit()..getTest(examId),
+          ),
+        ],
         child: BlocConsumer<TestCubit, TestState>(
           listener: (context, state) {
+            final TestCubit testCubit = context.read<TestCubit>();
             if (state is StartExamSuccessState) {
             } else if (state is SubmitExamErrorState) {
               customSnackBar(context, success: 0, message: state.message);
             }
             if (state is SubmitExamSuccessState) {
-              ResultDialog.show(context, state.result);
+              ResultDialog.show(
+                context,
+                result: state.result,
+                onTryAgainInFailed: () {
+                  Navigator.pop(context);
+                  testCubit.getTest(examId);
+                },
+              );
             }
           },
           builder: (context, state) {
-            final TestCubit examCubit = context.read<TestCubit>();
+            final TestCubit testCubit = context.read<TestCubit>();
             if (state is GetTestLoadingState) {
               return const AppLoading();
             }
@@ -50,7 +64,7 @@ class TestScreen extends StatelessWidget {
               return TryAgain(
                 message: state.message,
                 onTap: () {
-                  examCubit.getTest(examId);
+                  testCubit.getTest(examId);
                 },
               );
             }
@@ -59,11 +73,19 @@ class TestScreen extends StatelessWidget {
               return TryAgain(
                 message: state.message,
                 onTap: () {
-                  examCubit.createExam(examId);
+                  testCubit.createExam(examId);
                 },
               );
             }
 
+            if (state is SubmitExamErrorState) {
+              return Center(
+                child: Text(
+                  translate('something_went_wrong', context),
+                  style: titilliumBold.copyWith(fontSize: 22.sp),
+                ),
+              );
+            }
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -75,15 +97,21 @@ class TestScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: CustomScrollView(
                 slivers: [
-                  ExamHeader(description: examCubit.test.description),
-                  CountersSqures(testCubit: examCubit),
-                  QuestionsList(examCubit: examCubit),
-                  if (!examCubit.isSolving)
-                    FinalResultCard(result: examCubit.test.result),
+                  ExamHeader(description: testCubit.test.description),
+                  CountersSqures(testCubit: testCubit),
+                  QuestionsList(examCubit: testCubit),
+                  if (!testCubit.isSolving)
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: <Widget>[
+                          FinalResultCard(result: testCubit.test.result),
+                        ],
+                      ),
+                    ),
                   if (state is SubmitExamLoadingState)
                     const SliverToBoxAdapter(child: AppLoading())
-                  else if (examCubit.isSolving)
-                    SubmitButton(examCubit: examCubit),
+                  else if (testCubit.isSolving)
+                    SubmitButton(examCubit: testCubit),
                 ],
               ),
             );
@@ -110,7 +138,7 @@ class SubmitButton extends StatelessWidget {
           backgroundColor: AppColors.LIGHTGRAY,
           buttonStyle: titilliumBold.copyWith(color: AppColors.PRIMARY),
           onPressed: () {
-            examCubit.submitExam(examCubit.test.id);
+            examCubit.submitExam(examId: examCubit.test.id);
           },
           label: 'تحقق من الإجابات',
         ),

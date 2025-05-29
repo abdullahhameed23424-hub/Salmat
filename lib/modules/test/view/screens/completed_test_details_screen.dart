@@ -42,7 +42,6 @@ class CompletedTestDetailsScreen extends StatelessWidget {
                     padding: EdgeInsets.all(12.w),
                     question: Question(
                       id: 1,
-                     
                       degree: 1,
                       video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                       image: 'https://via.placeholder.com/150',
@@ -68,13 +67,15 @@ class CompletedTestDetailsScreen extends StatelessWidget {
                     ),
                     examCubit: TestCubit()..isSolving = true),
               ),
-              FinalResultCard(
-                  result: Result(
-                      studentDegree: '20',
-                      examDegree: '100',
-                      examStudentDegree: '20',
-                      examPassPercentage: '70',
-                      pass: true))
+              SliverToBoxAdapter(
+                child: FinalResultCard(
+                    result: Result(
+                        studentDegree: '20',
+                        examDegree: '100',
+                        examStudentDegree: '20',
+                        examPassPercentage: '70',
+                        pass: true)),
+              )
             ],
           ),
         ));

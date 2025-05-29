@@ -31,25 +31,26 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (test.result.pass == null && test.isSubscribed && !test.isSolving) {
+      if (!test.result.pass && test.isSubscribed && !test.isSolving) {
         createExam(test.id);
-      } else {
-        if (test.result.pass != null) {
-          // student is success
-          testTime = test.minutes * 60;
-        } else if (test.isSolving) {
-          // student is solving
-          isSolving = true;
-
-          testTime = test.remainingTime.toInt();
-        } else {
-          // student is not solving yet
-          testTime = test.minutes * 60;
-          isSolving = true;
-        }
-
-        emit(GetTestSuccessState());
       }
+      if (test.result.pass) {
+        // student is success
+        testTime = test.minutes * 60;
+      } else if (test.isSolving) {
+        // student is solving
+        isSolving = true;
+        testTime = test.remainingTime.toInt();
+        if (testTime.isNegative) {
+          submitExam(examId: test.id, force: true);
+        }
+      } else {
+        // student is not solving yet
+        testTime = test.minutes * 60;
+        isSolving = true;
+      }
+
+      emit(GetTestSuccessState());
     } on DioException catch (error) {
       emit(GetTestErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
@@ -106,10 +107,10 @@ class TestCubit extends Cubit<TestState> {
     });
   }
 
-  Future<void> submitExam(int examId) async {
+  Future<void> submitExam({required int examId, bool force = false}) async {
     print("selectedOptions: $selectedOptions");
     emit(SubmitExamLoadingState());
-    if (selectedOptions.any((option) => option['option_id'] == -1)) {
+    if (selectedOptions.any((option) => option['option_id'] == -1) && !force) {
       emit(SubmitExamErrorState(message: "يرجى حل جميع الأسئلة"));
       return;
     }
@@ -122,10 +123,19 @@ class TestCubit extends Cubit<TestState> {
         },
       );
       isSolving = false;
-      final TestResponse testResponse =
-          TestResponse.fromJson(response.data['data']);
-      test = testResponse.data;
-      emit(SubmitExamSuccessState(result: testResponse.data.result));
+
+      if (response.data['data']['pass'] ?? true) {
+        // this mean that the student is success and in this case back return the exam
+
+        final TestResponse testResponse =
+            TestResponse.fromJson(response.data['data']);
+        test = testResponse.data;
+        emit(SubmitExamSuccessState(result: testResponse.data.result));
+      } else {
+        final Result failedResult = Result.fromJson(response.data['data']);
+        emit(SubmitExamSuccessState(result: failedResult));
+        // this mean that the student is failed and in this case back return the result only
+      }
     } on DioException catch (e) {
       emit(SubmitExamErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
@@ -133,7 +143,11 @@ class TestCubit extends Cubit<TestState> {
     }
   }
 
-  int nextLessonId = 0;
+  Future<void> showAnswers(int examId) async {
+    test.result.questions = test.questions;
 
-  
+    emit(ShowAnswersSuccessState());
+  }
+
+  int nextLessonId = 0;
 }

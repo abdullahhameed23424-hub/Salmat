@@ -14,51 +14,49 @@ class FinalResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: ZoomIn(
-        child: Container(
-          margin: EdgeInsets.only(top: 20.h),
-          height: 60.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.r),
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 5,
-                offset: Offset(0, 2),
+    return ZoomIn(
+      child: Container(
+        margin: EdgeInsets.only(top: 20.h),
+        height: 60.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.r),
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text('النتيجة النهائية', style: titilliumBold),
               ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text('النتيجة النهائية', style: titilliumBold),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: result.pass == true
+                    ? AppColors.LIGHT_GREEN
+                    : AppColors.PURPLE_LIGHT,
+                borderRadius: BorderRadiusDirectional.horizontal(
+                  end: Radius.circular(15.r),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  color: result.pass == true
-                      ? AppColors.LIGHT_GREEN
-                      : AppColors.PURPLE_LIGHT,
-                  borderRadius: BorderRadiusDirectional.horizontal(
-                    end: Radius.circular(15.r),
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  "${result.examStudentDegree} / ${result.examDegree}",
-                  style: titilliumBold.copyWith(
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                  ),
+              alignment: Alignment.center,
+              child: Text(
+                "${result.examStudentDegree} / ${result.examDegree}",
+                style: titilliumBold.copyWith(
+                  color: Colors.white,
+                  fontSize: 16.sp,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
