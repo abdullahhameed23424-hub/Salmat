@@ -39,9 +39,7 @@ class CountersSqures extends StatelessWidget {
                 Expanded(
                   child: TestInfo(
                     text: translate('attempt_count', context),
-                    value: testCubit.test.attemptCount != null
-                        ? testCubit.test.attemptCount.toString()
-                        : "0",
+                    value: testCubit.test.attemptCount.toString(),
                   ),
                 ),
                 Expanded(
@@ -82,6 +80,9 @@ class _TestTimerState extends State<TestTimer> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!widget.testCubit.isSolving) {
+        _timer?.cancel();
+      }
       setState(() {
         if (_remainingSeconds > 0) {
           _remainingSeconds--;

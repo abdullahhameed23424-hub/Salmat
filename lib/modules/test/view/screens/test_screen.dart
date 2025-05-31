@@ -7,6 +7,7 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
 import 'package:my_project_new/modules/test/view/widgets/result_dialog.dart';
@@ -42,6 +43,7 @@ class TestScreen extends StatelessWidget {
               customSnackBar(context, success: 0, message: state.message);
             }
             if (state is SubmitExamSuccessState) {
+              LessonDetailsScreen.refrshLessonScreen = true;
               ResultDialog.show(
                 context,
                 result: state.result,

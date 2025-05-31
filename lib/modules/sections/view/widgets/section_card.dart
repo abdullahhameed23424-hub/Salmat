@@ -67,6 +67,7 @@ class SectionCard extends StatelessWidget {
                 aspectRatio: 1,
                 child: CachedImage(
                     image: section.image,
+                    boxFit: BoxFit.cover,
                     borderRadius: BorderRadius.circular(5))),
           ],
         ),

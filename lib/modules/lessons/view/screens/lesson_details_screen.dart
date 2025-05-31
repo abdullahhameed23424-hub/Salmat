@@ -28,6 +28,7 @@ import 'package:my_project_new/widgets/try_again.dart';
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen({super.key, required this.lesson});
   final Lesson lesson;
+  static bool refrshLessonScreen = false;
   @override
   State<LessonDetailsScreen> createState() => _LessonDetailsScreenState();
 }
@@ -59,7 +60,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
         child: BlocConsumer<LessonsCubit, LessonsState>(
           listener: (context, state) {
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is OpenNextLessonErrorState) {
+            if (state is GetLessonDetailsSuccessState) {
+              widget.lesson.id = lessonsCubit.lessonDetails.id;
+            } else if (state is OpenNextLessonErrorState) {
               customSnackBar(context, success: 0, message: state.message);
             } else if (state is OpenNextLessonSuccessState) {
               if (lessonsCubit.buttonStatus ==
@@ -106,7 +109,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             }
             final bool thereIsTest = lessonsCubit.lessonDetails.examId != null;
             final bool isPassed =
-                thereIsTest && lessonsCubit.lessonDetails.test!.result.pass;
+                thereIsTest && lessonsCubit.lessonDetails.exam!.result.pass;
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
@@ -125,17 +128,25 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                           label: isPassed
                               ? translate('view_exam', context)
                               : translate('do_exam', context),
-                          onTap: () {
-                            pushTo(
+                          onTap: () async {
+                            LessonDetailsScreen.refrshLessonScreen = false;
+                            await pushTo(
                                 context: context,
                                 toPage: TestScreen(
                                     examId:
                                         lessonsCubit.lessonDetails.examId!));
+
+                            if (LessonDetailsScreen.refrshLessonScreen) {
+                              lessonsCubit.getLessonDetails(
+                                  lessonId: widget.lesson.id,
+                                  unitId: widget.lesson.unitId);
+                            }
                           }),
                       SizedBox(height: 15.h),
                       if (!isPassed &&
-                          thereIsTest &&
-                          lessonsCubit.lessonDetails.test!.attemptCount > 0)
+                          lessonsCubit.lessonDetails.exam!.attemptCount > 0 &&
+                          lessonsCubit.buttonStatus ==
+                              NextLessonButtonStatus.DO_TEST_FIRST)
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,
                             label: translate(
@@ -233,7 +244,6 @@ class NextAndLastLessonButtons extends StatelessWidget {
                   onPressed: (lessonsCubit.buttonStatus !=
                           NextLessonButtonStatus.DISABLED)
                       ? () {
-                        
                           lessonsCubit.openNextLessons();
                         }
                       : null);

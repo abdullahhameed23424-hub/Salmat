@@ -138,9 +138,10 @@ class TestCubit extends Cubit<TestState> {
       }
     } on DioException catch (e) {
       emit(SubmitExamErrorState(message: exceptionsHandle(error: e)));
-    } catch (error) {
-      emit(SubmitExamErrorState(message: unknownError()));
     }
+    //  catch (error) {
+    //   emit(SubmitExamErrorState(message: unknownError()));
+    // }
   }
 
   Future<void> showAnswers(int examId) async {

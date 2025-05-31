@@ -21,8 +21,8 @@ class Result {
         pass: boolConverter(json["pass"]),
         studentDegree: stringOrZero(json["student_degree"]),
         examDegree: stringOrZero(json["exam_degree"]),
-        examPassPercentage: stringOrZero(json["exam_pass_percentage"]),
-        examStudentDegree: stringOrZero(json["exam_student_degree"]),
+        examPassPercentage: stringOrZero(json["pass_percentage"]),
+        examStudentDegree: stringOrZero(json["student_percentage"]),
         questions: json["questions"] != null
             ? List<Question>.from(
                 json["questions"].map((x) => Question.fromJson(x)))

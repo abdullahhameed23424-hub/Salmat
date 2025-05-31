@@ -59,10 +59,9 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(GetLessonDetailsErrorState(message: unknownError()));
     }
-    // catch (error) {
-    //   emit(GetLessonDetailsErrorState(message: unknownError()));
-    // }
   }
 
   Future<void> _openNextLesson(int unitId, int lessonId) async {
@@ -98,8 +97,8 @@ class LessonsCubit extends Cubit<LessonsState> {
       if (lesson.nextUnitId == -1) {
         _buttonStatus = NextLessonButtonStatus.COURSE_END;
       } else if ((lesson.nextUnitId != null) &&
-          ((lesson.test != null && lesson.test?.result.pass != null) ||
-              lesson.test == null)) {
+          ((lesson.exam != null && lesson.exam!.result.pass) ||
+              lesson.exam == null)) {
         _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
       } else {
         _buttonStatus = NextLessonButtonStatus
@@ -107,7 +106,7 @@ class LessonsCubit extends Cubit<LessonsState> {
       }
     } else if (lesson.nextLessonId != null) {
       _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
-    } else if (lesson.test != null && lesson.test?.result.pass == null) {
+    } else if (lesson.exam != null && !lesson.exam!.result.pass) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {
       _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;
@@ -118,7 +117,7 @@ class LessonsCubit extends Cubit<LessonsState> {
     emit(SkipTestLoadingState());
     try {
       final Response response = await Network.postData(
-          url: '${Urls.sections}/$unitId/lessons/$lessonId/open');
+          url: '${Urls.sections}/$unitId/lessons/$lessonId/open?skipped=true');
       emit(SkipTestSuccessState(
         nextLessonId: response.data['data']['next_lesson_id'],
       ));

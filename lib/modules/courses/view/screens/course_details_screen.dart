@@ -253,7 +253,7 @@ class _InfoCircles extends StatelessWidget {
         child: _InfoCircle(
           image: Images.hoursCircle,
           title: translate("hours", context),
-          value: "${course.totalLessonsTime}h",
+          value: course.totalLessonsTime,
         ),
       ),
     ]);
