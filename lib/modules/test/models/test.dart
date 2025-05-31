@@ -7,8 +7,8 @@ class Test {
   final int lessonId;
   final int unitId;
   final String description;
-  final int degree;
-  final String name;
+  final dynamic degree;
+
   final bool isSolving;
   final int minutes;
   final int passPercentage;
@@ -25,7 +25,6 @@ class Test {
       required this.unitId,
       required this.description,
       required this.degree,
-      required this.name,
       required this.isSolving,
       required this.minutes,
       required this.passPercentage,
@@ -46,7 +45,6 @@ class Test {
         id: json["id"],
         description: json["description"] ?? "",
         degree: json["degree"],
-        name: json["name"],
         minutes: json["minutes"],
         passPercentage: json["pass_percentage"],
         questionsCount: json["questions_count"],

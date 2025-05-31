@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
@@ -33,9 +34,9 @@ class _QuestionCardState extends State<QuestionCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
+          HtmlWidget(
             widget.question.text,
-            style: titilliumRegular,
+            textStyle: titilliumRegular,
           ),
           ...List.generate(
             widget.question.options.length,
@@ -72,9 +73,9 @@ class _QuestionCardState extends State<QuestionCard> {
                         .onOptionTaped(widget.question, optionIndex, value!);
                     setState(() {});
                   },
-                  title: Text(
+                  title: HtmlWidget(
                     widget.question.options[optionIndex].name,
-                    style: titilliumRegular,
+                    textStyle: titilliumRegular,
                   ),
                 ),
               );

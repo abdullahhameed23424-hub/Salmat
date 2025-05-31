@@ -61,12 +61,19 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
             if (state is OpenNextLessonErrorState) {
               customSnackBar(context, success: 0, message: state.message);
-            } else if (state is OpenNextLessonSuccessState &&
-                lessonsCubit.buttonStatus ==
-                    NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-              Navigator.pop(context,
-                  {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
-              customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+            } else if (state is OpenNextLessonSuccessState) {
+              if (lessonsCubit.buttonStatus ==
+                  NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+                Navigator.pop(context,
+                    {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+                customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+              } else if (lessonsCubit.buttonStatus ==
+                  NextLessonButtonStatus.OPEN_AND_MOVE) {
+                widget.lesson.id = state.nextLessonId;
+                lessonsCubit.getLessonDetails(
+                    lessonId: state.nextLessonId,
+                    unitId: lessonsCubit.lessonDetails.unitId);
+              }
             } else if (state is SkipTestLoadingState) {
               ModernLoadingDialog.show(context, _loadingDialogKey);
             } else if (state is SkipTestSuccessState) {
@@ -226,6 +233,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
                   onPressed: (lessonsCubit.buttonStatus !=
                           NextLessonButtonStatus.DISABLED)
                       ? () {
+                        
                           lessonsCubit.openNextLessons();
                         }
                       : null);

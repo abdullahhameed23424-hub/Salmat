@@ -69,6 +69,7 @@ dependencies:
   flutter_downloader: ^1.12.0
   permission_handler: ^12.0.0+1
   sqflite: ^2.4.1
+  flutter_widget_from_html_core: ^0.16.0
 
 
   

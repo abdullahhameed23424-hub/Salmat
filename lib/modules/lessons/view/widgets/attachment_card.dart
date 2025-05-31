@@ -1,19 +1,21 @@
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/lessons/models/app_file.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 
 class AttachmentCard extends StatelessWidget {
   const AttachmentCard({
     super.key,
     required this.file,
   });
-   
+
   final AppFile file;
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,9 @@ class AttachmentCard extends StatelessWidget {
       duration: const Duration(milliseconds: 400),
       delay: Duration(milliseconds: 100 * (1 + Random().nextInt(5))),
       child: InkWell(
+        onTap: () {
+          EasyLauncher.url(url: file.url);
+        },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 0.w),
           decoration: BoxDecoration(
@@ -31,13 +36,13 @@ class AttachmentCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              AspectRatio(
-                aspectRatio: 1,
-                child: SizedBox(
-                  width: 1.sw,
-                  child: Image.asset(file.image, fit: BoxFit.contain),
-                ),
-              ),
+              // AspectRatio(
+              //   aspectRatio: 1,
+              //   child: SizedBox(
+              //     width: 1.sw,
+              //     child: CachedImage(image: file.image, boxFit: BoxFit.contain),
+              //   ),
+              // ),
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -47,7 +52,7 @@ class AttachmentCard extends StatelessWidget {
                       bottomRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                     ),
-                  ),  
+                  ),
                   child: Center(
                     child: Text(
                       file.name,
