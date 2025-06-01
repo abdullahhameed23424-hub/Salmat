@@ -79,9 +79,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
               }
-              lessonsCubit.getLessonDetails(
-                  lessonId: state.nextLessonId,
-                  unitId: lessonsCubit.lessonDetails.unitId);
+              pushTo(
+                  context: context,
+                  toPage:
+                      TestScreen(examId: lessonsCubit.lessonDetails.exam!.id));
             } else if (state is SkipTestErrorState) {
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
@@ -104,8 +105,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   message: state.message);
             }
             final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
-            final bool isPassed =
-                thereIsTest && lessonsCubit.lessonDetails.exam!.result.pass;
+            final bool isPassed = thereIsTest &&
+                (lessonsCubit.lessonDetails.exam!.result.pass ?? true);
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
@@ -142,8 +143,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                       if (!isPassed &&
                           lessonsCubit.lessonDetails.exam != null &&
                           lessonsCubit.lessonDetails.exam!.attemptCount > 0 &&
-                          lessonsCubit.buttonStatus ==
-                              NextLessonButtonStatus.DO_TEST_FIRST) 
+                          lessonsCubit.lessonDetails.exam!.result.pass != false)
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,
                             label: translate(

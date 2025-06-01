@@ -2,7 +2,8 @@ import 'package:my_project_new/modules/test/models/test_response.dart';
 import 'package:my_project_new/utils/bool_converter.dart';
 
 class Result {
-  final bool  pass;
+  final bool?
+      pass; //pass =true :success ,null : non skipped and not success , pass :false exam skipped
   final String examDegree;
   final String examPassPercentage;
   final String examStudentDegree;

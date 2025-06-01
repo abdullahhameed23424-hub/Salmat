@@ -31,10 +31,10 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (!test.result.pass && test.isSubscribed && !test.isSolving) {
+      if (!(test.result.pass ?? true) && test.isSubscribed && !test.isSolving) {
         createExam(test.id);
       }
-      if (test.result.pass) {
+      if (test.result.pass ?? true) {
         // student is success
         testTime = test.minutes * 60;
       } else if (test.isSolving) {
