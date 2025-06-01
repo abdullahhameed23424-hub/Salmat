@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';

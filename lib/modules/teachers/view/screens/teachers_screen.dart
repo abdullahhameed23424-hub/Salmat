@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/teachers/cubit/teachers_cubit.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
 import 'package:my_project_new/modules/teachers/view/widgets/teacher_card.dart';
 import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';

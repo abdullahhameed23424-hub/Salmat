@@ -59,7 +59,9 @@ class TeacherCard extends StatelessWidget {
                   spacing: 5,
                   children: <Widget>[
                     Text(
-                      teacher.username,
+                      teacher.fullName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: titilliumBold.copyWith(
                           color: AppColors.PRIMARY,
                           decoration: TextDecoration.underline,

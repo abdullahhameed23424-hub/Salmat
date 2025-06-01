@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/library/cubit/library_cubit.dart';
 import 'package:my_project_new/modules/library/view/widgets/library_section_card.dart';
@@ -68,8 +67,9 @@ class LibraryScreen extends StatelessWidget {
                           child: AspectRatio(
                             aspectRatio: 16 / 9,
                             child: CachedImage(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(10),
                               image: cubit.image,
+                              boxFit: BoxFit.cover,
                               width: 1.sw,
                             ),
                           ),

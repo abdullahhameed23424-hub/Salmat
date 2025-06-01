@@ -65,7 +65,7 @@ class BookCard extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 1,
                         child: CachedImage(
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               bottomLeft: Radius.circular(12),
                               bottomRight: Radius.circular(12)),
                           image: book.image,

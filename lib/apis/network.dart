@@ -1,7 +1,5 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';

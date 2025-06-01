@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +29,7 @@ class CourseCard extends StatelessWidget {
       },
       child: FadeIn(
         child: Container(
+          clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
           decoration: BoxDecoration(
               color: AppColors.WHITE,
@@ -40,10 +40,7 @@ class CourseCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CourseImage(imagePath: course.image),
-                ),
+                child: CourseImage(imagePath: course.image),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -95,11 +92,14 @@ class CourseImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 155.h,
-      child: AspectRatio(
-        aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
-        child: CachedImage(image: imagePath),
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: SizedBox(
+        height: 155.h,
+        child: CachedImage(
+          image: imagePath,
+          boxFit: BoxFit.cover,
+        ),
       ),
     );
   }

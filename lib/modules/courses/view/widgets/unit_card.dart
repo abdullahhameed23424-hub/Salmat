@@ -24,7 +24,7 @@ class UnitCard extends StatelessWidget {
       onTap: () {
         pushTo(context: context, toPage: LessonsScreen(unit: unit));
         return;
-        showDialog(context: context, builder: (context) => LockedUnit());
+        showDialog(context: context, builder: (context) => const LockedUnit());
       },
       child: FadeIn(
         duration: const Duration(milliseconds: 400),
@@ -41,8 +41,8 @@ class UnitCard extends StatelessWidget {
           ),
           child: Row(
             children: <Widget>[
-              Image.asset(true ? Images.unlockedUnit : Images.lockedUnit,
-                  width: 24.w),
+              // Image.asset(true ? Images.unlockedUnit : Images.lockedUnit,
+              // width: 24.w),
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(

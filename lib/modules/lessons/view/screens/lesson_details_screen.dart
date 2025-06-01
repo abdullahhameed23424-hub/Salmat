@@ -13,7 +13,6 @@ import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
@@ -60,9 +59,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
         child: BlocConsumer<LessonsCubit, LessonsState>(
           listener: (context, state) {
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is GetLessonDetailsSuccessState) {
-              widget.lesson.id = lessonsCubit.lessonDetails.id;
-            } else if (state is OpenNextLessonErrorState) {
+            if (state is OpenNextLessonErrorState) {
               customSnackBar(context, success: 0, message: state.message);
             } else if (state is OpenNextLessonSuccessState) {
               if (lessonsCubit.buttonStatus ==
@@ -72,7 +69,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                 customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
               } else if (lessonsCubit.buttonStatus ==
                   NextLessonButtonStatus.OPEN_AND_MOVE) {
-                widget.lesson.id = state.nextLessonId;
                 lessonsCubit.getLessonDetails(
                     lessonId: state.nextLessonId,
                     unitId: lessonsCubit.lessonDetails.unitId);
@@ -107,14 +103,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   },
                   message: state.message);
             }
-            final bool thereIsTest = lessonsCubit.lessonDetails.examId != null;
+            final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed =
                 thereIsTest && lessonsCubit.lessonDetails.exam!.result.pass;
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
                 // LessonVideo(lesson: lessonsCubit.lessonDetails),
-                ServerOptions(),
+                const ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(
                   children: [
@@ -138,15 +134,16 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
                             if (LessonDetailsScreen.refrshLessonScreen) {
                               lessonsCubit.getLessonDetails(
-                                  lessonId: widget.lesson.id,
-                                  unitId: widget.lesson.unitId);
+                                  lessonId: lessonsCubit.lessonDetails.id,
+                                  unitId: lessonsCubit.lessonDetails.unitId);
                             }
                           }),
                       SizedBox(height: 15.h),
                       if (!isPassed &&
+                          lessonsCubit.lessonDetails.exam != null &&
                           lessonsCubit.lessonDetails.exam!.attemptCount > 0 &&
                           lessonsCubit.buttonStatus ==
-                              NextLessonButtonStatus.DO_TEST_FIRST)
+                              NextLessonButtonStatus.DO_TEST_FIRST) 
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,
                             label: translate(
@@ -154,11 +151,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                             onPressed: () async {
                               final bool? shouldSkip =
                                   await ConfirmationDialog.show(
-                                context: context,
-                                title: translate('skip_exam', context),
-                                message:
-                                    translate('skip_exam_message', context),
-                              );
+                                      context: context,
+                                      title: translate('skip_exam', context),
+                                      message: translate(
+                                          'skip_exam_message', context));
 
                               if (shouldSkip == true) {
                                 lessonsCubit.skipTest(

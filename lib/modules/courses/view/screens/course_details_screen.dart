@@ -323,7 +323,7 @@ class _CourseHeader extends StatelessWidget {
                             showModalBottomSheet(
                               isScrollControlled: true,
                               context: context,
-                              builder: (context) => ContactWithAdminDialog(),
+                              builder: (context) => const ContactWithAdminDialog(),
                             );
                           },
                           // style: IconButton.styleFrom(padding: const EdgeInsets.all(5)),

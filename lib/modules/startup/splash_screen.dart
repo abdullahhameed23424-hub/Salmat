@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
         context.read<LocalizationCubit>().init(context: context);
 
         if (AppSharedPreferences.hasToken) {
-          pushAndRemoveUntiTo(context, toPage: BottomNavScreen());
+          pushAndRemoveUntiTo(context, toPage: const BottomNavScreen());
         } else {
           pushAndRemoveUntiTo(context, toPage: const GetStartedScreen());
         }

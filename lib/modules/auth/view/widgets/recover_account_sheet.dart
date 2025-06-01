@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';

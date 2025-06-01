@@ -195,7 +195,7 @@ class _UserHeaderShimmer extends StatelessWidget {
         ),
         SizedBox(
             width: 150.w,
-            child: DescriptionShimmer(
+            child: const DescriptionShimmer(
               linesNumber: 2,
             ))
       ],

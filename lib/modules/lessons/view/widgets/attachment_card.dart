@@ -8,7 +8,6 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/lessons/models/app_file.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
 
 class AttachmentCard extends StatelessWidget {
   const AttachmentCard({

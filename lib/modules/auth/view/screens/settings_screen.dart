@@ -38,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.pop(context);
                   }
                   AppSharedPreferences.removeToken;
-                  pushAndRemoveUntiTo(context, toPage: LoginScreen());
+                  pushAndRemoveUntiTo(context, toPage: const LoginScreen());
                 }
                 if (state is LogoutErrorState) {
                   customSnackBar(context, success: 0, message: state.message);

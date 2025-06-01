@@ -109,12 +109,12 @@ class TestCubit extends Cubit<TestState> {
 
   Future<void> submitExam({required int examId, bool force = false}) async {
     print("selectedOptions: $selectedOptions");
-    emit(SubmitExamLoadingState());
     if (selectedOptions.any((option) => option['option_id'] == -1) && !force) {
       emit(SubmitExamErrorState(message: "يرجى حل جميع الأسئلة"));
       return;
     }
 
+    emit(SubmitExamLoadingState());
     try {
       final response = await Network.postData(
         url: '${Urls.studentExams}/$examId/store',
@@ -127,10 +127,9 @@ class TestCubit extends Cubit<TestState> {
       if (response.data['data']['pass'] ?? true) {
         // this mean that the student is success and in this case back return the exam
 
-        final TestResponse testResponse =
-            TestResponse.fromJson(response.data['data']);
-        test = testResponse.data;
-        emit(SubmitExamSuccessState(result: testResponse.data.result));
+        final Test testResponse = Test.fromJson(response.data['data']);
+        test = testResponse;
+        emit(SubmitExamSuccessState(result: testResponse.result));
       } else {
         final Result failedResult = Result.fromJson(response.data['data']);
         emit(SubmitExamSuccessState(result: failedResult));

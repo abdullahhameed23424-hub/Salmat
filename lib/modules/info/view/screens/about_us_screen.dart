@@ -212,10 +212,10 @@ class ContactUsLinks1 extends StatelessWidget {
               icon: SvgPicture.asset(Images.whatsapp, width: 24.sp),
               text: infoCubit.infoResponse.contact.whatsapp),
           ContactRow(
-              icon: Icon(Icons.facebook, color: Colors.blue),
+              icon: const Icon(Icons.facebook, color: Colors.blue),
               text: infoCubit.infoResponse.contact.facebook),
           ContactRow(
-              icon: Icon(Icons.telegram, color: AppColors.PRIMARY),
+              icon: const Icon(Icons.telegram, color: AppColors.PRIMARY),
               text: infoCubit.infoResponse.contact.telegram),
         ],
       ),
@@ -240,6 +240,7 @@ class ContactUsLinks2 extends StatelessWidget {
             style: titleHeader.copyWith(
                 color: Colors.teal,
                 decoration: TextDecoration.underline,
+
                 decorationColor: Colors.teal),
           ),
           SizedBox(height: 5.h),

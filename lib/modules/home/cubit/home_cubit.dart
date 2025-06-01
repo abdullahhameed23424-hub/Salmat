@@ -7,10 +7,8 @@ import 'package:my_project_new/modules/comments/models/comment.dart';
 import 'package:my_project_new/modules/home/models/home_response.dart';
 import 'package:my_project_new/modules/offers/models/offer.dart';
 import 'package:my_project_new/modules/sections/models/section.dart';
-import 'package:my_project_new/modules/subjects/models/subject.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'home_state.dart';

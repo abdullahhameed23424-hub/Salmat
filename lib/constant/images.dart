@@ -1,7 +1,5 @@
 class Images {
-// handle states
   static const String noData = "assets/Images/no_data.png";
-
   static const String errorImage = "assets/Images/error.png";
   static const String getStarted1 = "assets/Images/get_started_1.png";
   static const String getStarted2 = "assets/Images/get_started_2.png";
@@ -47,7 +45,6 @@ class Images {
 
   static const String blueContactDialog =
       "assets/Images/blue_contact_dialog.png";
-  static const String libraryCardBack = "assets/Images/library_card_back.png";
   static const String subjectHint = "assets/Images/subject_hint.png";
   static const String logout = "assets/Images/logout.png";
   static const String hoursCircle = "assets/Images/hours_circle.png";
@@ -61,10 +58,6 @@ class Images {
   static const String whiteShape = "assets/Images/white_shape.png";
   static const String checkMark = "assets/Images/check_mark.png";
   static const String lock = "assets/Images/lock.png";
-  static const String leftBottomDecoration =
-      "assets/Images/left_bottom_decoration.png";
-  static const String rightTopDecoration =
-      "assets/Images/right_top_decoration.png";
 
   static const String libraryIcon = "assets/Images/library_icon.png";
   static const String unLocked = "assets/Images/opend_unit_lock.png";
@@ -72,8 +65,6 @@ class Images {
   static const String pointsIcon = "assets/Images/points_icon.png";
   static const String settingsIcon = "assets/Images/settings_icon.png";
   static const String testIcon = "assets/Images/test_icon.png";
-  static const String rightFlwers = "assets/Images/right_flowers.png";
-  static const String leftFlwers = "assets/Images/left_flowers.png";
   static const String number1 = "assets/Images/number_one.png";
   static const String number2 = "assets/Images/number_tow.png";
   static const String number3 = "assets/Images/number_three.png";
@@ -98,35 +89,17 @@ class Images {
   // tmep
 
   static const String temp = "assets/Images/temp/";
-  static const String ex = "assets/Images/temp/exsessoar.png";
+
   static const String completedTests = "assets/Images/temp/completed_tests.png";
-  static const String offer = "assets/Images/temp/offer.png";
-  static const String graphicLesson = "assets/Images/temp/graphic_lesson.PNG";
-  static const String trainer = "assets/Images/temp/trainer.png";
-  static const String homeOffer = "assets/Images/temp/home_offer.png";
-  static const String car = "assets/Images/temp/car.png";
-  static const String libraryTop = "assets/Images/temp/library_image.png";
-  static const String course = "assets/Images/temp/course.png";
-  static const String course2 = "assets/Images/temp/course2.png";
-  static const String course3 = "assets/Images/temp/course3.png";
-  static const String course4 = "assets/Images/temp/course4.png";
-  static const String library = "assets/Images/temp/library.png";
-  static const String bmw = 'assets/Images/temp/bmw.png';
   static const String books = 'assets/Images/temp/books.png';
   static const String arabic = 'assets/Images/temp/arabic.png';
-  static const String siance = 'assets/Images/temp/since.png';
-  static const String mathPi = 'assets/Images/temp/math_pi.png';
-  static const String section = 'assets/Images/temp/section_image.png';
-
 // icons
   static const String gb = "assets/icons/gb.svg";
   static const String ar = "assets/icons/ar.svg";
-  static const String logo = "assets/icons/logo.svg";
+
   static const String whatsapp = "assets/icons/whatsapp.svg";
   static const String youtube = "assets/icons/youtube.svg";
   static const String insta = "assets/icons/insta.svg";
   static const String linkedin = "assets/icons/linkedin.svg";
   static const String buyIcon = "assets/icons/buy_icon.svg";
-
-  static const String blueLogo = "assets/icons/blue_logo.svg";
 }

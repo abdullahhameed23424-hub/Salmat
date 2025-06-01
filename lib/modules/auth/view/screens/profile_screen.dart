@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                           style: titilliumBold.copyWith(
                               fontSize: 20.sp, color: AppColors.WHITE)),
                       SizedBox(height: 8.h),
-                      Text(authCubit.user.education,
+                      Text(authCubit.user.grade?.name ?? "",
                           style: titilliumBold.copyWith(fontSize: 20.sp)),
                       SizedBox(height: 54.h),
                       Row(
@@ -75,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                           _Divider(),
                           ProfileInfo(
                               title: translate('address_label', context),
-                              value: authCubit.user.address),
+                              value: authCubit.user.city?.name ?? ""),
                           _Divider(),
                           ProfileInfo(
                               title: translate('phone_label', context),
@@ -144,6 +144,7 @@ class ProfileInfo extends StatelessWidget {
                   color: AppColors.WHITE, fontSize: 12.sp)),
           Text(
             value,
+            textAlign: TextAlign.center,
             style: titleRegular.copyWith(color: AppColors.WHITE),
           ),
         ],
