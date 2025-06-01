@@ -106,7 +106,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             }
             final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed = thereIsTest &&
-                (lessonsCubit.lessonDetails.exam!.result.pass ?? true);
+                (lessonsCubit.lessonDetails.exam!.result.pass == null
+                    ? false
+                    : true);
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[

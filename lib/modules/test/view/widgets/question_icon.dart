@@ -15,7 +15,7 @@ class QuestionIcon extends StatelessWidget {
   final TestCubit examCubit;
   @override
   Widget build(BuildContext context) {
-    if (!examCubit.isSolving && (examCubit.test.result.pass??true)) {
+    if (!examCubit.isSolving && (examCubit.test.result.pass != null)) {
       return _QuestionMarkButton(examCubit: examCubit);
     }
 

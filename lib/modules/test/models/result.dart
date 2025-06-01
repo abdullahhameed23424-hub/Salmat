@@ -19,7 +19,7 @@ class Result {
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        pass: boolConverter(json["pass"]),
+        pass: json["pass"],
         studentDegree: stringOrZero(json["student_degree"]),
         examDegree: stringOrZero(json["exam_degree"]),
         examPassPercentage: stringOrZero(json["pass_percentage"]),

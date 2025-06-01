@@ -97,6 +97,7 @@ class Lesson {
     }
 
     String audio = '';
+    
     if (!json['video_file'].toString().startsWith('lessons/videos')) {
       audio = json["video_streams"] != null &&
               json["video_streams"].isNotEmpty &&
