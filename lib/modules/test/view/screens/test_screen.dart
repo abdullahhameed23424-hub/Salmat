@@ -104,6 +104,9 @@ class TestScreen extends StatelessWidget {
                     const SliverToBoxAdapter(child: AppLoading())
                   else if (testCubit.isSolving)
                     SubmitButton(examCubit: testCubit),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 20.h),
+                  )
                 ],
               ),
             );

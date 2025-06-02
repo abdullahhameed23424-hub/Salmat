@@ -4,6 +4,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
+import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
 
 class QuestionCard extends StatefulWidget {
@@ -12,11 +13,13 @@ class QuestionCard extends StatefulWidget {
       required this.question,
       required this.examCubit,
       this.padding,
-      this.color});
+      this.color,
+      required this.test});
   final Question question;
   final TestCubit examCubit;
   final EdgeInsets? padding;
   final Color? color;
+  final Test test;
 
   @override
   State<QuestionCard> createState() => _QuestionCardState();
@@ -46,7 +49,11 @@ class _QuestionCardState extends State<QuestionCard> {
               final bool isTrue = widget.question.options[optionIndex].isTrue;
               Color? tileColor;
 
-              if (!widget.examCubit.isSolving) {
+              print(
+                  "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
+
+              if (!widget.examCubit.isSolving &&
+                  widget.test.result.pass != null) {
                 if (isTrue) {
                   tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
                 } else if (isChosen && !isTrue) {

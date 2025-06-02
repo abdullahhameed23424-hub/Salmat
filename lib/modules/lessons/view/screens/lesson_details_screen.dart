@@ -9,6 +9,7 @@ import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
@@ -62,11 +63,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             if (state is OpenNextLessonErrorState) {
               customSnackBar(context, success: 0, message: state.message);
             } else if (state is OpenNextLessonSuccessState) {
+              LessonsScreen.refrshLessonsScreen = true;
               if (lessonsCubit.buttonStatus ==
                   NextLessonButtonStatus.OPEN_NEXT_UNIT) {
                 Navigator.pop(context,
                     {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
-                customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+                customSnackBar(context, success: 1, message: "تم إنهاء الوحدة");
               } else if (lessonsCubit.buttonStatus ==
                   NextLessonButtonStatus.OPEN_AND_MOVE) {
                 lessonsCubit.getLessonDetails(
@@ -76,9 +78,14 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             } else if (state is SkipTestLoadingState) {
               ModernLoadingDialog.show(context, _loadingDialogKey);
             } else if (state is SkipTestSuccessState) {
+              LessonsScreen.refrshLessonsScreen = true;
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
               }
+              lessonsCubit.getLessonDetails(
+                  lessonId: lessonsCubit.lessonDetails.id,
+                  unitId: lessonsCubit.lessonDetails.unitId);
+
               pushTo(
                   context: context,
                   toPage:
@@ -126,7 +133,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                           color: isPassed ? AppColors.LIGHT_GREEN : null,
                           label: isPassed
                               ? translate('view_exam', context)
-                              : translate('do_exam', context),
+                              : lessonsCubit.lessonDetails.exam?.isSolving ==
+                                      true
+                                  ? "إتمام الاختبار"
+                                  : translate('do_exam', context),
                           onTap: () async {
                             LessonDetailsScreen.refrshLessonScreen = false;
                             await pushTo(
@@ -145,6 +155,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                       if (!isPassed &&
                           lessonsCubit.lessonDetails.exam != null &&
                           lessonsCubit.lessonDetails.exam!.attemptCount > 0 &&
+                          !lessonsCubit.lessonDetails.exam!.isSolving &&
                           lessonsCubit.lessonDetails.exam!.result.pass != false)
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,

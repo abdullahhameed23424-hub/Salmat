@@ -69,6 +69,7 @@ class QuestionExplanationScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 QuestionCard(
+                    test: examCubit.test,
                     padding: EdgeInsets.all(8.w),
                     question: Question(
                       id: 1,

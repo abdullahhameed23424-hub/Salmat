@@ -61,8 +61,7 @@ class ResultDialog extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             _buildRow(translate('exam_degree', context), result.examDegree),
-            _buildRow(
-                translate('your_score', context), result.examStudentDegree),
+            _buildRow(translate('your_score', context), result.studentDegree),
             _buildRow(translate('pass_percentage', context),
                 '${result.examPassPercentage}%'),
             SizedBox(height: 24.h),

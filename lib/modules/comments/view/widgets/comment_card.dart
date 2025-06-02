@@ -33,10 +33,10 @@ class CommentCard extends StatelessWidget {
           width: 75.w,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: boxShadow,
-              color: Colors.white,
-              border: Border.all(color: AppColors.GRAY600, width: 2)),
+            shape: BoxShape.circle,
+            boxShadow: boxShadow,
+            color: Colors.white,
+          ),
           child: AspectRatio(
               aspectRatio: 1,
               child: CachedImage(

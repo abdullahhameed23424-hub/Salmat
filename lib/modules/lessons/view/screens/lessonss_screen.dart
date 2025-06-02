@@ -14,6 +14,7 @@ import 'package:my_project_new/widgets/try_again.dart';
 
 class LessonsScreen extends StatelessWidget {
   const LessonsScreen({super.key, required this.unit});
+  static bool refrshLessonsScreen = false;
 
   final Unit unit;
   @override
@@ -62,6 +63,7 @@ class LessonsScreen extends StatelessWidget {
                         return LessonCard(
                             onTap: lesson.isOpen
                                 ? () async {
+                                    LessonsScreen.refrshLessonsScreen = false;
                                     final Map<String, dynamic>? params =
                                         await pushTo(
                                             context: context,
@@ -71,6 +73,9 @@ class LessonsScreen extends StatelessWidget {
                                         params['next_unit_id'] != null) {
                                       lessonsCubit.getLessons(
                                           unitId: params['next_unit_id']);
+                                    } else if (LessonsScreen
+                                        .refrshLessonsScreen) {
+                                      lessonsCubit.getLessons(unitId: unit.id);
                                     }
                                   }
                                 : null,

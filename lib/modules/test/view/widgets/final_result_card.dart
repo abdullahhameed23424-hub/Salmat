@@ -49,7 +49,7 @@ class FinalResultCard extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                "${result.examStudentDegree} / ${result.examDegree}",
+                "${result.studentDegree} / ${result.examDegree}",
                 style: titilliumBold.copyWith(
                   color: Colors.white,
                   fontSize: 16.sp,

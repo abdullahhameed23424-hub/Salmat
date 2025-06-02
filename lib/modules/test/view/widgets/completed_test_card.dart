@@ -7,21 +7,28 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
+import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/view/screens/completed_test_details_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
 class CompletedTestCard extends StatelessWidget {
-  const CompletedTestCard({
-    super.key,
-  });
-
+  const CompletedTestCard(
+      {super.key, required this.test, required this.testCubit});
+  final Test test;
+  final TestCubit testCubit;
   @override
   Widget build(BuildContext context) {
     return ZoomIn(
       delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),
       child: InkWell(
         onTap: () {
-          pushTo(context: context, toPage: const CompletedTestDetailsScreen());
+          pushTo(
+              context: context,
+              toPage: CompletedTestDetailsScreen(
+                test: test,
+                testCubit: testCubit,
+              ));
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -46,9 +53,9 @@ class CompletedTestCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'أساسيات 1 في التحليل',
+                  test.name,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                  maxLines: 2,
                   textAlign: TextAlign.center,
                   style: titilliumBold.copyWith(
                       color: Colors.white, fontSize: 14.sp),

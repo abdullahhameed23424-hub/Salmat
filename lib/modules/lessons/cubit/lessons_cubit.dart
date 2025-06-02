@@ -82,8 +82,7 @@ class LessonsCubit extends Cubit<LessonsState> {
     if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE ||
         buttonStatus == NextLessonButtonStatus.OPEN_NEXT_UNIT) {
       _openNextLesson(lessonDetails.unitId, lessonDetails.id);
-    } else if (buttonStatus ==
-        NextLessonButtonStatus.MOVE_ONLY_AND_PREVENT_DOING_TEST) {
+    } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
       getLessonDetails(
           lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
     }
@@ -106,7 +105,7 @@ class LessonsCubit extends Cubit<LessonsState> {
             .DO_TEST_FIRST; // this mean that im in last lesson and i dont pass the test
       }
     } else if (lesson.nextLessonId != null) {
-      _buttonStatus = NextLessonButtonStatus.MOVE_ONLY_AND_PREVENT_DOING_TEST;
+      _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
     } else if (lesson.exam != null && lesson.exam!.result.pass == null) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {

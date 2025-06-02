@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
+import 'package:my_project_new/modules/test/models/completed_tests_response.dart';
 import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
@@ -129,6 +130,7 @@ class TestCubit extends Cubit<TestState> {
 
         final Test testResponse = Test.fromJson(response.data['data']);
         test = testResponse;
+        questions = test.questions;
         emit(SubmitExamSuccessState(result: testResponse.result));
       } else {
         final Result failedResult = Result.fromJson(response.data['data']);
@@ -137,10 +139,9 @@ class TestCubit extends Cubit<TestState> {
       }
     } on DioException catch (e) {
       emit(SubmitExamErrorState(message: exceptionsHandle(error: e)));
+    } catch (error) {
+      emit(SubmitExamErrorState(message: unknownError()));
     }
-    //  catch (error) {
-    //   emit(SubmitExamErrorState(message: unknownError()));
-    // }
   }
 
   Future<void> showAnswers(int examId) async {
@@ -150,4 +151,22 @@ class TestCubit extends Cubit<TestState> {
   }
 
   int nextLessonId = 0;
+  List<Test> tests = [];
+
+  Future<void> getCompletedTests() async {
+    emit(GetCompletedTestsLoadingState());
+    try {
+      final Response response =
+          await Network.getData(url: "${Urls.completedTests}?paginate=1");
+      final CompletedTestsResponse completedTestsResponse =
+          CompletedTestsResponse.fromJson(response.data);
+      tests = completedTestsResponse.data.tests;
+
+      emit(GetCompletedTestsSuccessState());
+    } on DioException catch (e) {
+      emit(GetCompletedTestsErrorState(message: exceptionsHandle(error: e)));
+    } catch (error) {
+      emit(GetCompletedTestsErrorState(message: unknownError()));
+    }
+  }
 }

@@ -47,7 +47,11 @@ class _QuestionFormState extends State<QuestionForm> {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          QuestionCard(question: widget.question, examCubit: widget.examCubit),
+          QuestionCard(
+            question: widget.question,
+            examCubit: widget.examCubit,
+            test: widget.examCubit.test,
+          ),
           QuestionIcon(
               examCubit: widget.examCubit), // to go to explanation screen
         ],

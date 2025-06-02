@@ -39,3 +39,13 @@ final class SubmitExamErrorState extends TestState {
 }
 
 final class ShowAnswersSuccessState extends TestState {}
+
+final class GetCompletedTestsLoadingState extends TestState {}
+
+final class GetCompletedTestsSuccessState extends TestState {}
+
+final class GetCompletedTestsErrorState extends TestState {
+  final String message;
+
+  GetCompletedTestsErrorState({required this.message});
+}
