@@ -22,6 +22,8 @@ class Urls {
   static const String teachers = 'teachers';
   static const String comments = 'comments';
   static const String completedTests = 'auth/exams';
+  static const String myCourses = 'auth/courses';
+  static const String points = 'points';
 
   static const String checkVerificationCode = "check/verification";
   static const String restPassword = "reset-password";

@@ -16,7 +16,7 @@ import 'package:my_project_new/modules/info/view/screens/about_us_screen.dart';
 import 'package:my_project_new/modules/info/view/screens/privacy_policy_screen.dart';
 import 'package:my_project_new/modules/library/view/screens/library_screen.dart';
 import 'package:my_project_new/modules/points_record/view/screens/points_record_screen.dart';
-import 'package:my_project_new/modules/subjects/view/screens/user_subjects_screen.dart';
+import 'package:my_project_new/modules/courses/view/screens/my_courses_screen.dart';
 import 'package:my_project_new/modules/teachers/view/screens/teachers_screen.dart';
 
 class MoreInfoScreen extends StatelessWidget {
@@ -39,10 +39,10 @@ class MoreInfoScreen extends StatelessWidget {
       }
     },
     {
-      "icon": Icons.subject,
-      "title": "my_subjects",
+      "icon": Icons.play_lesson,
+      "title": "my_courses",
       "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const UserSubjectsScreen());
+        pushTo(context: context, toPage: const MyCoursesScreen());
       }
     },
     {

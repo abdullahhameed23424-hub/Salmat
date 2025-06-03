@@ -17,6 +17,7 @@ import 'package:my_project_new/screens/notifications_screen.dart';
 import 'package:my_project_new/widgets/app_shimmer.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/description_shimmer.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 final ValueNotifier selectedPage = ValueNotifier<int>(1);
 
@@ -87,7 +88,15 @@ class _AppBar extends StatelessWidget {
         bloc: authCubit,
         builder: (context, state) {
           final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
-
+          if (state is GetProfileErrorState) {
+            return TryAgain(
+                withImage: false,
+                small: true,
+                onTap: () {
+                  authCubit.getProfile();
+                },
+                message: state.message);
+          }
           return AppBar(
               actions: const [SizedBox.shrink()], // to hide drawer button
               surfaceTintColor: Colors.transparent,

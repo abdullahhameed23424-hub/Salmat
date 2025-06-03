@@ -7,6 +7,7 @@ import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/modules/courses/models/coures_response.dart';
 import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/modules/courses/models/courses_response.dart';
+import 'package:my_project_new/modules/courses/models/my_courses_response.dart';
 import 'package:my_project_new/modules/courses/models/unit.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -70,6 +71,37 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCourseDetailsErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
       emit(GetCourseDetailsErrorState(message: unknownError()));
+    }
+  }
+
+  Future<void> getMycourses() async {
+    if (page == 1) {
+      emit(GetCoursesLoadingState());
+    }
+    try {
+      final Response response =
+          await Network.getData(url: "${Urls.myCourses}?page=$page");
+      final MyCoursesResponse coursesResponse =
+          MyCoursesResponse.fromJson(response.data);
+
+      if (page > 1) {
+        courses.addAll(coursesResponse.data.courses);
+
+        if (coursesResponse.data.courses.isEmpty) {
+          refreshController.loadNoData();
+        } else {
+          refreshController.loadComplete();
+        }
+      } else {
+        courses = coursesResponse.data.courses;
+      }
+      page = coursesResponse.data.currentPage + 1;
+
+      emit(GetCoursesSuccessState());
+    } on DioException catch (error) {
+      emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(GetCoursesErrorState(message: unknownError()));
     }
   }
 }

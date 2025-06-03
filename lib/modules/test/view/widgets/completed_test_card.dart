@@ -22,13 +22,16 @@ class CompletedTestCard extends StatelessWidget {
     return ZoomIn(
       delay: Duration(milliseconds: 50 + 50 * Random().nextInt(6)),
       child: InkWell(
+        borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+            topLeft: Radius.circular(80),
+            topRight: Radius.circular(10)),
         onTap: () {
           pushTo(
               context: context,
-              toPage: CompletedTestDetailsScreen(
-                test: test,
-                testCubit: testCubit,
-              ));
+              toPage:
+                  CompletedTestDetailsScreen(test: test, testCubit: testCubit));
         },
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w),

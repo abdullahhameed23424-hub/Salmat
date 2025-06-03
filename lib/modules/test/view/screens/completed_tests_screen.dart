@@ -8,6 +8,7 @@ import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/completed_test_card.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class CompletedTestsScreen extends StatelessWidget {
@@ -41,8 +42,11 @@ class CompletedTestsScreen extends StatelessWidget {
                   child: AspectRatio(
                       aspectRatio: 16 / 9,
                       child: Container(
-                        margin: EdgeInsets.only(top: 20.h),
-                        child: Image.asset(Images.completedTests),
+                        margin:
+                            EdgeInsets.only(top: 20.h, left: 16.w, right: 16.w),
+                        child: CachedImage(
+                            image: testCubit.image,
+                            borderRadius: BorderRadius.circular(12)),
                       )),
                 ),
                 SliverToBoxAdapter(

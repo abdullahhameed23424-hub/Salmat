@@ -66,9 +66,13 @@ class SubjectsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 24.h),
-                          Align(
-                              child: CachedImage(
-                                  image: subjectsCubit.headerImage)),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Align(
+                                child: CachedImage(
+                                    borderRadius: BorderRadius.circular(12),
+                                    image: subjectsCubit.headerImage)),
+                          ),
                           SizedBox(height: 10.h),
                           ReadMoreText(
                               text: subjectsCubit.headerText, maxLength: 120),
@@ -77,7 +81,7 @@ class SubjectsScreen extends StatelessWidget {
                       ),
                     ),
                     if (subjectsCubit.subjects.isEmpty)
-                      const SliverToBoxAdapter(child: NoData ()),
+                      const SliverToBoxAdapter(child: NoData()),
                     SliverGrid.builder(
                       itemCount: subjectsCubit.subjects.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

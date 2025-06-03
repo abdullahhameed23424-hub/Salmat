@@ -1,4 +1,3 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,11 +64,11 @@ class CourseCard extends StatelessWidget {
                       children: [
                         _InfoItem(
                             label: translate('lessons', context),
-                            value: "20",
+                            value: course.lessonsCount.toString(),
                             primaryColor: primaryColor),
                         _InfoItem(
                             label: translate('hours', context),
-                            value: "20",
+                            value: course.totalLessonsTime,
                             primaryColor: primaryColor),
                         _EyeIcon(primaryColor: primaryColor),
                       ],

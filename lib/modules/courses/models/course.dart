@@ -54,7 +54,8 @@ class Course {
       teachers: json["teachers"] != null
           ? List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)))
           : [],
-      totalLessonsTime: json["total_lessons_time"] != null
+      totalLessonsTime: json["total_lessons_time"] != null &&
+              json["total_lessons_time"] is String
           ? getHoursFromTimeString(json["total_lessons_time"])
           : "0",
       comments: json["comments"] != null
@@ -64,11 +65,17 @@ class Course {
   }
 }
 
-String getHoursFromTimeString(String time) {
+String getHoursFromTimeString(dynamic dytime) {
+  String time = dytime.toString();
   final parts = time.split(":").map(int.parse).toList();
   int hours = parts[0];
   int minutes = parts[1];
   int seconds = parts[2];
-
-  return (hours + (minutes / 60) + (seconds / 3600)).toStringAsFixed(1);
+  time = (hours + (minutes / 60) + (seconds / 3600)).toStringAsFixed(1);
+  final formattedTime = time.split('.');
+  if (formattedTime[1] == "0") {
+    return formattedTime[0];
+  } else {
+    return time;
+  }
 }

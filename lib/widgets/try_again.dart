@@ -104,16 +104,15 @@ class _TryAgainState extends State<TryAgain>
               ),
             ),
           SizedBox(height: widget.small ? 8.h : 35.h),
-          Text(
-            widget.message,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            style: titilliumBold.copyWith(
-                color: const Color.fromARGB(255, 0, 55, 106),
-                fontSize: widget.small ? 11.sp : null),
-          ),
+          Text(widget.message,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              style: titilliumBold.copyWith(
+                  color: const Color.fromARGB(255, 0, 55, 106),
+                  fontSize: widget.small ? 11.sp : null)),
           SizedBox(height: widget.small ? 14.h : 35.h),
           CustomButton(
+            size: widget.small ? Size(150.w, 40.h) : null,
             onPressed: widget.onTap,
             label: translate("try_again", context),
           )

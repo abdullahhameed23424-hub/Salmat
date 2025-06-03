@@ -62,9 +62,7 @@ class TestCubit extends Cubit<TestState> {
   Future<void> createExam(int examId) async {
     emit(StartExamLoadingState());
     try {
-      await Network.postData(
-        url: '${Urls.studentExams}/$examId/create',
-      );
+      await Network.postData(url: '${Urls.studentExams}/$examId/create');
 
       isSolving = true;
       emit(StartExamSuccessState());
@@ -152,6 +150,7 @@ class TestCubit extends Cubit<TestState> {
 
   int nextLessonId = 0;
   List<Test> tests = [];
+  String image = '';
 
   Future<void> getCompletedTests() async {
     emit(GetCompletedTestsLoadingState());
@@ -160,7 +159,8 @@ class TestCubit extends Cubit<TestState> {
           await Network.getData(url: "${Urls.completedTests}?paginate=1");
       final CompletedTestsResponse completedTestsResponse =
           CompletedTestsResponse.fromJson(response.data);
-      tests = completedTestsResponse.data.tests;
+      tests = completedTestsResponse.data.original.data.data;
+      image = completedTestsResponse.extraData.authExams.image;
 
       emit(GetCompletedTestsSuccessState());
     } on DioException catch (e) {
