@@ -23,10 +23,7 @@ class QuestionExplanationScreen extends StatelessWidget {
             Positioned(
                 bottom: 20.h,
                 left: 0,
-                child: Image.asset(
-                  Images.explanationScreenBg,
-                  width: 270.w,
-                )),
+                child: Image.asset(Images.explanationScreenBg, width: 270.w)),
             ListView(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               children: [

@@ -110,7 +110,6 @@ class TestCubit extends Cubit<TestState> {
   }
 
   Future<void> submitExam({required int examId, bool force = false}) async {
-    print("selectedOptions: $selectedOptions");
     if (selectedOptions.any((option) => option['option_id'] == -1) && !force) {
       emit(SubmitExamErrorState(message: "يرجى حل جميع الأسئلة"));
       return;

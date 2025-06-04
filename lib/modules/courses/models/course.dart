@@ -7,6 +7,7 @@ class Course {
   final String name;
   final String image;
   final bool isFree;
+  final bool subscribed;
   final String price; //before discount
   final String totalPrice; //  after discount
   final String discount;
@@ -24,6 +25,7 @@ class Course {
     required this.name,
     required this.image,
     required this.isFree,
+    required this.subscribed,
     required this.price,
     required this.totalPrice,
     required this.discount,
@@ -39,6 +41,7 @@ class Course {
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(
+      subscribed: boolConverter(json['subscribed']),
       id: json['id'],
       parentId: json["parent_id"],
       name: json['name'],
@@ -68,8 +71,8 @@ class Course {
 String getHoursFromTimeString(dynamic dytime) {
   String time = dytime.toString();
   final parts = time.split(":").map(int.parse).toList();
-  int hours = parts[0]; 
-  
+  int hours = parts[0];
+
   int minutes = parts[1];
   int seconds = parts[2];
   time = (hours + (minutes / 60) + (seconds / 3600)).toStringAsFixed(1);

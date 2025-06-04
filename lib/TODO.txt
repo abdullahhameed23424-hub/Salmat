@@ -1,3 +1,4 @@
 course subscribed state buttons buy
 vistitor mode 
 hide teacher if no teachers in course
+

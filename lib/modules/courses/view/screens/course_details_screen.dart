@@ -318,33 +318,33 @@ class _CourseHeader extends StatelessWidget {
                                 fontWeight: FontWeight.w900,
                                 fontSize: 18.sp,
                                 color: AppColors.PRIMARY)),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) => const ContactWithAdminDialog(),
-                            );
-                          },
-                          // style: IconButton.styleFrom(padding: const EdgeInsets.all(5)),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(Images.buyIcon,
-                                  width: 80.w,
-                                  colorFilter: const ColorFilter.mode(
-                                      AppColors.PRIMARY, BlendMode.srcIn)),
-                              Positioned(
-                                top: 25.h,
-                                child: Text(
-                                  translate('buy', context),
-                                  style: titilliumBold.copyWith(
-                                      color: AppColors.WHITE),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                        if (!course.subscribed)
+                          InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) => ContactWithAdminDialog(),
+                              );
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SvgPicture.asset(Images.buyIcon,
+                                    width: 80.w,
+                                    colorFilter: const ColorFilter.mode(
+                                        AppColors.PRIMARY, BlendMode.srcIn)),
+                                Positioned(
+                                  top: 25.h,
+                                  child: Text(
+                                    translate('buy', context),
+                                    style: titilliumBold.copyWith(
+                                        color: AppColors.WHITE),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                       ],
                     ),
                   ],

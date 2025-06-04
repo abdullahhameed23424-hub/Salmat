@@ -14,9 +14,6 @@ class Option {
   });
 
   factory Option.fromJson(Map<String, dynamic> json) {
-    print(
-        "==1====Option: ${json['name']}, is_true: ${json['is_true']} (type: ${json['is_true'].runtimeType})");
-
     return Option(
       id: json["id"],
       name: json["name"],
