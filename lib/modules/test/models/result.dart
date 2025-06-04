@@ -4,9 +4,9 @@ import 'package:my_project_new/utils/bool_converter.dart';
 class Result {
   final bool?
       pass; //pass =true :success ,null : non skipped and not success , pass :false exam skipped
-  final String examDegree;
+    String examDegree;
   final String examPassPercentage;
-  final String studentDegree;
+    String studentDegree;
   List<Question>? questions;
   Result({
     required this.pass,

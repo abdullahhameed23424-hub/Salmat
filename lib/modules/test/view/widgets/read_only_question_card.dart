@@ -3,29 +3,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
 
-class QuestionCard extends StatefulWidget {
-  const QuestionCard(
+class ReadOnlyQuestionCard extends StatefulWidget {
+  const ReadOnlyQuestionCard(
       {super.key,
       required this.question,
-      required this.examCubit,
       this.padding,
       this.color,
       required this.test});
   final Question question;
-  final TestCubit examCubit;
   final EdgeInsets? padding;
   final Color? color;
   final Test test;
 
   @override
-  State<QuestionCard> createState() => _QuestionCardState();
+  State<ReadOnlyQuestionCard> createState() => _ReadOnlyQuestionCardState();
 }
 
-class _QuestionCardState extends State<QuestionCard> {
+class _ReadOnlyQuestionCardState extends State<ReadOnlyQuestionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,13 +49,10 @@ class _QuestionCardState extends State<QuestionCard> {
               print(
                   "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
 
-              if ((!widget.examCubit.isSolving &&
-                  widget.test.result.pass != null)) {
-                if (isTrue) {
-                  tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
-                } else if (isChosen) {
-                  tileColor = AppColors.PURPLE_LIGHT.withAlpha(200);
-                }
+              if (isTrue) {
+                tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
+              } else if (isChosen) {
+                tileColor = AppColors.PURPLE_LIGHT.withAlpha(200);
               }
 
               return Container(
@@ -72,14 +66,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   fillColor: WidgetStatePropertyAll(
                       isChosen ? AppColors.PRIMARY : AppColors.LIGHTGRAY),
                   value: widget.question.options[optionIndex].isChosen,
-                  onChanged: (value) {
-                    if (!widget.examCubit.isSolving) {
-                      return;
-                    }
-                    widget.examCubit
-                        .onOptionTapped(widget.question, optionIndex, value!);
-                    setState(() {});
-                  },
+                  onChanged: null,
                   title: HtmlWidget(
                     widget.question.options[optionIndex].name,
                     textStyle: titilliumRegular,

@@ -7,7 +7,7 @@
   "next_unit": "Next Unit",
   "something_went_wrong": "Something went wrong :(",
   "skip_exam": "Skip Exam",
-  "skip_exam_message": "Are you sure you want to skip this exam? You will lose the points assigned for this action and it cannot be undone.",
+  "skip_exam_message": "Are you sure you want to skip this exam?",
   "skip_test_and_show_answers": "Skip test and show answers",
   "contact_admin_title": "Contact Admin",
   "contact_admin_message": "For assistance, contact the admin:",

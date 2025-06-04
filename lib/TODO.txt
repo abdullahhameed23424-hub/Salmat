@@ -1,1 +1,3 @@
-delete images social media and all unused 
+course subscribed state buttons buy
+vistitor mode 
+hide teacher if no teachers in course

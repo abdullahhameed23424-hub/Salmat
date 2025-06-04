@@ -75,7 +75,10 @@ class TestCubit extends Cubit<TestState> {
 
   List<Map<String, int>> selectedOptions = [];
 
-  void onOptionTaped(Question question, int optionIndex, bool value) {
+  void onOptionTapped(Question question, int optionIndex, bool value) {
+    if (state is SubmitExamLoadingState) {
+      return;
+    }
     if (value) {
       for (var option in question.options) {
         if (option.isChosen) {
@@ -132,6 +135,8 @@ class TestCubit extends Cubit<TestState> {
         emit(SubmitExamSuccessState(result: testResponse.result));
       } else {
         final Result failedResult = Result.fromJson(response.data['data']);
+        test.result.studentDegree = failedResult.studentDegree;
+        test.result.examDegree = failedResult.examDegree;
         emit(SubmitExamSuccessState(result: failedResult));
         // this mean that the student is failed and in this case back return the result only
       }
@@ -140,12 +145,6 @@ class TestCubit extends Cubit<TestState> {
     } catch (error) {
       emit(SubmitExamErrorState(message: unknownError()));
     }
-  }
-
-  Future<void> showAnswers(int examId) async {
-    test.result.questions = test.questions;
-
-    emit(ShowAnswersSuccessState());
   }
 
   int nextLessonId = 0;

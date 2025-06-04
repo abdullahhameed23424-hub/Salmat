@@ -6,6 +6,7 @@ import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/view/widgets/final_result_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
+import 'package:my_project_new/modules/test/view/widgets/read_only_question_card.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/top_banner.dart';
 
@@ -18,20 +19,7 @@ class CompletedTestDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
         title: test.name,
-        body:
-
-            // final TestCubit testCubit = context.read<TestCubit>();
-            // if (state is GetTestLoadingState) {
-            //   return const AppLoading();
-            // }
-            // if (state is GetTestErrorState) {
-            //   return TryAgain(
-            //       onTap: () {
-            //          getTest(test.id);
-            //       },
-            //       message: state.message);
-            // }
-            Padding(
+        body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: CustomScrollView(
             slivers: [
@@ -42,7 +30,10 @@ class CompletedTestDetailsScreen extends StatelessWidget {
                     TopBanner(
                         title: 'مرات المحاولة',
                         value: test.attemptCount.toString()),
-                    TopBanner(title: 'النتيجة السابقة', value: "0"),
+                    TopBanner(
+                        title: 'النتيجة السابقة',
+                        value:
+                            "${test.latestStudentExam!.degree}/${test.latestStudentExam!.examDegree}"),
                   ],
                 ),
               ),
@@ -50,13 +41,11 @@ class CompletedTestDetailsScreen extends StatelessWidget {
               SliverList.separated(
                 itemCount: test.questions.length,
                 separatorBuilder: (context, index) => SizedBox(height: 15.h),
-                itemBuilder: (context, index) => QuestionCard(
+                itemBuilder: (context, index) => ReadOnlyQuestionCard(
                     test: test,
                     color: AppColors.appColors[index % 4].withAlpha(180),
-                    //  AppColors.SECONDRY.withAlpha(210),
                     padding: EdgeInsets.all(12.w),
-                    question: test.questions[index],
-                    examCubit: testCubit),
+                    question: test.questions[index]),
               ),
               SliverToBoxAdapter(
                 child: FinalResultCard(

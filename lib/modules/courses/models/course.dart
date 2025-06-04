@@ -68,7 +68,8 @@ class Course {
 String getHoursFromTimeString(dynamic dytime) {
   String time = dytime.toString();
   final parts = time.split(":").map(int.parse).toList();
-  int hours = parts[0];
+  int hours = parts[0]; 
+  
   int minutes = parts[1];
   int seconds = parts[2];
   time = (hours + (minutes / 60) + (seconds / 3600)).toStringAsFixed(1);

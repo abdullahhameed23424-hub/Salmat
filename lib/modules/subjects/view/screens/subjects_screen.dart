@@ -71,6 +71,7 @@ class SubjectsScreen extends StatelessWidget {
                             child: Align(
                                 child: CachedImage(
                                     borderRadius: BorderRadius.circular(12),
+                                    boxFit: BoxFit.cover,
                                     image: subjectsCubit.headerImage)),
                           ),
                           SizedBox(height: 10.h),

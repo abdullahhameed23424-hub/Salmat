@@ -11,7 +11,7 @@ class Test {
   final int minutes;
   final int passPercentage;
   final List<Question> questions;
-  final Result result;
+  Result result;
   final int attemptCount;
   final bool isSubscribed;
   final dynamic remainingTime;
