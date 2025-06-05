@@ -62,7 +62,7 @@ class _QuestionMarkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PositionedDirectional(
-      top: -35.h,
+      top: -20.h,
       end: 20.w,
       child: InkWell(
         onTap: () {

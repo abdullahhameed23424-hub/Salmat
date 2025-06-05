@@ -104,4 +104,17 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesErrorState(message: unknownError()));
     }
   }
+
+  Future<void> subscribeToCourse({required int courseId}) async {
+    try {
+      emit(SubscribeToCourseLoadingState());
+      await Network.postData(url: "${Urls.sections}/$courseId/open");
+      emit(SubscribeToCourseSuccessState());
+    } on DioException catch (error) {
+      emit(
+          SubscribeToCourseErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(SubscribeToCourseErrorState(message: unknownError()));
+    }
+  }
 }

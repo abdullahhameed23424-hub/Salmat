@@ -14,6 +14,7 @@ import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
+import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
