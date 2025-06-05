@@ -46,6 +46,7 @@ class LessonsCubit extends Cubit<LessonsState> {
   }
 
   late Lesson lessonDetails;
+
   Future<void> getLessonDetails(
       {required int lessonId, required int unitId}) async {
     emit(GetLessonDetailsLoadingState());
@@ -58,8 +59,7 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
-    }
-    catch (error) {
+    } catch (error) {
       emit(GetLessonDetailsErrorState(message: unknownError()));
     }
   }
@@ -96,12 +96,21 @@ class LessonsCubit extends Cubit<LessonsState> {
     if (lesson.nextLessonId == -1) {
       if (lesson.nextUnitId == -1) {
         _buttonStatus = NextLessonButtonStatus.COURSE_END;
-      } else if (lesson.nextUnitId != null) {
+      } else if ((lesson.nextUnitId != null) &&
+          ((lesson.exam != null &&
+                  (lesson.exam!.result.pass == true ||
+                      lesson.exam!.studentExam.skipped)) ||
+              lesson.exam == null)) {
         _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
+      } else {
+        _buttonStatus = NextLessonButtonStatus
+            .DO_TEST_FIRST; // this mean that im in last lesson and i dont pass the test
       }
     } else if (lesson.nextLessonId != null) {
       _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
-    } else if (lesson.test?.result.pass == null) {
+    } else if (lesson.exam != null &&
+        lesson.exam!.result.pass == null &&
+        !lesson.exam!.studentExam.skipped) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {
       _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;
@@ -112,7 +121,7 @@ class LessonsCubit extends Cubit<LessonsState> {
     emit(SkipTestLoadingState());
     try {
       final Response response = await Network.postData(
-          url: '${Urls.sections}/$unitId/lessons/$lessonId/open');
+          url: '${Urls.sections}/$unitId/lessons/$lessonId/open?skipped=true');
       emit(SkipTestSuccessState(
         nextLessonId: response.data['data']['next_lesson_id'],
       ));

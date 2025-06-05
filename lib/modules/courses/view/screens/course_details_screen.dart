@@ -58,7 +58,7 @@ class CourseDetailsScreen extends StatelessWidget {
                 _InfoCircles(coursesCubit.couresDetails, coursesCubit.units),
                 _CourseDetails(course: coursesCubit.couresDetails),
                 SizedBox(height: 20.h),
-                _Units(coursesCubit.units),
+                _Units(coursesCubit.units, coursesCubit.couresDetails),
                 SizedBox(height: 20.h),
                 _ReviewSection(coursesCubit),
               ],
@@ -160,8 +160,9 @@ class _ReviewSectionState extends State<_ReviewSection> {
 }
 
 class _Units extends StatelessWidget {
-  const _Units(this.units);
+  const _Units(this.units, this.course);
   final List<Unit> units;
+  final Course course;
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
@@ -188,7 +189,9 @@ class _Units extends StatelessWidget {
       ),
       children: List.generate(
         units.length,
-        (index) => UnitCard(unit: units[index]),
+        (index) => UnitCard(
+            unit: units[index],
+            isLocked: units[index].isLocked && !course.subscribed),
       ),
     );
   }
@@ -249,13 +252,13 @@ class _InfoCircles extends StatelessWidget {
           value: course.lessonsCount.toString(),
         ),
       ),
-      Expanded(
-        child: _InfoCircle(
-          image: Images.hoursCircle,
-          title: translate("hours", context),
-          value: "${course.totalLessonsTime}h",
-        ),
-      ),
+      // Expanded(
+      //   child: _InfoCircle(
+      //     image: Images.hتoursCircle,
+      //     title: translate("hours", context),
+      //     value: course.totalLessonsTime,
+      //   ),
+      // ),
     ]);
   }
 }
@@ -302,51 +305,52 @@ class _CourseHeader extends StatelessWidget {
                   spacing: 5.h,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        course.description,
-                        style: titilliumSemiBold),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            "${course.totalPrice} SP",
-                            style: titilliumBold.copyWith(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 18.sp,
-                                color: AppColors.PRIMARY)),
-                        InkWell(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (context) => ContactWithAdminDialog(),
-                            );
-                          },
-                          // style: IconButton.styleFrom(padding: const EdgeInsets.all(5)),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(Images.buyIcon,
-                                  width: 80.w,
-                                  colorFilter: const ColorFilter.mode(
-                                      AppColors.PRIMARY, BlendMode.srcIn)),
-                              Positioned(
-                                top: 25.h,
-                                child: Text(
-                                  translate('buy', context),
-                                  style: titilliumBold.copyWith(
-                                      color: AppColors.WHITE),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                    ReadMoreText(text: course.description, maxLength: 70),
+                    if (!course.subscribed)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          if (!course.isFree)
+                            Text(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                "${course.totalPrice} SP",
+                                style: titilliumBold.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 18.sp,
+                                    color: AppColors.PRIMARY))
+                          else
+                            const Spacer(),
+                          InkWell(
+                            onTap: () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) => ContactWithAdminDialog(),
+                              );
+                            },
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SvgPicture.asset(Images.buyIcon,
+                                    width: 80.w,
+                                    colorFilter: const ColorFilter.mode(
+                                        AppColors.PRIMARY, BlendMode.srcIn)),
+                                Positioned(
+                                  top: 25.h,
+                                  child: Text(
+                                    translate('buy', context),
+                                    style: titilliumBold.copyWith(
+                                        color: AppColors.WHITE),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    else
+                      SizedBox(height: 15.h),
                   ],
                 ),
               )

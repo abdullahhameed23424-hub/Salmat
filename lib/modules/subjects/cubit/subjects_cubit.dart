@@ -30,19 +30,19 @@ class SubjectsCubit extends Cubit<SubjectsState> {
       subjectsResponse = SubjectsResponse.fromJson(response.data);
 
       if (page > 1) {
-        subjects.addAll(subjectsResponse.data.seubjects);
+        subjects.addAll(subjectsResponse.original.data.seubjects);
 
-        if (subjectsResponse.data.seubjects.isEmpty) {
+        if (subjectsResponse.original.data.seubjects.isEmpty) {
           refreshController.loadNoData();
         } else {
           refreshController.loadComplete();
         }
       } else {
-        subjects = subjectsResponse.data.seubjects;
-        headerImage = subjectsResponse.exteraData.image;
-        headerText = subjectsResponse.exteraData.headerText;
+        subjects = subjectsResponse.original.data.seubjects;
+        headerImage = subjectsResponse.original.section.image;
+        headerText = subjectsResponse.original.section.description;
       }
-      page = subjectsResponse.data.currentPage + 1;
+      page = subjectsResponse.original.data.currentPage + 1;
 
       emit(GetSubjectsSuccessState());
     } on DioException catch (error) {

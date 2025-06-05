@@ -9,11 +9,11 @@ import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
@@ -28,6 +28,7 @@ import 'package:my_project_new/widgets/try_again.dart';
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen({super.key, required this.lesson});
   final Lesson lesson;
+  static bool refrshLessonScreen = false;
   @override
   State<LessonDetailsScreen> createState() => _LessonDetailsScreenState();
 }
@@ -61,21 +62,34 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
             if (state is OpenNextLessonErrorState) {
               customSnackBar(context, success: 0, message: state.message);
-            } else if (state is OpenNextLessonSuccessState &&
-                lessonsCubit.buttonStatus ==
-                    NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-              Navigator.pop(context,
-                  {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
-              customSnackBar(context, success: 1, message: "تم إتهاء الوحدة");
+            } else if (state is OpenNextLessonSuccessState) {
+              LessonsScreen.refrshLessonsScreen = true;
+              if (lessonsCubit.buttonStatus ==
+                  NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+                Navigator.pop(context,
+                    {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+                customSnackBar(context, success: 1, message: "تم إنهاء الوحدة");
+              } else if (lessonsCubit.buttonStatus ==
+                  NextLessonButtonStatus.OPEN_AND_MOVE) {
+                lessonsCubit.getLessonDetails(
+                    lessonId: state.nextLessonId,
+                    unitId: lessonsCubit.lessonDetails.unitId);
+              }
             } else if (state is SkipTestLoadingState) {
               ModernLoadingDialog.show(context, _loadingDialogKey);
             } else if (state is SkipTestSuccessState) {
+              LessonsScreen.refrshLessonsScreen = true;
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
               }
               lessonsCubit.getLessonDetails(
-                  lessonId: state.nextLessonId,
+                  lessonId: lessonsCubit.lessonDetails.id,
                   unitId: lessonsCubit.lessonDetails.unitId);
+
+              pushTo(
+                  context: context,
+                  toPage:
+                      TestScreen(examId: lessonsCubit.lessonDetails.exam!.id));
             } else if (state is SkipTestErrorState) {
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
@@ -97,14 +111,17 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   },
                   message: state.message);
             }
-            final bool thereIsTest = lessonsCubit.lessonDetails.examId != null;
+            final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed =
-                thereIsTest && lessonsCubit.lessonDetails.test!.result.pass;
+                ((lessonsCubit.lessonDetails.exam!.result.pass == true) ||
+                        (lessonsCubit.lessonDetails.exam!.studentExam.skipped)
+                    ? true
+                    : false);
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
                 // LessonVideo(lesson: lessonsCubit.lessonDetails),
-                ServerOptions(),
+                const ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(
                   children: [
@@ -112,23 +129,38 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                     _LessonDscription(lessonsCubit.lessonDetails.description),
                     _LessonTaps(
                         controller: controller, lessonsCubit: lessonsCubit),
-                    if (lessonsCubit.lessonDetails.examId != null) ...[
+                    if (thereIsTest) ...[
                       DoExamButton(
                           color: isPassed ? AppColors.LIGHT_GREEN : null,
                           label: isPassed
                               ? translate('view_exam', context)
-                              : translate('do_exam', context),
-                          onTap: () {
-                            pushTo(
+                              : lessonsCubit.lessonDetails.exam?.isSolving ==
+                                      true
+                                  ? "إتمام الاختبار"
+                                  : translate('do_exam', context),
+                          onTap: () async {
+                            LessonDetailsScreen.refrshLessonScreen = false;
+                            await pushTo(
                                 context: context,
                                 toPage: TestScreen(
                                     examId:
                                         lessonsCubit.lessonDetails.examId!));
+
+                            if (LessonDetailsScreen.refrshLessonScreen) {
+                              lessonsCubit.getLessonDetails(
+                                  lessonId: lessonsCubit.lessonDetails.id,
+                                  unitId: lessonsCubit.lessonDetails.unitId);
+                            }
                           }),
                       SizedBox(height: 15.h),
-                      if (!isPassed &&
-                          thereIsTest &&
-                          lessonsCubit.lessonDetails.test!.attemptCount > 0)
+                      if (thereIsTest &&
+                          !lessonsCubit.lessonDetails.exam!.isSolving &&
+                          lessonsCubit.lessonDetails.exam!.result.pass ==
+                              null &&
+                          lessonsCubit.lessonDetails.exam!.studentExam
+                                  .attemptCount >
+                              0 &&
+                          !lessonsCubit.lessonDetails.exam!.studentExam.skipped)
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,
                             label: translate(
@@ -136,11 +168,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                             onPressed: () async {
                               final bool? shouldSkip =
                                   await ConfirmationDialog.show(
-                                context: context,
-                                title: translate('skip_exam', context),
-                                message:
-                                    translate('skip_exam_message', context),
-                              );
+                                      context: context,
+                                      title: translate('skip_exam', context),
+                                      message: translate(
+                                          'skip_exam_message', context));
 
                               if (shouldSkip == true) {
                                 lessonsCubit.skipTest(
@@ -269,58 +300,54 @@ class _LessonTaps extends StatefulWidget {
 class _LessonTapsState extends State<_LessonTaps> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        LessonButtonsTabbar(
-          controller: widget.controller,
-          items: LessonsCubit.lessonButtonsTitles,
-          onTap: (index) {
-            LessonsCubit.changeSelectedButton(index: index);
-            setState(() {});
-          },
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: ExpansionTile(
+        shape: const RoundedRectangleBorder(),
+        tilePadding: EdgeInsets.zero,
+        childrenPadding: EdgeInsets.zero,
+        title: Text(
+          "المرفقات",
+          style: titilliumBold,
         ),
-        if (LessonsCubit.selectedButton == 0)
-          _LessonImages(widget.lessonsCubit.lessonDetails)
-        else if (LessonsCubit.selectedButton == 1)
-          _LessonAttachments(widget.lessonsCubit.lessonDetails)
-      ],
+        children: [_LessonAttachments(widget.lessonsCubit.lessonDetails)],
+      ),
     );
   }
 }
 
-class _LessonImages extends StatelessWidget {
-  final Lesson lesson;
+// class _LessonImages extends StatelessWidget {
+//   final Lesson lesson;
 
-  const _LessonImages(this.lesson);
-  @override
-  Widget build(BuildContext context) {
-    if (lesson.images.isEmpty) {
-      return SizedBox(
-        height: 180.h,
-        child: Center(
-          child: ZoomIn(
-            child: Text(
-              translate('no_images', context),
-              style: titilliumBold,
-            ),
-          ),
-        ),
-      );
-    }
-    return SizedBox(
-      height: 180.h,
-      child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding:
-              EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h, top: 5),
-          itemCount: lesson.images.length,
-          separatorBuilder: (context, index) => SizedBox(width: 12.w),
-          itemBuilder: (context, index) =>
-              LessonImageCard(imagePath: lesson.images[index])),
-    );
-  }
-}
+//   const _LessonImages(this.lesson);
+//   @override
+//   Widget build(BuildContext context) {
+//     if (lesson.images.isEmpty) {
+//       return SizedBox(
+//         height: 180.h,
+//         child: Center(
+//           child: ZoomIn(
+//             child: Text(
+//               translate('no_images', context),
+//               style: titilliumBold,
+//             ),
+//           ),
+//         ),
+//       );
+//     }
+//     return SizedBox(
+//       height: 180.h,
+//       child: ListView.separated(
+//           scrollDirection: Axis.horizontal,
+//           padding:
+//               EdgeInsets.only(left: 16.w, right: 16.w, bottom: 12.h, top: 5),
+//           itemCount: lesson.images.length,
+//           separatorBuilder: (context, index) => SizedBox(width: 12.w),
+//           itemBuilder: (context, index) =>
+//               LessonImageCard(imagePath: lesson.images[index])),
+//     );
+//   }
+// }
 
 class _LessonAttachments extends StatelessWidget {
   final Lesson lesson;

@@ -1,18 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/models/subject.dart';
 
 class SubjectsResponse {
-  final Data data;
+  final Original original;
   final ExtraData exteraData;
 
   SubjectsResponse({
-    required this.data,
+    required this.original,
     required this.exteraData,
   });
 
   factory SubjectsResponse.fromJson(Map<String, dynamic> json) {
     return SubjectsResponse(
         exteraData: ExtraData.fromJson(json['extra_data']['info']),
-        data: Data.fromJson(json['data']['original']['data']));
+        original: Original.fromJson(json['data']['original']));
+  }
+}
+
+class Original {
+  final Data data;
+  final Section section;
+  Original({
+    required this.data,
+    required this.section,
+  });
+
+  factory Original.fromJson(Map<String, dynamic> json) {
+    return Original(
+        data: Data.fromJson(json['data']),
+        section: Section.fromJson(json['parent_section']));
   }
 }
 

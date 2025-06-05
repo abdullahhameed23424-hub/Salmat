@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   final String title;

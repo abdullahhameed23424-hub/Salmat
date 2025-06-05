@@ -24,7 +24,7 @@ class FailureWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "${state.result.examStudentDegree} / ${state.result.examDegree}",
+          "${state.result.studentDegree} / ${state.result.examDegree}",
           style: titilliumBold,
         ),
         Text(

@@ -35,7 +35,8 @@ class SectionsScreen extends StatelessWidget {
             }
 
             return SmartRefresher(
-              enablePullUp: true,
+              enablePullUp: state is! GetSectionsLoadingState,
+              enablePullDown: state is! GetSectionsLoadingState,
               controller: sectionsCubit.refreshController,
               footer: CustomFooter(builder: (context, mode) {
                 return const SizedBox.shrink();

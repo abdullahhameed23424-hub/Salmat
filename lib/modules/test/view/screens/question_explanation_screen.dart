@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
+import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
-import 'package:my_project_new/modules/test/models/option.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
 import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/explanation_video.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:my_project_new/widgets/image_viewer.dart';
 
 class QuestionExplanationScreen extends StatelessWidget {
-  const QuestionExplanationScreen({super.key, required this.examCubit});
+  const QuestionExplanationScreen(
+      {super.key, required this.examCubit, required this.question});
   final TestCubit examCubit;
+  final Question question;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -23,20 +29,14 @@ class QuestionExplanationScreen extends StatelessWidget {
             Positioned(
                 bottom: 20.h,
                 left: 0,
-                child: Image.asset(
-                  Images.explanationScreenBg,
-                  width: 270.w,
-                )),
+                child: Image.asset(Images.explanationScreenBg, width: 270.w)),
             ListView(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               children: [
                 Row(
                   spacing: 12.w,
                   children: <Widget>[
-                    Image.asset(
-                      Images.explanationIcon,
-                      width: 72.w,
-                    ),
+                    Image.asset(Images.explanationIcon, width: 72.w),
                     SizedBox(
                       width: 1.sw - 72.w - 12.w - 32.w,
                       child: Text.rich(
@@ -69,32 +69,9 @@ class QuestionExplanationScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 QuestionCard(
+                    test: examCubit.test,
                     padding: EdgeInsets.all(8.w),
-                    question: Question(
-                      id: 1,
-                      degree: 1,
-                      video: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                      image: 'https://via.placeholder.com/150',
-                      chosenAndTrue: true,
-                      text: 'المقدار 2x(x+3)-(x+3) يساوي:' * 3,
-                      options: [
-                        Option(
-                            id: 1,
-                            name: '2(x+1)(x+3)',
-                            isTrue: true,
-                            isChosen: true),
-                        Option(
-                            id: 2,
-                            name: '2x+3',
-                            isTrue: false,
-                            isChosen: false),
-                        Option(
-                            id: 3,
-                            name: 'x(2x+3)',
-                            isTrue: false,
-                            isChosen: false),
-                      ],
-                    ),
+                    question: question,
                     examCubit: examCubit),
                 SizedBox(height: 10.h),
                 Text(
@@ -102,21 +79,42 @@ class QuestionExplanationScreen extends StatelessWidget {
                   style: titilliumBold.copyWith(color: AppColors.PRIMARY),
                 ),
                 SizedBox(height: 10.h),
-                Text(
-                  'لنبدأ بتبسيط المقدار  2x(x+3) - (x+3) ثم نبدأ بتوزبع العوامل ثم نجمع الحدود، والآن، نريد أن نرى إذا كان يمكننا كتابة  2x² + 5x - 3  بشكل عامل. لنبحث عن العوامل التي تعطي نفس المقدار',
-                  style: titilliumRegular,
-                ),
+                if (question.note != "")
+                  HtmlWidget(
+                    question.note!,
+                    textStyle: titilliumRegular,
+                  ),
                 Divider(indent: 77.w, endIndent: 77.w, height: 40.h),
-                const ExplanationVideo(),
-                Divider(indent: 77.w, endIndent: 77.w, height: 40.h),
-                AspectRatio(
-                    aspectRatio: 16 / 9,
+                if (question.video != "") ...[
+                  ExplanationVideo(url: question.video),
+                  Divider(indent: 77.w, endIndent: 77.w, height: 40.h),
+                ],
+                if (question.image.isNotEmpty)
+                  InkWell(
+                    onTap: () {
+                      pushTo(
+                          context: context,
+                          toPage: ImageViewer(imageUrl: question.image));
+                    },
                     child: Container(
-                        decoration: BoxDecoration(
-                            color: AppColors.DARK_GREY,
-                            borderRadius: BorderRadius.circular(10)),
-                        width: 1.sw,
-                        child: Image.asset(Images.arabic)))
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                          boxShadow: boxShadow,
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12)),
+                      width: 1.sw,
+                      child: Hero(
+                        tag: question.image,
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: CachedImage(
+                            image: question.image,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
               ],
             ),
           ],

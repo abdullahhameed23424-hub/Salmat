@@ -8,7 +8,7 @@ class Lesson {
   final int lessonOrder;
   final int? previousLessonId;
   final int? examId;
-  final int id;
+  int id;
   final int? nextLessonId;
   final int? nextUnitId;
   final String name;
@@ -24,7 +24,7 @@ class Lesson {
 
   final List<MyVideo> myVideos;
   final String? audio;
-  final Test ? test;
+  final Test? exam;
   final int unitId;
   final Unit? unit;
   Lesson({
@@ -47,7 +47,7 @@ class Lesson {
     required this.isOpen,
     required this.files,
     required this.nextLessonId,
-    required this.test,
+    required this.exam,
     required this.unit,
   });
 
@@ -97,6 +97,7 @@ class Lesson {
     }
 
     String audio = '';
+    
     if (!json['video_file'].toString().startsWith('lessons/videos')) {
       audio = json["video_streams"] != null &&
               json["video_streams"].isNotEmpty &&
@@ -110,7 +111,7 @@ class Lesson {
       unit: json["parent_section"] != null
           ? Unit.fromJson(json["parent_section"])
           : null,
-      test: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
+      exam: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
       images: json["images"] != null
           ? List<String>.from(json["images"].map((x) => x))
           : [],

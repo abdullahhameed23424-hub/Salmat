@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
+import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:my_project_new/modules/subjects/view/widgets/subject_card.dart';
@@ -66,9 +67,17 @@ class SubjectsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 24.h),
-                          Align(
-                              child: CachedImage(
-                                  image: subjectsCubit.headerImage)),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    boxShadow: boxShadow,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: CachedImage(
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxFit: BoxFit.cover,
+                                    image: subjectsCubit.headerImage)),
+                          ),
                           SizedBox(height: 10.h),
                           ReadMoreText(
                               text: subjectsCubit.headerText, maxLength: 120),
@@ -77,7 +86,7 @@ class SubjectsScreen extends StatelessWidget {
                       ),
                     ),
                     if (subjectsCubit.subjects.isEmpty)
-                      const SliverToBoxAdapter(child: NoData ()),
+                      const SliverToBoxAdapter(child: NoData()),
                     SliverGrid.builder(
                       itemCount: subjectsCubit.subjects.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

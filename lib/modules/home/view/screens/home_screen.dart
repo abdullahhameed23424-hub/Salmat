@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
           }
 
           return SmartRefresher(
-            header: AppRefresherHeader(),
+            header: const AppRefresherHeader(),
             controller: homeCubit.refreshController,
             onRefresh: () {
               homeCubit.getHomeInfo();
@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
 
 class _ReviewLayer extends StatefulWidget {
   final List<Comment> comments;
-  _ReviewLayer({required this.comments});
+  const _ReviewLayer({required this.comments});
 
   @override
   State<_ReviewLayer> createState() => _ReviewLayerState();

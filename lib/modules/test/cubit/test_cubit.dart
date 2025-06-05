@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
+import 'package:my_project_new/modules/test/models/completed_tests_response.dart';
 import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/models/test_response.dart';
@@ -31,21 +32,23 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (!test.result.pass && test.isSubscribed && !test.isSolving) {
+      if (test.result.pass == null &&
+          test.isSubscribed &&
+          !test.isSolving &&
+          !test.studentExam.skipped) {
         createExam(test.id);
       }
-      if (test.result.pass) {
-        // student is success
+      
+      if ((test.result.pass == null && test.studentExam.skipped) ||
+          (test.result.pass == true)) {
         testTime = test.minutes * 60;
       } else if (test.isSolving) {
-        // student is solving
         isSolving = true;
         testTime = test.remainingTime.toInt();
         if (testTime.isNegative) {
           submitExam(examId: test.id, force: true);
         }
       } else {
-        // student is not solving yet
         testTime = test.minutes * 60;
         isSolving = true;
       }
@@ -61,9 +64,7 @@ class TestCubit extends Cubit<TestState> {
   Future<void> createExam(int examId) async {
     emit(StartExamLoadingState());
     try {
-      await Network.postData(
-        url: '${Urls.studentExams}/$examId/create',
-      );
+      await Network.postData(url: '${Urls.studentExams}/$examId/create');
 
       isSolving = true;
       emit(StartExamSuccessState());
@@ -76,7 +77,10 @@ class TestCubit extends Cubit<TestState> {
 
   List<Map<String, int>> selectedOptions = [];
 
-  void onOptionTaped(Question question, int optionIndex, bool value) {
+  void onOptionTapped(Question question, int optionIndex, bool value) {
+    if (state is SubmitExamLoadingState) {
+      return;
+    }
     if (value) {
       for (var option in question.options) {
         if (option.isChosen) {
@@ -108,13 +112,12 @@ class TestCubit extends Cubit<TestState> {
   }
 
   Future<void> submitExam({required int examId, bool force = false}) async {
-    print("selectedOptions: $selectedOptions");
-    emit(SubmitExamLoadingState());
     if (selectedOptions.any((option) => option['option_id'] == -1) && !force) {
       emit(SubmitExamErrorState(message: "يرجى حل جميع الأسئلة"));
       return;
     }
 
+    emit(SubmitExamLoadingState());
     try {
       final response = await Network.postData(
         url: '${Urls.studentExams}/$examId/store',
@@ -127,12 +130,14 @@ class TestCubit extends Cubit<TestState> {
       if (response.data['data']['pass'] ?? true) {
         // this mean that the student is success and in this case back return the exam
 
-        final TestResponse testResponse =
-            TestResponse.fromJson(response.data['data']);
-        test = testResponse.data;
-        emit(SubmitExamSuccessState(result: testResponse.data.result));
+        final Test testResponse = Test.fromJson(response.data['data']);
+        test = testResponse;
+        questions = test.questions;
+        emit(SubmitExamSuccessState(result: testResponse.result));
       } else {
         final Result failedResult = Result.fromJson(response.data['data']);
+        test.result.studentDegree = failedResult.studentDegree;
+        test.result.examDegree = failedResult.examDegree;
         emit(SubmitExamSuccessState(result: failedResult));
         // this mean that the student is failed and in this case back return the result only
       }
@@ -143,11 +148,25 @@ class TestCubit extends Cubit<TestState> {
     }
   }
 
-  Future<void> showAnswers(int examId) async {
-    test.result.questions = test.questions;
-
-    emit(ShowAnswersSuccessState());
-  }
-
   int nextLessonId = 0;
+  List<Test> tests = [];
+  String image = '';
+
+  Future<void> getCompletedTests() async {
+    emit(GetCompletedTestsLoadingState());
+    try {
+      final Response response =
+          await Network.getData(url: "${Urls.completedTests}?paginate=1");
+      final CompletedTestsResponse completedTestsResponse =
+          CompletedTestsResponse.fromJson(response.data);
+      tests = completedTestsResponse.data.original.data.data;
+      image = completedTestsResponse.extraData.authExams.image;
+
+      emit(GetCompletedTestsSuccessState());
+    } on DioException catch (e) {
+      emit(GetCompletedTestsErrorState(message: exceptionsHandle(error: e)));
+    } catch (error) {
+      emit(GetCompletedTestsErrorState(message: unknownError()));
+    }
+  }
 }

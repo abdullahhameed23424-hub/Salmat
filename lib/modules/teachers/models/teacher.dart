@@ -3,6 +3,7 @@ import 'package:my_project_new/modules/courses/models/course.dart';
 class Teacher {
   final int id;
   final String username;
+  final String fullName;
   final String description;
   final String email;
   final String phoneNumber;
@@ -14,6 +15,7 @@ class Teacher {
 
   Teacher({
     required this.id,
+    required this.fullName,
     required this.username,
     required this.description,
     required this.email,
@@ -26,6 +28,7 @@ class Teacher {
   });
 
   factory Teacher.fromJson(Map<String, dynamic> json) => Teacher(
+        fullName: json["full_name"],
         logo: json["logo"] ?? "",
         id: json["id"],
         job: json["job"] ?? "",

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,6 +28,7 @@ class CourseCard extends StatelessWidget {
       },
       child: FadeIn(
         child: Container(
+          clipBehavior: Clip.hardEdge,
           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
           decoration: BoxDecoration(
               color: AppColors.WHITE,
@@ -40,10 +39,7 @@ class CourseCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CourseImage(imagePath: course.image),
-                ),
+                child: CourseImage(imagePath: course.image),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -56,27 +52,36 @@ class CourseCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.only(end: 37.w),
-                      child: Text(
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          course.name,
-                          style: titilliumBold.copyWith(color: primaryColor)),
+                      padding: EdgeInsetsDirectional.only(end: 0.w),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                course.name,
+                                style: titilliumBold.copyWith(
+                                    color: primaryColor)),
+                          ),
+                          _EyeIcon(primaryColor: primaryColor),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _InfoItem(
-                            label: translate('lessons', context),
-                            value: "20",
-                            primaryColor: primaryColor),
-                        _InfoItem(
-                            label: translate('hours', context),
-                            value: "20",
-                            primaryColor: primaryColor),
-                        _EyeIcon(primaryColor: primaryColor),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     // _InfoItem(
+                    //     //     label: translate('lessons', context),
+                    //     //     value: course.lessonsCount.toString(),
+                    //     //     primaryColor: primaryColor),
+                    //     // _InfoItem(
+                    //     //     label: translate('hours', context),
+                    //     //     value: course.totalLessonsTime,
+                    //     //     primaryColor: primaryColor),
+                    //     // Spacer(),
+                    //     // _EyeIcon(primaryColor: primaryColor),
+                    //   ],
+                    // ),
                   ],
                 ),
               )
@@ -95,11 +100,14 @@ class CourseImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 155.h,
-      child: AspectRatio(
-        aspectRatio: 16 / 9, // Adjust the aspect ratio as needed
-        child: CachedImage(image: imagePath),
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: SizedBox(
+        height: 155.h,
+        child: CachedImage(
+          image: imagePath,
+          boxFit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -113,7 +121,7 @@ class _EyeIcon extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
-      transform: Matrix4.translationValues(-8.w, -58.h, 0),
+      transform: Matrix4.translationValues(-8.w, -32.h, 0),
       child: Image.asset(Images.eye, width: 35.w),
     );
   }

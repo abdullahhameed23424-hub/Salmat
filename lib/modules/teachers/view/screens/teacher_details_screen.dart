@@ -91,12 +91,11 @@ class _CoursesLayer extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 16.w,
             mainAxisSpacing: 15.h,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.8,
           ),
           itemBuilder: (context, index) {
             return TeacherCourseCard(
-              imagePath: teacher.courses[index].image,
-              label: teacher.courses[index].name,
+              course: teacher.courses[index],
               footerColor: AppColors.appColors[index % 4],
             );
           },
@@ -166,13 +165,14 @@ class _Header extends StatelessWidget {
                                   color: AppColors.WHITE)),
                         ),
                         SizedBox(height: 10.h),
-                        SizedBox(
-                          width: 50.w,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: CachedImage(image: teacher.logo),
-                          ),
-                        )
+                        if (teacher.logo.isNotEmpty)
+                          SizedBox(
+                            width: 50.w,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: CachedImage(image: teacher.logo),
+                            ),
+                          )
                       ],
                     ),
                   ),
@@ -189,7 +189,6 @@ class _Header extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
                     boxShadow: boxShadow,
-                    border: Border.all(color: AppColors.PRIMARY),
                     color: AppColors.WHITE,
                     shape: BoxShape.circle),
                 child: AspectRatio(

@@ -22,3 +22,4 @@ final class GetCourseDetailsErrorState extends CoursesState {
   final String message;
    GetCourseDetailsErrorState({required this.message});
 }
+

@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +5,7 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
 import 'package:my_project_new/modules/test/view/widgets/result_dialog.dart';
@@ -42,6 +41,7 @@ class TestScreen extends StatelessWidget {
               customSnackBar(context, success: 0, message: state.message);
             }
             if (state is SubmitExamSuccessState) {
+              LessonDetailsScreen.refrshLessonScreen = true;
               ResultDialog.show(
                 context,
                 result: state.result,
@@ -78,14 +78,6 @@ class TestScreen extends StatelessWidget {
               );
             }
 
-            if (state is SubmitExamErrorState) {
-              return Center(
-                child: Text(
-                  translate('something_went_wrong', context),
-                  style: titilliumBold.copyWith(fontSize: 22.sp),
-                ),
-              );
-            }
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -112,6 +104,9 @@ class TestScreen extends StatelessWidget {
                     const SliverToBoxAdapter(child: AppLoading())
                   else if (testCubit.isSolving)
                     SubmitButton(examCubit: testCubit),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 20.h),
+                  )
                 ],
               ),
             );
