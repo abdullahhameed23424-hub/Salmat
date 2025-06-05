@@ -8,13 +8,15 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/points_record/models/points.dart';
 import 'package:my_project_new/modules/points_record/view/widgets/text_row.dart';
 
 class PointsCard extends StatelessWidget {
   const PointsCard({
     super.key,
+    required this.points,
   });
-
+  final Points points;
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
@@ -22,11 +24,6 @@ class PointsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Text('قبل شهر، 6 أيام',
-                style: titilliumBold.copyWith(color: AppColors.YELLOW)),
-          ),
           Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.topLeft,
@@ -47,19 +44,15 @@ class PointsCard extends StatelessWidget {
                     ),
                     TextRow(
                         title: "${translate('points', context)}:",
-                        value: "100"),
-                    TextRow(
-                        title: "${translate('new_balance', context)}:",
-                        value: "-300"),
+                        value: points.points.toString()),
                     TextRow(
                       title: "${translate('time', context)}:",
                       value:
-                          " ${DateFormat('hh:MM a').format(DateTime.now())} ",
+                          " ${DateFormat('hh:MM a').format(points.createdAt)} ",
                     ),
                     TextRow(
                         title: "${translate('reason', context)}:",
-                        value:
-                            "خصم 100 نقطة بسبب التغيب عن تقديم مذاكرة الكيمياء"),
+                        value: points.reason),
                   ],
                 ),
               ),

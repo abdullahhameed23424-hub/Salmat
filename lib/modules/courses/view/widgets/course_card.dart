@@ -52,27 +52,36 @@ class CourseCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.only(end: 37.w),
-                      child: Text(
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          course.name,
-                          style: titilliumBold.copyWith(color: primaryColor)),
+                      padding: EdgeInsetsDirectional.only(end: 0.w),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                course.name,
+                                style: titilliumBold.copyWith(
+                                    color: primaryColor)),
+                          ),
+                          _EyeIcon(primaryColor: primaryColor),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _InfoItem(
-                            label: translate('lessons', context),
-                            value: course.lessonsCount.toString(),
-                            primaryColor: primaryColor),
-                        _InfoItem(
-                            label: translate('hours', context),
-                            value: course.totalLessonsTime,
-                            primaryColor: primaryColor),
-                        _EyeIcon(primaryColor: primaryColor),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     // _InfoItem(
+                    //     //     label: translate('lessons', context),
+                    //     //     value: course.lessonsCount.toString(),
+                    //     //     primaryColor: primaryColor),
+                    //     // _InfoItem(
+                    //     //     label: translate('hours', context),
+                    //     //     value: course.totalLessonsTime,
+                    //     //     primaryColor: primaryColor),
+                    //     // Spacer(),
+                    //     // _EyeIcon(primaryColor: primaryColor),
+                    //   ],
+                    // ),
                   ],
                 ),
               )
@@ -112,7 +121,7 @@ class _EyeIcon extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(4.w),
       decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
-      transform: Matrix4.translationValues(-8.w, -58.h, 0),
+      transform: Matrix4.translationValues(-8.w, -32.h, 0),
       child: Image.asset(Images.eye, width: 35.w),
     );
   }

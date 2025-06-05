@@ -48,12 +48,13 @@ class _QuestionCardState extends State<QuestionCard> {
                   widget.question.options[optionIndex].isChosen;
               final bool isTrue = widget.question.options[optionIndex].isTrue;
               Color? tileColor;
-
               print(
                   "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
+              final bool isSuccessIn = (widget.test.result.pass == true ||
+                  (widget.test.result.pass == null &&
+                      widget.test.studentExam.skipped)); 
 
-              if ((!widget.examCubit.isSolving &&
-                  widget.test.result.pass != null)) {
+              if (!widget.examCubit.isSolving && isSuccessIn) {
                 if (isTrue) {
                   tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
                 } else if (isChosen) {

@@ -1,5 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 import 'package:my_project_new/modules/video/cubit/video_state.dart';
@@ -10,8 +13,9 @@ import 'package:my_project_new/widgets/try_again.dart';
 class ExplanationVideo extends StatefulWidget {
   const ExplanationVideo({
     super.key,
+    required this.url,
   });
-
+  final String url;
   @override
   State<ExplanationVideo> createState() => _ExplanationVideoState();
 }
@@ -36,8 +40,7 @@ class _ExplanationVideoState extends State<ExplanationVideo> {
               create: (context) => videoCubit
                 ..setStreams([
                   MyVideo(
-                      link:
-                          "https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4", //  "${Urls.storageUrl}${widget.oneCourseCubit.introVideo!}",
+                      link: "${Urls.storageUrl}${widget.url}",
                       value: 0,
                       quality: "")
                 ])
@@ -69,7 +72,7 @@ class _ExplanationVideoState extends State<ExplanationVideo> {
                         },
                       );
                     }
-        
+
                     return VideoWidget2(
                       videoCubit: context.read<VideoCubit>(),
                     );

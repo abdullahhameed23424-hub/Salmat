@@ -97,7 +97,9 @@ class LessonsCubit extends Cubit<LessonsState> {
       if (lesson.nextUnitId == -1) {
         _buttonStatus = NextLessonButtonStatus.COURSE_END;
       } else if ((lesson.nextUnitId != null) &&
-          ((lesson.exam != null && (lesson.exam!.result.pass != null)) ||
+          ((lesson.exam != null &&
+                  (lesson.exam!.result.pass == true ||
+                      lesson.exam!.studentExam.skipped)) ||
               lesson.exam == null)) {
         _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
       } else {
@@ -106,7 +108,9 @@ class LessonsCubit extends Cubit<LessonsState> {
       }
     } else if (lesson.nextLessonId != null) {
       _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
-    } else if (lesson.exam != null && lesson.exam!.result.pass == null) {
+    } else if (lesson.exam != null &&
+        lesson.exam!.result.pass == null &&
+        !lesson.exam!.studentExam.skipped) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {
       _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;

@@ -53,6 +53,7 @@ class _QuestionFormState extends State<QuestionForm> {
             test: widget.examCubit.test,
           ),
           QuestionIcon(
+              question: widget.question,
               examCubit: widget.examCubit), // to go to explanation screen
         ],
       ),

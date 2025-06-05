@@ -32,21 +32,23 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (test.result.pass == null && test.isSubscribed && !test.isSolving) {
+      if (test.result.pass == null &&
+          test.isSubscribed &&
+          !test.isSolving &&
+          !test.studentExam.skipped) {
         createExam(test.id);
       }
-      if (test.result.pass != null) {
-        // student is success
-        testTime = test.minutes * 60; // only show test
+      
+      if ((test.result.pass == null && test.studentExam.skipped) ||
+          (test.result.pass == true)) {
+        testTime = test.minutes * 60;
       } else if (test.isSolving) {
-        // student is solving
         isSolving = true;
         testTime = test.remainingTime.toInt();
         if (testTime.isNegative) {
           submitExam(examId: test.id, force: true);
         }
       } else {
-        // student is not solving yet
         testTime = test.minutes * 60;
         isSolving = true;
       }

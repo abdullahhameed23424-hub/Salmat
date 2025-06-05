@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
+import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/modules/sections/models/section.dart';
 import 'package:my_project_new/modules/subjects/cubit/subjects_cubit.dart';
 import 'package:my_project_new/modules/subjects/view/widgets/subject_card.dart';
@@ -68,7 +69,10 @@ class SubjectsScreen extends StatelessWidget {
                           SizedBox(height: 24.h),
                           AspectRatio(
                             aspectRatio: 16 / 9,
-                            child: Align(
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    boxShadow: boxShadow,
+                                    borderRadius: BorderRadius.circular(12)),
                                 child: CachedImage(
                                     borderRadius: BorderRadius.circular(12),
                                     boxFit: BoxFit.cover,

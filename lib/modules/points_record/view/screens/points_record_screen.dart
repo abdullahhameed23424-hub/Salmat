@@ -74,7 +74,10 @@ class PointsRecordScreen extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                       translate(
                                           'greeting_message',
-                                          args: ['200'],
+                                          args: [
+                                            pointsRecordCubit
+                                                .pointsResponse.data.totlaPoints
+                                          ],
                                           context),
                                       style: titilliumBold.copyWith(
                                           color: AppColors.WHITE, height: 2),
@@ -108,8 +111,11 @@ class PointsRecordScreen extends StatelessWidget {
                   ),
                 ),
                 SliverList.separated(
-                  itemCount: 10,
-                  itemBuilder: (context, index) => const PointsCard(),
+                  itemCount:
+                      pointsRecordCubit.pointsResponse.data.totlaPoints.length,
+                  itemBuilder: (context, index) => PointsCard(
+                      points: pointsRecordCubit
+                          .pointsResponse.data.pointsList[index]),
                   separatorBuilder: (context, index) => SizedBox(height: 10.h),
                 )
               ],

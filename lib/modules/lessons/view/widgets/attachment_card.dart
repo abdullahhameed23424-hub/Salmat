@@ -16,6 +16,7 @@ class AttachmentCard extends StatelessWidget {
   });
 
   final AppFile file;
+
   @override
   Widget build(BuildContext context) {
     return FadeInLeft(
@@ -25,44 +26,55 @@ class AttachmentCard extends StatelessWidget {
         onTap: () {
           EasyLauncher.url(url: file.url);
         },
+        borderRadius: BorderRadius.circular(20.r),
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 0.w),
+          margin: EdgeInsets.symmetric(vertical: 4.h),
+          padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.black26),
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: boxShadow,
+            borderRadius: BorderRadius.circular(20.r),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 12,
+                offset: Offset(0, 6),
+              ),
+            ],
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // AspectRatio(
-              //   aspectRatio: 1,
-              //   child: SizedBox(
-              //     width: 1.sw,
-              //     child: CachedImage(image: file.image, boxFit: BoxFit.contain),
-              //   ),
-              // ),
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: AppColors.LIGHTGRAY,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
+              Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    padding: EdgeInsets.all(12.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.LIGHTGRAY,
+                      borderRadius: BorderRadius.circular(15.r),
+                    ),
+                    child: Icon(
+                      Icons.attach_file,
+                      size: 28.sp,
+                      color: AppColors.PRIMARY,
                     ),
                   ),
-                  child: Center(
-                    child: Text(
-                      file.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: titilliumRegular.copyWith(color: AppColors.BLACK),
-                    ),
+                  SizedBox(width: 12.w),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 16.sp,
+                    color: AppColors.GRAY,
                   ),
-                ),
-              )
+                ],
+              ),
+              const Spacer(),
+              Text(
+                file.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: titilliumRegular.copyWith(fontSize: 12.sp),
+              ),
             ],
           ),
         ),

@@ -16,9 +16,11 @@ class Test {
   final bool isSubscribed;
   final dynamic remainingTime;
   final LatestStudentExam? latestStudentExam;
+  final StudentExam studentExam;
   Test(
       {required this.id,
       required this.description,
+      required this.studentExam,
       required this.latestStudentExam,
       required this.degree,
       required this.isSolving,
@@ -32,6 +34,7 @@ class Test {
       required this.remainingTime});
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
+        studentExam: StudentExam.fromJson(json['studentExam']),
         latestStudentExam: json['latest_student_exam'] != null
             ? LatestStudentExam.fromJson(json['latest_student_exam'])
             : null,

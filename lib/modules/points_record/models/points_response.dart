@@ -1,3 +1,5 @@
+import 'package:my_project_new/modules/points_record/models/points.dart';
+
 class PointsResponse {
   final Data data;
 
@@ -7,10 +9,28 @@ class PointsResponse {
 }
 
 class Data {
-  final String points;
-  final List pointsDetails;
+  final String totlaPoints;
+  final List<Points> pointsList;
 
-  Data({required this.points, required this.pointsDetails});
-  factory Data.fromJson(Map<String, dynamic> json) =>
-      Data(points: json['points'], pointsDetails: json['history']);
+  Data({required this.totlaPoints, required this.pointsList});
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        totlaPoints: json['points'].toString(),
+        pointsList:
+            List<Points>.from(json["history"].map((x) => Points.fromJson(x))),
+      );
+}
+
+class StudentName {
+  final int id;
+  final String name;
+
+  StudentName({
+    required this.id,
+    required this.name,
+  });
+
+  factory StudentName.fromJson(Map<String, dynamic> json) => StudentName(
+        id: json["id"],
+        name: json["name"],
+      );
 }

@@ -46,9 +46,6 @@ class _ReadOnlyQuestionCardState extends State<ReadOnlyQuestionCard> {
               final bool isTrue = widget.question.options[optionIndex].isTrue;
               Color? tileColor;
 
-              print(
-                  "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
-
               if (isTrue) {
                 tileColor = AppColors.LIGHT_GREEN.withAlpha(200);
               } else if (isChosen) {

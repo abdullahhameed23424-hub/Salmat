@@ -4,17 +4,19 @@ import 'package:meta/meta.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
+import 'package:my_project_new/modules/points_record/models/points_response.dart';
 
 part 'points_record_state.dart';
 
 class PointsRecordCubit extends Cubit<PointsRecordState> {
   PointsRecordCubit() : super(PointsRecordInitial());
-  // int myPoints = -1;
+
+  late PointsResponse pointsResponse;
   Future<void> getPoints() async {
     emit(PointsRecordLoadingState());
     try {
       final Response response = await Network.getData(url: Urls.points);
-      // myPoints = response.data['data']['points'];
+      pointsResponse = PointsResponse.fromJson(response.data);
 
       emit(PointsRecordSuccessState());
     } on DioException catch (error) {
