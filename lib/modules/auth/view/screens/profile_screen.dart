@@ -50,8 +50,8 @@ class ProfileScreen extends StatelessWidget {
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          boxShadow: boxShadow,
                           color: AppColors.WHITE,
-                          border: Border.all(color: AppColors.PRIMARY),
                         ),
                         child: CachedImage(
                           image: authCubit.user.image,

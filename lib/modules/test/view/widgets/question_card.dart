@@ -29,7 +29,7 @@ class _QuestionCardState extends State<QuestionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: widget.padding ?? EdgeInsets.fromLTRB(16.w, 34.h, 16.w, 8.h),
+      padding: widget.padding ?? EdgeInsets.fromLTRB(16.w, 45.h, 16.w, 8.h),
       decoration: BoxDecoration(
         color: widget.color ?? AppColors.WHITE,
         borderRadius: BorderRadius.circular(20),
@@ -52,7 +52,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
               final bool isSuccessIn = (widget.test.result.pass == true ||
                   (widget.test.result.pass == null &&
-                      widget.test.studentExam.skipped)); 
+                      widget.test.studentExam.skipped));
 
               if (!widget.examCubit.isSolving && isSuccessIn) {
                 if (isTrue) {

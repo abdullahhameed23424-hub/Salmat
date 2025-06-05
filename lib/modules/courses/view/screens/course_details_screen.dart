@@ -36,7 +36,17 @@ class CourseDetailsScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) =>
             CoursesCubit()..getCourseDetails(courseId: course.id),
-        child: BlocBuilder<CoursesCubit, CoursesState>(
+        child: BlocConsumer<CoursesCubit, CoursesState>(
+          listener: (context, state) {
+            if (state is SubscribeToCourseSuccessState) {
+              context
+                  .read<CoursesCubit>()
+                  .getCourseDetails(courseId: course.id);
+            }
+            if (state is SubscribeToCourseErrorState) {
+              customSnackBar(context, success: 0, message: state.message);
+            }
+          },
           builder: (context, state) {
             final CoursesCubit coursesCubit =
                 BlocProvider.of<CoursesCubit>(context);
@@ -54,7 +64,7 @@ class CourseDetailsScreen extends StatelessWidget {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               children: [
-                _CourseHeader(coursesCubit.couresDetails),
+                _CourseHeader(coursesCubit.couresDetails, coursesCubit),
                 _InfoCircles(coursesCubit.couresDetails, coursesCubit.units),
                 _CourseDetails(course: coursesCubit.couresDetails),
                 SizedBox(height: 20.h),
@@ -182,7 +192,6 @@ class _Units extends StatelessWidget {
         translate('units', context),
         style: TextStyle(
           fontFamily: FONTF_FAMILY,
-          // color: Colors.black, // we dont use titilliumBold to use pernt color
           fontSize: Dimensions.FONT_SIZE_DEFAULT,
           fontWeight: FontWeight.w700,
         ),
@@ -191,7 +200,7 @@ class _Units extends StatelessWidget {
         units.length,
         (index) => UnitCard(
             unit: units[index],
-            isLocked: units[index].isLocked && !course.subscribed),
+            isLocked: units[index].isLocked || !course.subscribed),
       ),
     );
   }
@@ -264,9 +273,9 @@ class _InfoCircles extends StatelessWidget {
 }
 
 class _CourseHeader extends StatelessWidget {
-  const _CourseHeader(this.course);
+  const _CourseHeader(this.course, this.courseCubit);
   final Course course;
-
+  final CoursesCubit courseCubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -310,17 +319,16 @@ class _CourseHeader extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (!course.isFree)
-                            Text(
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                "${course.totalPrice} SP",
-                                style: titilliumBold.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 18.sp,
-                                    color: AppColors.PRIMARY))
-                          else
-                            const Spacer(),
+                          Text(
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              course.isFree
+                                  ? translate('free', context)
+                                  : "${course.totalPrice} SP",
+                              style: titilliumBold.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 18.sp,
+                                  color: AppColors.PRIMARY)),
                           InkWell(
                             onTap: () {
                               showModalBottomSheet(
@@ -333,13 +341,17 @@ class _CourseHeader extends StatelessWidget {
                               alignment: Alignment.center,
                               children: [
                                 SvgPicture.asset(Images.buyIcon,
-                                    width: 80.w,
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.PRIMARY, BlendMode.srcIn)),
+                                    width: 90.w,
+                                    colorFilter: ColorFilter.mode(
+                                        course.isFree
+                                            ? Colors.green
+                                            : AppColors.PRIMARY,
+                                        BlendMode.srcIn)),
                                 Positioned(
-                                  top: 25.h,
                                   child: Text(
-                                    translate('buy', context),
+                                    course.isFree
+                                        ? translate('subscribe', context)
+                                        : translate('buy', context),
                                     style: titilliumBold.copyWith(
                                         color: AppColors.WHITE),
                                   ),

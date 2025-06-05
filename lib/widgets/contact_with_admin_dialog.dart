@@ -46,8 +46,9 @@ class ContactWithAdminDialog extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      EasyLauncher.call(
-                          number: cubit.infoResponse.adminContact.phone);
+                      EasyLauncher.url(
+                          url:
+                              "https://wa.me/${cubit.infoResponse.adminContact.phone}");
                     },
                     child: Text(
                       translate("tap_to_contact", context),

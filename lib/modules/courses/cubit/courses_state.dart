@@ -11,7 +11,7 @@ final class GetCoursesSuccessState extends CoursesState {}
 
 final class GetCoursesErrorState extends CoursesState {
   final String message;
-   GetCoursesErrorState({required this.message});
+  GetCoursesErrorState({required this.message});
 }
 
 final class GetCourseDetailsLoadingState extends CoursesState {}
@@ -20,6 +20,14 @@ final class GetCourseDetailsSuccessState extends CoursesState {}
 
 final class GetCourseDetailsErrorState extends CoursesState {
   final String message;
-   GetCourseDetailsErrorState({required this.message});
+  GetCourseDetailsErrorState({required this.message});
 }
 
+final class SubscribeToCourseLoadingState extends CoursesState {}
+
+final class SubscribeToCourseSuccessState extends CoursesState {}
+
+final class SubscribeToCourseErrorState extends CoursesState {
+  final String message;
+  SubscribeToCourseErrorState({required this.message});
+}
