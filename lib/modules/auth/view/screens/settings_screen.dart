@@ -11,6 +11,7 @@ import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/modules/auth/view/screens/change_password_screen.dart';
 import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
 import 'package:my_project_new/modules/auth/view/widgets/delete_account_dialog.dart';
+import 'package:my_project_new/modules/startup/get_started_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
@@ -38,7 +39,8 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.pop(context);
                   }
                   AppSharedPreferences.removeToken;
-                  pushAndRemoveUntiTo(context, toPage: const LoginScreen());
+                  pushAndRemoveUntiTo(context,
+                      toPage: const GetStartedScreen());
                 }
                 if (state is LogoutErrorState) {
                   customSnackBar(context, success: 0, message: state.message);

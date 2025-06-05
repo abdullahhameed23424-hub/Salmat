@@ -1,9 +1,14 @@
+import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_project_new/animation/fade_in_animation.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/core/validators/phone_number_validator.dart';
+import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/modules/auth/view/screens/profile_screen.dart';
@@ -18,6 +23,9 @@ import 'package:my_project_new/modules/library/view/screens/library_screen.dart'
 import 'package:my_project_new/modules/points_record/view/screens/points_record_screen.dart';
 import 'package:my_project_new/modules/courses/view/screens/my_courses_screen.dart';
 import 'package:my_project_new/modules/teachers/view/screens/teachers_screen.dart';
+import 'package:my_project_new/widgets/app_loading.dart';
+import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
+import 'package:my_project_new/widgets/try_again.dart';
 
 class MoreInfoScreen extends StatelessWidget {
   MoreInfoScreen({super.key});
@@ -27,38 +35,55 @@ class MoreInfoScreen extends StatelessWidget {
   // we declare the infoCubit as static to use it in all the screens to call the api once
 
   final List<Map<String, dynamic>> menuItems = [
-    {
-      "icon": Icons.person_outline_outlined,
-      "title": "my_info",
-      "onTap": (BuildContext context) {
-        pushTo(
+    if (!AppSharedPreferences.hasToken)
+      {
+        "icon": Icons.login_outlined,
+        "title": "login",
+        "onTap": (BuildContext context) {
+          showDialog(
             context: context,
-            toPage: ProfileScreen(
-              authCubit: AuthCubit()..getProfile(),
-            ));
-      }
-    },
-    {
-      "icon": Icons.play_lesson,
-      "title": "my_courses",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const MyCoursesScreen());
-      }
-    },
-    {
-      "image": Images.pointsIcon,
-      "title": "my_points",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const PointsRecordScreen());
-      }
-    },
-    {
-      "icon": Icons.download_outlined,
-      "title": "downloaded_lessons",
-      "onTap": (BuildContext context) {
-        // pushTo(context: context, toPage: const PointsRecordScreen());
-      }
-    },
+            builder: (context) {
+              return ContactAdminDialog();
+            },
+          );
+        }
+      },
+    if (AppSharedPreferences.hasToken)
+      {
+        "icon": Icons.person_outline_outlined,
+        "title": "my_info",
+        "onTap": (BuildContext context) {
+          pushTo(
+              context: context,
+              toPage: ProfileScreen(
+                authCubit: AuthCubit()..getProfile(),
+              ));
+        }
+      },
+    if (AppSharedPreferences.hasToken)
+      {
+        "icon": Icons.play_lesson,
+        "title": "my_courses",
+        "onTap": (BuildContext context) {
+          pushTo(context: context, toPage: const MyCoursesScreen());
+        }
+      },
+    if (AppSharedPreferences.hasToken)
+      {
+        "image": Images.pointsIcon,
+        "title": "my_points",
+        "onTap": (BuildContext context) {
+          pushTo(context: context, toPage: const PointsRecordScreen());
+        }
+      },
+    if (AppSharedPreferences.hasToken)
+      {
+        "icon": Icons.download_outlined,
+        "title": "downloaded_lessons",
+        "onTap": (BuildContext context) {
+          // pushTo(context: context, toPage: const PointsRecordScreen());
+        }
+      },
     {
       "image": Images.libraryIcon,
       "title": "library",
@@ -66,13 +91,14 @@ class MoreInfoScreen extends StatelessWidget {
         pushTo(context: context, toPage: const LibraryScreen());
       }
     },
-    {
-      "image": Images.testIcon,
-      "title": "completed_tests",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: const CompletedTestsScreen());
-      }
-    },
+    if (AppSharedPreferences.hasToken)
+      {
+        "image": Images.testIcon,
+        "title": "completed_tests",
+        "onTap": (BuildContext context) {
+          pushTo(context: context, toPage: const CompletedTestsScreen());
+        }
+      },
     {
       "image": Images.trainersIcon,
       "title": "teachers",
@@ -80,13 +106,14 @@ class MoreInfoScreen extends StatelessWidget {
         pushTo(context: context, toPage: const TeachersScreen());
       }
     },
-    {
-      "image": Images.settingsIcon,
-      "title": "settings",
-      "onTap": (BuildContext context) {
-        pushTo(context: context, toPage: SettingsScreen());
-      }
-    },
+    if (AppSharedPreferences.hasToken)
+      {
+        "image": Images.settingsIcon,
+        "title": "settings",
+        "onTap": (BuildContext context) {
+          pushTo(context: context, toPage: SettingsScreen());
+        }
+      },
     {
       "image": Images.privacyPolicy,
       "title": "privacy_policy",
@@ -180,5 +207,120 @@ class MoreInfoScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ContactAdminDialog extends StatelessWidget {
+  const ContactAdminDialog({super.key});
+
+  static Future<void> show(
+    BuildContext context,
+  ) async {
+    await showDialog(
+      context: context,
+      builder: (context) => FadeInDown(
+          duration: const Duration(milliseconds: 400),
+          child: ContactAdminDialog()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: BlocProvider(
+          create: (context) => InfoCubit()..getInfo(),
+          child: BlocBuilder<InfoCubit, InfoState>(
+            builder: (context, state) {
+              final InfoCubit infoCubit = context.read<InfoCubit>();
+              if (state is GetInfoLoadingState) {
+                return SizedBox(height: 0.3.sh, child: const AppLoading());
+              }
+              if (state is GetInfoErrorState) {
+                return SizedBox(
+                  height: 0.3.sh,
+                  child: TryAgain(
+                      small: true,
+                      withImage: true,
+                      onTap: () {
+                        infoCubit.getInfo();
+                      },
+                      message: state.message),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      translate('contact_admin_title', context),
+                      style: titleRegular.copyWith(color: AppColors.PRIMARY),
+                    ),
+                    const Icon(Icons.admin_panel_settings_outlined,
+                        size: 56, color: AppColors.PRIMARY),
+                    const SizedBox(height: 20),
+                    Text(
+                      translate('contact_admin_message', context),
+                      style: titilliumRegular.copyWith(color: AppColors.BLACK),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      infoCubit.infoResponse.contact.phone,
+                      style: titilliumBold.copyWith(color: AppColors.PRIMARY),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            foregroundColor: AppColors.PRIMARY,
+                            textStyle: titilliumSemiBold,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(translate('close', context)),
+                        ),
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.phone, color: Colors.white),
+                          label: Text(
+                            translate('call_button', context),
+                            style:
+                                titilliumSemiBold.copyWith(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.PRIMARY,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                            elevation: 4,
+                            shadowColor: AppColors.PRIMARY.withOpacity(0.4),
+                          ),
+                          onPressed: () {
+                            final phoneNumber =
+                                infoCubit.infoResponse.contact.phone;
+                            if (RegExp(r'^[0-9]{10,15}$')
+                                .hasMatch(phoneNumber)) {
+                              EasyLauncher.call(number: phoneNumber);
+                            }
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        ));
   }
 }
