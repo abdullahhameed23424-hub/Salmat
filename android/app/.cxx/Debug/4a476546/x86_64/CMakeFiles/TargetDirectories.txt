@@ -1,0 +1,2 @@
+E:/Projects/Jaafar Platform/Codes/slamat_flutter/android/app/.cxx/Debug/4a476546/x86_64/CMakeFiles/edit_cache.dir
+E:/Projects/Jaafar Platform/Codes/slamat_flutter/android/app/.cxx/Debug/4a476546/x86_64/CMakeFiles/rebuild_cache.dir

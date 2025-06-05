@@ -1,0 +1,152 @@
+import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_project_new/constant/app_colors.dart';
+import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:my_project_new/constant/images.dart';
+import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/courses/models/course.dart';
+import 'package:my_project_new/utils/global_functions.dart';
+import 'package:my_project_new/modules/courses/view/screens/course_details_screen.dart';
+import 'package:my_project_new/widgets/cached_image.dart';
+
+class CourseCard extends StatelessWidget {
+  const CourseCard(
+      {super.key, required this.primaryColor, required this.course});
+  final Color primaryColor;
+  final Course course;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        pushTo(
+            context: context,
+            toPage: CourseDetailsScreen(
+              course: course,
+            ));
+      },
+      child: FadeIn(
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          decoration: BoxDecoration(
+              color: AppColors.WHITE,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: boxShadow),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: CourseImage(imagePath: course.image),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: primaryColor.withAlpha(51),
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(16)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(end: 0.w),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                course.name,
+                                style: titilliumBold.copyWith(
+                                    color: primaryColor)),
+                          ),
+                          _EyeIcon(primaryColor: primaryColor),
+                        ],
+                      ),
+                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     // _InfoItem(
+                    //     //     label: translate('lessons', context),
+                    //     //     value: course.lessonsCount.toString(),
+                    //     //     primaryColor: primaryColor),
+                    //     // _InfoItem(
+                    //     //     label: translate('hours', context),
+                    //     //     value: course.totalLessonsTime,
+                    //     //     primaryColor: primaryColor),
+                    //     // Spacer(),
+                    //     // _EyeIcon(primaryColor: primaryColor),
+                    //   ],
+                    // ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CourseImage extends StatelessWidget {
+  const CourseImage({super.key, required this.imagePath});
+
+  final String imagePath;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 16 / 9,
+      child: SizedBox(
+        height: 155.h,
+        child: CachedImage(
+          image: imagePath,
+          boxFit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+}
+
+class _EyeIcon extends StatelessWidget {
+  const _EyeIcon({required this.primaryColor});
+  final Color primaryColor;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(color: primaryColor, shape: BoxShape.circle),
+      transform: Matrix4.translationValues(-8.w, -32.h, 0),
+      child: Image.asset(Images.eye, width: 35.w),
+    );
+  }
+}
+
+class _InfoItem extends StatelessWidget {
+  const _InfoItem(
+      {required this.label, required this.value, required this.primaryColor});
+
+  final String label;
+  final String value;
+  final Color primaryColor;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: primaryColor,
+          radius: 15.sp,
+          child: Text(value,
+              style: titilliumBold.copyWith(color: AppColors.WHITE)),
+        ),
+        SizedBox(width: 4.w),
+        Text(label, style: titilliumSemiBold),
+      ],
+    );
+  }
+}
