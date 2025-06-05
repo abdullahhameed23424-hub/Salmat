@@ -61,7 +61,7 @@ dependencies:
   firebase_messaging: ^15.1.6
   flutter_local_notifications: ^18.0.1
   app_links: ^6.3.3
-  chewie: ^1.8.5
+  chewie: ^1.11.3
   video_player: ^2.9.1
   just_audio: ^0.9.42
   font_awesome_flutter: ^10.8.0

@@ -16,6 +16,7 @@ import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabba
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
+import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
@@ -24,6 +25,8 @@ import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/widgets/modern_loading_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
+
+import '../widgets/lesson_video.dart';
 
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen({super.key, required this.lesson});
@@ -36,6 +39,11 @@ class LessonDetailsScreen extends StatefulWidget {
 class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     with SingleTickerProviderStateMixin {
   late TabController controller;
+  final UniqueKey online = UniqueKey();
+  final UniqueKey offline = UniqueKey();
+
+  VideoCubit? onlineVideoCubit = VideoCubit();
+  VideoCubit? offlineVideoCubit = VideoCubit();
 
   @override
   void initState() {
@@ -43,6 +51,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   final GlobalKey<ModernLoadingDialogState> _loadingDialogKey =
@@ -120,7 +134,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
-                // LessonVideo(lesson: lessonsCubit.lessonDetails),
+                LessonVideo(lesson: lessonsCubit.lessonDetails),
                 const ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(
@@ -439,7 +453,7 @@ class _LessonHeader extends StatelessWidget {
                 style: titilliumBold.copyWith(
                     color: AppColors.WHITE, fontSize: 14.sp),
               ),
-              const Spacer(),
+             Spacer(),
               Row(
                 children: [
                   Text(

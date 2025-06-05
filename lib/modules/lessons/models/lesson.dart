@@ -4,6 +4,8 @@ import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/video/models/my_viedeo.dart';
 import 'package:my_project_new/utils/bool_converter.dart';
 
+import '../../../apis/urls.dart';
+
 class Lesson {
   final int lessonOrder;
   final int? previousLessonId;
@@ -65,36 +67,41 @@ class Lesson {
 
     int index = -1;
     List<MyVideo> streems = [];
+    json['videos'].forEach((video){
+      index++;
+      streems.add(MyVideo(link: '${Urls.storageUrl}${video['url']}', value: index, quality: '${video['url']}p'));
 
-    if (json["video_streams"] != null &&
-        json["video_streams"].isNotEmpty &&
-        json["video_streams"]["streams"] != null &&
-        json["video_streams"]["streams"].isNotEmpty) {
-      streems = List<MyVideo>.from(json["video_streams"]["streams"]
-          .map((x) {
-            index++;
-            if (x["resolution"].startsWith("audio")) {
-              return null;
-            } else if (x["resolution"].startsWith("360") && x['itag'] == 134) {
-              return MyVideo(
-                  link: x["url"], value: index, quality: x["resolution"]);
-            } else {
-              return null;
-            }
-          })
-          .where((element) => element != null)
-          .toList());
+    });
 
-      if (streems.isEmpty) {
-        for (var x in json["video_streams"]["streams"]) {
-          if (x["type"].startsWith("video")) {
-            streems.add(MyVideo(
-                link: x["url"], value: index, quality: x["resolution"]));
-            break;
-          }
-        }
-      }
-    }
+    // if (json["videos"] != null &&
+    //     json["video_streams"].isNotEmpty &&
+    //     json["video_streams"]["streams"] != null &&
+    //     json["video_streams"]["streams"].isNotEmpty) {
+    //   streems = List<MyVideo>.from(json["video_streams"]["streams"]
+    //       .map((x) {
+    //         index++;
+    //         if (x["resolution"].startsWith("audio")) {
+    //           return null;
+    //         } else if (x["resolution"].startsWith("360") && x['itag'] == 134) {
+    //           return MyVideo(
+    //               link: x["url"], value: index, quality: x["resolution"]);
+    //         } else {
+    //           return null;
+    //         }
+    //       })
+    //       .where((element) => element != null)
+    //       .toList());
+    //
+    //   if (streems.isEmpty) {
+    //     for (var x in json["video_streams"]["streams"]) {
+    //       if (x["type"].startsWith("video")) {
+    //         streems.add(MyVideo(
+    //             link: x["url"], value: index, quality: x["resolution"]));
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
 
     String audio = '';
     

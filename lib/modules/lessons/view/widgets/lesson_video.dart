@@ -39,12 +39,13 @@ class _LessonVideoState extends State<LessonVideo> {
             child: BlocProvider(
               lazy: false,
               create: (context) => videoCubit
-                ..setStreams([
-                  MyVideo(
-                      link: "${Urls.storageUrl}${widget.lesson.videoFile}",
-                      value: 0,
-                      quality: "")
-                ])
+                ..setStreams(
+                  widget.lesson.myVideos
+                  // MyVideo(
+                  //     link: "${Urls.storageUrl}${widget.lesson.myVideos}",
+                  //     value: 0,
+                  //     quality: "")
+                )
                 ..initFromNetwork2(0, Duration.zero) ,
               child: AspectRatio(
                 aspectRatio: 16 / 9,
