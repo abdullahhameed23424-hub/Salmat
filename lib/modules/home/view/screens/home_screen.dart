@@ -137,7 +137,7 @@ class _ReviewLayerState extends State<_ReviewLayer> {
 
                       if (commentsCubit.state is DeleteCommentsSuccessState) {
                         widget.comments.removeAt(index);
-                        setState(() {});  
+                        setState(() {});
                       }
                     });
                   },
@@ -198,6 +198,7 @@ class _LibraryLayer extends StatelessWidget {
                 aspectRatio: 1,
                 child: CachedImage(
                   image: libraryImage,
+                  boxFit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),

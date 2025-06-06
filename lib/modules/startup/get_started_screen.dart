@@ -5,6 +5,7 @@ import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
+import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
 import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'dart:async'; // Add this import
@@ -68,7 +69,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             CustomButton(
               label: translate('login_as_guest', context),
               onPressed: () {
-                pushTo(context: context, toPage: const LoginScreen());
+                pushTo(context: context, toPage: const BottomNavScreen());
               },
               buttonStyle: titilliumBold,
               backgroundColor: AppColors.LIGHTGRAY,

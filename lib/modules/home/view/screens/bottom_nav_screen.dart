@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 
@@ -49,8 +50,9 @@ class BottomNavScreenState extends State<BottomNavScreen> {
   final AuthCubit authCubit = AuthCubit();
   @override
   void initState() {
-    print("init getProfile ");
-    authCubit.getProfile();
+    if (AppSharedPreferences.hasToken) {
+      authCubit.getProfile();
+    }
     super.initState();
   }
 
@@ -107,35 +109,39 @@ class _AppBar extends StatelessWidget {
               systemOverlayStyle: const SystemUiOverlayStyle(
                   statusBarColor: AppColors.SECONDRY),
               toolbarHeight: 90.h,
-              title: Row(
-                spacing: 10.w,
-                children: <Widget>[
-                  if (state is GetProfileSuccessState)
-                    _UserHeader(authCubit: authCubit),
-                  if (state is GetProfileLoadingState) _UserHeaderShimmer(),
-                  const Spacer(),
-                  IconButton(
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.black12,
-                        iconSize: 30.sp,
-                      ),
-                      onPressed: () {
-                        pushTo(
-                            context: context,
-                            toPage: const NotificationsScreen());
-                      },
-                      icon: Badge.count(
-                        backgroundColor: AppColors.RED.withAlpha(210),
-                        isLabelVisible:
-                            authCubit.notificationCount > 0, //to do test
-                        count: authCubit.notificationCount,
-                        child: const Icon(
-                          Icons.notifications,
-                          color: AppColors.WHITE,
-                        ),
-                      )),
-                ],
-              ));
+              title: AppSharedPreferences.hasToken
+                  ? Row(
+                      spacing: 10.w,
+                      children: <Widget>[
+                        if (state is GetProfileSuccessState)
+                          _UserHeader(authCubit: authCubit),
+                        if (state is GetProfileLoadingState)
+                          _UserHeaderShimmer(),
+                        const Spacer(),
+                        IconButton(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.black12,
+                              iconSize: 30.sp,
+                            ),
+                            onPressed: () {
+                              pushTo(
+                                  context: context,
+                                  toPage: const NotificationsScreen());
+                            },
+                            icon: Badge.count(
+                              backgroundColor: AppColors.RED.withAlpha(210),
+                              isLabelVisible:
+                                  authCubit.notificationCount > 0, //to do test
+                              count: authCubit.notificationCount,
+                              child: const Icon(
+                                Icons.notifications,
+                                color: AppColors.WHITE,
+                              ),
+                            )),
+                      ],
+                    )
+                  : Text('أهلاً وسهلاً في تطبيق سلامات  👋🏻',
+                      style: titleHeader.copyWith(color: Colors.white)));
         },
       ),
     );
@@ -165,13 +171,12 @@ class _UserHeader extends StatelessWidget {
           Container(
             clipBehavior: Clip.hardEdge,
             decoration: const BoxDecoration(shape: BoxShape.circle),
-            child:  CachedImage(
-                boxFit: BoxFit.cover,
-                image: authCubit.user.image,
-                width: 60.w,
-                height: 60.w,
-              ),
-             
+            child: CachedImage(
+              boxFit: BoxFit.cover,
+              image: authCubit.user.image,
+              width: 60.w,
+              height: 60.w,
+            ),
           ),
           Column(
             spacing: 5.h,
