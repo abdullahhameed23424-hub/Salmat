@@ -40,7 +40,7 @@ class CommentCard extends StatelessWidget {
           child: AspectRatio(
               aspectRatio: 1,
               child: CachedImage(
-                image: comment.user.image??'',
+                image: comment.user?.image ?? "",
                 boxFit: BoxFit.cover,
               )),
         ),
@@ -63,7 +63,7 @@ class CommentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  comment.user.username,
+                  comment.user?.username ?? "",
                   style: titilliumBold,
                 ),
                 Align(
@@ -78,7 +78,7 @@ class CommentCard extends StatelessWidget {
                   text: comment.body??'',
                   maxLength: 100,
                 ),
-                if (comment.user.id.toString() ==
+                if (comment.user?.id.toString() ==
                     AppSharedPreferences.getUserID)
                   BlocConsumer(
                       bloc: commentsCubit,

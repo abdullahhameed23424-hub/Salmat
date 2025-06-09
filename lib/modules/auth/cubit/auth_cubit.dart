@@ -3,12 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'dart:async';
 
 import 'package:my_project_new/modules/auth/models/profile_response.dart';
 import 'package:my_project_new/modules/auth/models/user.dart';
+
+import '../../../apis/urls.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
