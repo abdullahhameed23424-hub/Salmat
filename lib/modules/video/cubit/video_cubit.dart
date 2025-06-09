@@ -66,6 +66,8 @@ class VideoCubit extends Cubit<VideoState> {
       ),
       autoPlay: false,
     );
+
+
     return await initStream;
   }
 
@@ -129,45 +131,47 @@ class VideoCubit extends Cubit<VideoState> {
     // print(
     //     'show the two ${controller!.value.position.inMilliseconds - audioPlayer.position.inMilliseconds}');
 
-    if ((controller!.value.position.inMilliseconds -
-                audioPlayer.position.inMilliseconds)
-            .abs() >
-        200) {
-      double speed = controller!.value.position.inMilliseconds -
-                  audioPlayer.position.inMilliseconds <
-              0
-          ? 2 * (playbackSpeed)
-          : 0.5 * (playbackSpeed);
-      controller!.setPlaybackSpeed(speed);
-    } else {
-      controller!.setPlaybackSpeed(playbackSpeed);
-    }
+    // if ((controller!.value.position.inMilliseconds -
+    //             audioPlayer.position.inMilliseconds)
+    //         .abs() >
+    //     200) {
+    //   double speed = controller!.value.position.inMilliseconds -
+    //               audioPlayer.position.inMilliseconds <
+    //           0
+    //       ? 2 * (playbackSpeed)
+    //       : 0.5 * (playbackSpeed);
+    //   controller!.setPlaybackSpeed(speed);
+    // } else {
+    //   controller!.setPlaybackSpeed(playbackSpeed);
+    // }
+    //
+    // wasPlaying = controller!.value.isPlaying == true &&
+    //     controller!.value.isBuffering == true;
+    // if (controller!.value.isPlaying == false ||
+    //     controller!.value.isBuffering == true) {
+    //   if (audioPlayer.playing) {
+    //     audioPlayer.pause();
+    //   }
+    // } else if (controller!.value.isPlaying == true &&
+    //     controller!.value.isBuffering == false) {
+    //   if (audioPlayer.playing == false) {
+    //     audioPlayer.play();
+    //   }
+    // }
 
-    wasPlaying = controller!.value.isPlaying == true &&
-        controller!.value.isBuffering == true;
-    if (controller!.value.isPlaying == false ||
-        controller!.value.isBuffering == true) {
-      if (audioPlayer.playing) {
-        audioPlayer.pause();
-      }
-    } else if (controller!.value.isPlaying == true &&
-        controller!.value.isBuffering == false) {
-      if (audioPlayer.playing == false) {
-        audioPlayer.play();
-      }
-    }
+    print("show the full screen ${chewieController?.isFullScreen}");
 
-    debouncer.run(() {
-      for (int i = 0; i < _seekRestrictions.length; i++) {
-        if (controller!.value.position.inMilliseconds >
-                _seekRestrictions[i].duration.inMilliseconds &&
-            isSeeking == false &&
-            _seekRestrictions[i].show) {
-          isSeeking = true;
-          seekTo(_seekRestrictions[i].duration, i);
-        }
-      }
-    });
+    // debouncer.run(() {
+    //   for (int i = 0; i < _seekRestrictions.length; i++) {
+    //     if (controller!.value.position.inMilliseconds >
+    //             _seekRestrictions[i].duration.inMilliseconds &&
+    //         isSeeking == false &&
+    //         _seekRestrictions[i].show) {
+    //       isSeeking = true;
+    //       seekTo(_seekRestrictions[i].duration, i);
+    //     }
+    //   }
+    // });
   }
 
   int time = 0;

@@ -29,6 +29,8 @@ void main() async {
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");
   // AppSharedPreferences.removeToken;
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   print("token is: ${AppSharedPreferences.getToken}");
   print("userID is: ${AppSharedPreferences.getUserID}");
   print("has token is: ${AppSharedPreferences.hasToken}");
@@ -78,7 +80,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -95,6 +96,7 @@ class _MyAppState extends State<MyApp> {
           designSize: getDeviceSize(context),
           minTextAdapt: true,
           splitScreenMode: true,
+
           builder: (context, child) {
             List<Locale> locals = [];
             for (LanguageModel language in languages) {

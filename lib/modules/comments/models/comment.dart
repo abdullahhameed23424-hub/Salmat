@@ -3,7 +3,7 @@ import 'package:my_project_new/modules/comments/models/comment_writer.dart';
 
 class Comment {
   final int id;
-  final String body;
+  final String? body;
   final DateTime createdAt;
   final CommentWriter user;
 

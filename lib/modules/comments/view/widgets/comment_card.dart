@@ -40,7 +40,7 @@ class CommentCard extends StatelessWidget {
           child: AspectRatio(
               aspectRatio: 1,
               child: CachedImage(
-                image: comment.user.image,
+                image: comment.user.image??'',
                 boxFit: BoxFit.cover,
               )),
         ),
@@ -75,7 +75,7 @@ class CommentCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 ReadMoreText(
-                  text: comment.body,
+                  text: comment.body??'',
                   maxLength: 100,
                 ),
                 if (comment.user.id.toString() ==

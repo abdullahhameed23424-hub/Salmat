@@ -40,6 +40,54 @@ class Course {
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
+
+
+    print("section print");
+
+    print("ID: ${json['id']}");
+    print("Parent ID: ${json['parent_id']}");
+    print("Name: ${json['name']}");
+    print("Requirements: ${json['requirements'] ?? ""}");
+    print("Image: ${json['image'] ?? ""}");
+    print("Intro Video: ${json['introVideo'] ?? ""}");
+    print("Is Free: ${boolConverter(json['is_free'])}");
+    print("Price: ${stringOrZero(json['price'])}");
+    print("Total Price: ${stringOrZero(json['totalPrice'])}");
+    print("Discount: ${stringOrZero(json['discount'])}");
+    print("Description: ${json['description'] ?? ""}");
+    print("Lessons Count: ${json["lessons_count"] ?? 0}");
+
+// Teachers
+    if (json["teachers"] != null) {
+      List<Teacher> teachers = List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)));
+      print("Teachers:");
+      for (var teacher in teachers) {
+        print(" - ${teacher.toString()}"); // أو طباعة بيانات محددة من كل معلم
+      }
+    } else {
+      print("Teachers: []");
+    }
+
+
+// Total Lessons Time
+    String totalTime = (json["total_lessons_time"] != null && json["total_lessons_time"] is String)
+        ? getHoursFromTimeString(json["total_lessons_time"])
+        : "0";
+    print("Total Lessons Time: $totalTime");
+
+// Comments
+    if (json["comments"] != null) {
+      List<Comment> comments = List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x)));
+      print("Comments:");
+      for (var comment in comments) {
+        print(" - ${comment.toString()}"); // أو طباعة تفاصيل التعليق
+      }
+    } else {
+      print("Comments: []");
+    }
+
+
+
     return Course(
       subscribed: boolConverter(json['subscribed']),
       id: json['id'],

@@ -26,6 +26,7 @@ import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/widgets/modern_loading_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 
 import '../widgets/lesson_video.dart';
 
@@ -46,17 +47,31 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   VideoCubit? onlineVideoCubit = VideoCubit();
   VideoCubit? offlineVideoCubit = VideoCubit();
 
+  final _noScreenshot = NoScreenshot.instance;
+
+
   @override
   void initState() {
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
+    disableScreenshot();
 
     super.initState();
   }
 
+  void disableScreenshot() async {
+    try {
+      bool result = await _noScreenshot.screenshotOff();
+      print('Screenshot Off: $result');
+    }catch(error){
+      print('Screenshot error $error');
+    }
+  }
+
   @override
   void dispose() {
-    // TODO: implement dispose
+    _noScreenshot.screenshotOn();
+
     super.dispose();
   }
 
@@ -135,7 +150,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
-                LessonVideo(lesson: lessonsCubit.lessonDetails),
+                LessonVideo(key: online,lesson: lessonsCubit.lessonDetails),
                 const ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(

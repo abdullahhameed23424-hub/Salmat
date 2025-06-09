@@ -69,7 +69,7 @@ class Lesson {
     List<MyVideo> streems = [];
     json['videos'].forEach((video){
       index++;
-      streems.add(MyVideo(link: '${Urls.storageUrl}${video['url']}', value: index, quality: '${video['url']}p'));
+      streems.add(MyVideo(link: '${Urls.storageUrl}${video['url']}', value: index, quality: '${video['qulaity']}p'));
 
     });
 

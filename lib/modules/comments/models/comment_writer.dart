@@ -1,7 +1,7 @@
 class CommentWriter {
   final int id;
   final String username;
-  final String image;
+  final String? image;
 
   CommentWriter({
     required this.id,
@@ -9,10 +9,10 @@ class CommentWriter {
     required this.image,
   });
 
-  factory CommentWriter.fromJson(Map<String, dynamic> json) => CommentWriter(
-        id: json["id"],
-        username: json["username"],
-        image: json["image"],
+  factory CommentWriter.fromJson(Map<String, dynamic>? json) => CommentWriter(
+        id: json?["id"] ?? -1,
+        username: json?["username"] ?? '',
+        image: json?["image"]??'',
       );
 
   Map<String, dynamic> toJson() => {
