@@ -42,7 +42,7 @@ class HomeCubit extends Cubit<HomeState> {
     } on DioException catch (error) {
       emit(GetHomeErrorState(message: exceptionsHandle(error: error)));
     }
-    // catch (error) {
+    //  catch (error) {
     //   emit(GetHomeErrorState(message: unknownError()));
     // }
     finally {

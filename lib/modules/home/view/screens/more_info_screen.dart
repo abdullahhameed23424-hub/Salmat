@@ -15,6 +15,7 @@ import 'package:my_project_new/modules/auth/view/screens/profile_screen.dart';
 import 'package:my_project_new/modules/auth/view/screens/settings_screen.dart';
 import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
 import 'package:my_project_new/modules/info/view/screens/contact_us_screen.dart';
+import 'package:my_project_new/modules/startup/get_started_screen.dart';
 import 'package:my_project_new/modules/test/view/screens/completed_tests_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/modules/info/view/screens/about_us_screen.dart';
@@ -24,7 +25,6 @@ import 'package:my_project_new/modules/points_record/view/screens/points_record_
 import 'package:my_project_new/modules/courses/view/screens/my_courses_screen.dart';
 import 'package:my_project_new/modules/teachers/view/screens/teachers_screen.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class MoreInfoScreen extends StatelessWidget {
@@ -40,12 +40,7 @@ class MoreInfoScreen extends StatelessWidget {
         "icon": Icons.login_outlined,
         "title": "login",
         "onTap": (BuildContext context) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return ContactAdminDialog();
-            },
-          );
+          pushAndRemoveUntiTo(context, toPage: const GetStartedScreen());
         }
       },
     if (AppSharedPreferences.hasToken)

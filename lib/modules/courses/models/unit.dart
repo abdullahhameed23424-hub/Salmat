@@ -5,7 +5,7 @@ class Unit {
   final int id;
   final int parentId;
   final String name;
-  final String image;
+  final String? image;
   final String description;
   final String totalLessonsTime;
   final int lessonsCount;
@@ -31,7 +31,7 @@ class Unit {
             : null,
         parentId: json["parent_id"],
         name: json["name"],
-        image: json["image"],
+        image: json["image"] ?? "",
         description: json["description"],
         totalLessonsTime: json["total_lessons_time"],
         lessonsCount: json["lessons_count"],

@@ -1,11 +1,10 @@
- 
 import 'package:my_project_new/modules/comments/models/comment_writer.dart';
 
 class Comment {
   final int id;
   final String body;
   final DateTime createdAt;
-  final CommentWriter user;
+  final CommentWriter? user;
 
   Comment({
     required this.id,
@@ -18,6 +17,7 @@ class Comment {
         id: json["id"],
         body: json["body"],
         createdAt: DateTime.parse(json["created_at"]),
-        user: CommentWriter.fromJson(json["user"]),
+        user:
+            json["user"] != null ? CommentWriter.fromJson(json["user"]) : null,
       );
 }
