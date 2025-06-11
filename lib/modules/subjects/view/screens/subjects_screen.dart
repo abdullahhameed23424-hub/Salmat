@@ -68,7 +68,7 @@ class SubjectsScreen extends StatelessWidget {
                         children: [
                           SizedBox(height: 24.h),
                           AspectRatio(
-                            aspectRatio: 16 / 9,
+                            aspectRatio: 1,
                             child: Container(
                                 decoration: BoxDecoration(
                                     boxShadow: boxShadow,

@@ -49,10 +49,9 @@ class ProfileScreen extends StatelessWidget {
                         height: 100.w,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: boxShadow,
-                          color: AppColors.WHITE,
-                        ),
+                            shape: BoxShape.circle,
+                            boxShadow: boxShadow,
+                            color: AppColors.WHITE),
                         child: CachedImage(
                           image: authCubit.user.image,
                           boxFit: BoxFit.cover,
@@ -91,6 +90,9 @@ class ProfileScreen extends StatelessWidget {
                     style: titilliumBold.copyWith(
                         decoration: TextDecoration.underline)),
                 const SizedBox(height: 10),
+                InfoCard(
+                    title: translate('username', context),
+                    value: authCubit.user.username),
                 InfoCard(
                     title: translate('father_name_label', context),
                     value: authCubit.user.fatherName),

@@ -46,7 +46,7 @@ class MoreInfoScreen extends StatelessWidget {
     if (AppSharedPreferences.hasToken)
       {
         "icon": Icons.person_outline_outlined,
-        "title": "my_info",
+        "title": "my_profile",
         "onTap": (BuildContext context) {
           pushTo(
               context: context,
@@ -58,7 +58,7 @@ class MoreInfoScreen extends StatelessWidget {
     if (AppSharedPreferences.hasToken)
       {
         "icon": Icons.play_lesson,
-        "title": "my_courses",
+        "title": "my_subjects",// app owner wants its name my_subjects but it is Courses screen
         "onTap": (BuildContext context) {
           pushTo(context: context, toPage: const MyCoursesScreen());
         }

@@ -11,6 +11,7 @@ import 'package:my_project_new/modules/courses/view/widgets/my_course_card.dart'
 import 'package:my_project_new/widgets/app_footer.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
+import 'package:my_project_new/widgets/no_data.dart';
 import 'package:my_project_new/widgets/refresher_header.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -47,34 +48,35 @@ class MyCoursesScreen extends StatelessWidget {
                     _CoursesHeader(numOfCourses: coursesCubit.courses.length),
                     SizedBox(height: 40.h),
                     Expanded(
-                      child: SmartRefresher(
-                        header: const AppRefresherHeader(),
-                        footer: const AppFooter(),
-                        enablePullUp: true,
-                        controller: coursesCubit.refreshController,
-                        onLoading: () {
-                          coursesCubit.getMycourses();
-                        },
-                        onRefresh: () {
-                          coursesCubit.refreshController.loadComplete();
-                          coursesCubit.page = 1;
-                          coursesCubit.getMycourses();
-                        },
-                        child: GridView.builder(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.w, vertical: 10.h),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio: 0.9,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8.w,
-                            mainAxisSpacing: 15.h,
-                          ),
-                          itemCount: coursesCubit.courses.length, // عدد المواد
-                          itemBuilder: (context, index) =>
-                              MyCourseCard(course: coursesCubit.courses[index]),
-                        ),
-                      ),
+                      child: coursesCubit.courses.isNotEmpty
+                          ? SmartRefresher(
+                              header: const AppRefresherHeader(),
+                              footer: const AppFooter(),
+                              enablePullUp: true,
+                              controller: coursesCubit.refreshController,
+                              onLoading: () {
+                                coursesCubit.getMycourses();
+                              },
+                              onRefresh: () {
+                                coursesCubit.refreshController.loadComplete();
+                                coursesCubit.page = 1;
+                                coursesCubit.getMycourses();
+                              },
+                              child: GridView.builder(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w, vertical: 10.h),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.9,
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 8.w,
+                                    mainAxisSpacing: 15.h,
+                                  ),
+                                  itemCount:
+                                      coursesCubit.courses.length, // عدد المواد
+                                  itemBuilder: (context, index) => MyCourseCard(
+                                      course: coursesCubit.courses[index])))
+                          : const NoData(),
                     ),
                   ],
                 ),
@@ -114,8 +116,7 @@ class _CoursesHeader extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Text(
-            translate('purchased_courses_count', context,
-                args: [numOfCourses.toString()]),
+            "${translate('my_courses', context)} $numOfCourses",
             style: titilliumSemiBold,
           ),
           const Spacer(),

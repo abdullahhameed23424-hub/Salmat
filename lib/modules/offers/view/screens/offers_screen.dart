@@ -58,7 +58,7 @@ class OffersScreen extends StatelessWidget {
                     horizontal: 12.h,
                   ),
                   itemCount: offersCubit.offers.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 8.h),
+                  separatorBuilder: (context, index) => SizedBox(height: 25.h),
                   itemBuilder: (context, index) => ZoomIn(
                       delay:
                           Duration(milliseconds: 50 + 50 * Random().nextInt(6)),

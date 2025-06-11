@@ -17,8 +17,7 @@ class SectionsCubit extends Cubit<SectionsState> {
   int page = 1;
   late SectionsResponse sectionsResponse;
   List<Section> sections = [];
-  String headerText = '';
-  Future<void> getSections() async {
+   Future<void> getSections() async {
     if (page == 1) {
       emit(GetSectionsLoadingState());
     }
@@ -37,8 +36,7 @@ class SectionsCubit extends Cubit<SectionsState> {
           refreshController.loadComplete();
         }
       } else {
-        sections = sectionsResponse.data.sections;
-        headerText = sectionsResponse.extraData.headerText;
+        sections = sectionsResponse.data.sections; 
       }
       page = sectionsResponse.data.currentPage + 1;
 

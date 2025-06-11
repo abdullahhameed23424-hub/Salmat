@@ -41,7 +41,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
       child: RichText(
         text: TextSpan(
           style: titilliumSemiBold.copyWith(
-            color: AppColors.BLACK,
+            color: AppColors.LOGO_PRIMARY,
           ),
           children: <TextSpan>[
             TextSpan(text: firstHalf),
@@ -49,7 +49,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
               TextSpan(
                 text: secondHalf,
                 style: titilliumSemiBold.copyWith(
-                  color: AppColors.BLACK,
+                  color: AppColors.LOGO_PRIMARY,
                 ),
               ),
             if (!isExpanded && secondHalf.isNotEmpty)

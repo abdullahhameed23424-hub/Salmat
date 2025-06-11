@@ -21,15 +21,14 @@ class UnitCard extends StatelessWidget {
   final bool isLocked;
   @override
   Widget build(BuildContext context) {
+    const bool isLocked = false;
     return InkWell(
       onTap: () {
-        if (isLocked) {
-          return;
-          // showDialog(
-          //     context: context, builder: (context) => const LockedUnit());
-        } else {
-          pushTo(context: context, toPage: LessonsScreen(unit: unit));
-        }
+        // if (isLocked) {
+        //   return;
+        // } else {
+        pushTo(context: context, toPage: LessonsScreen(unit: unit));
+        // }
       },
       child: FadeIn(
         duration: const Duration(milliseconds: 400),
