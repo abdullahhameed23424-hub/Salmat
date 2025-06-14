@@ -241,7 +241,8 @@ class _ViewAll extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 14.w),
       child: Row(
         children: <Widget>[
-          Text(title, style: titilliumBold),
+          Text(title,
+              style: titilliumBold.copyWith(color: AppColors.LOGO_PRIMARY)),
           const Spacer(),
           TextButton(
               onPressed: () {

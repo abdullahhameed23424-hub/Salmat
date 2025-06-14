@@ -24,7 +24,7 @@ class AttachmentCard extends StatelessWidget {
       delay: Duration(milliseconds: 100 * (1 + Random().nextInt(5))),
       child: InkWell(
         onTap: () {
-          EasyLauncher.url(url: file.url);
+          EasyLauncher.url(url: file.url, mode: Mode.externalApp);
         },
         borderRadius: BorderRadius.circular(20.r),
         child: Container(

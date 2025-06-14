@@ -30,9 +30,8 @@ class Data {
           ? [ ] : List<Offer>.from(
               json['offers']['data'].map((x) => Offer.fromJson(x))),
       sections: Sections.fromJson(json['sections']),
-      libraryInfo: json['library'] == null
-          ? null
-          : LibraryInfo.fromJson(json['library']),
+      libraryInfo:
+          json['home'] == null ? null : LibraryInfo.fromJson(json['home']),
       platformComments: json['platform_comments'] == null
           ? [ ] : List<Comment>.from(
               json['platform_comments'].map((x) => Comment.fromJson(x))),
@@ -59,7 +58,7 @@ class LibraryInfo {
 
   factory LibraryInfo.fromJson(Map<String, dynamic> json) {
     return LibraryInfo(
-      image: json['image'],
+      image: json['library_image1'] ?? "",
     );
   }
 }

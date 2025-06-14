@@ -104,7 +104,7 @@ class Lesson {
     // }
 
     String audio = '';
-    
+
     if (!json['video_file'].toString().startsWith('lessons/videos')) {
       audio = json["video_streams"] != null &&
               json["video_streams"].isNotEmpty &&
@@ -134,7 +134,6 @@ class Lesson {
       videoUrl: json["video_url"] ?? '',
       videoFile: json["video_file"] ?? "",
       time: json["time"],
-      coverImage: json["cover_image"],
       files: json["files"] != null
           ? List<AppFile>.from(json["files"].map((x) => AppFile.fromJson(x)))
           : [],

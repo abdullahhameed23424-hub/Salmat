@@ -11,9 +11,9 @@ class Offer {
 
   factory Offer.fromJson(Map<String, dynamic> json) {
     return Offer(
-      image: json['image'],
-      description: json['description']??"",
-      link: json['link']??"",
+      image: json['image'] ?? "",
+      description: json['description'] ?? "",
+      link: json['link'] ?? "",
     );
   }
 }

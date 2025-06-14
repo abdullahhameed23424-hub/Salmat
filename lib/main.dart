@@ -115,6 +115,8 @@ class _MyAppState extends State<MyApp> {
                 home: const SplashScreen(),
                 theme: ThemeData(
                     scaffoldBackgroundColor: AppColors.LIGHTGRAY,
+                    colorScheme: const ColorScheme.light(
+                        primary: AppColors.LOGO_PRIMARY),
                     fontFamily: "NotoKufiArabic"),
                 debugShowCheckedModeBanner: false,
                 locale: const Locale('ar'), //localizationCubit.appLocale,

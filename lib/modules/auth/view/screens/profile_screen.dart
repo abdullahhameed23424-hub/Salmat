@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
+import 'package:my_project_new/modules/lessons/view/screens/image_viewer_screen.dart';
+import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:my_project_new/widgets/image_viewer.dart';
+import 'package:my_project_new/widgets/modern_loading_dialog.dart';
+import 'package:my_project_new/widgets/pick_image_dialog.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key, required this.authCubit});
+  ProfileScreen({super.key, required this.authCubit});
   final AuthCubit authCubit;
+  final GlobalKey<ModernLoadingDialogState> loadingKey =
+      GlobalKey<ModernLoadingDialogState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0),
       body: BlocProvider.value(
-        value: authCubit,
-        child: BlocBuilder<AuthCubit, AuthState>(
+        value: authCubit, //..getProfile(),
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is EditProfileLoadingState) {
+              ModernLoadingDialog.show(context, loadingKey);
+            } else if (state is EditProfileSuccessState) {
+              if (loadingKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              authCubit.getProfile();
+            } else if (state is EditProfileErrorState) {
+              if (loadingKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              customSnackBar(context, success: 0, message: state.message);
+            }
+          },
           builder: (context, state) {
             final AuthCubit authCubit = context.read<AuthCubit>();
             if (state is GetProfileLoadingState) {
@@ -41,22 +64,58 @@ class ProfileScreen extends StatelessWidget {
                     color: AppColors.SECONDRY,
                   ),
                   margin: EdgeInsets.symmetric(horizontal: 16.w),
-                  padding: EdgeInsets.only(top: 50.h),
+                  padding: EdgeInsets.only(top: 40.h),
                   child: Column(
                     children: [
-                      Container(
-                        width: 100.w,
-                        height: 100.w,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: boxShadow,
-                          color: AppColors.WHITE,
-                        ),
-                        child: CachedImage(
-                          image: authCubit.user.image,
-                          boxFit: BoxFit.cover,
-                        ),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              pushTo(
+                                  context: context,
+                                  toPage: ImageViewer(
+                                      imageUrl: authCubit.user.image));
+                            },
+                            child: Container(
+                              width: 130.w,
+                              height: 130.w,
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  boxShadow: boxShadow,
+                                  color: AppColors.WHITE),
+                              child: CachedImage(
+                                image: authCubit.user.image,
+                                boxFit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: -3,
+                            left: -3,
+                            child: IconButton(
+                                style: IconButton.styleFrom(
+                                    backgroundColor:
+                                        AppColors.WHITE.withAlpha(120)),
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) => PickImageDialog(
+                                      onSelect: ({required imageSource}) {
+                                        authCubit.pickImage(
+                                            imageSource: imageSource);
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.edit_outlined,
+                                  color: AppColors.LOGO_PRIMARY,
+                                )),
+                          )
+                        ],
                       ),
                       SizedBox(height: 8.h),
                       Text(authCubit.user.fullName,
@@ -65,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                       SizedBox(height: 8.h),
                       Text(authCubit.user.grade?.name ?? "",
                           style: titilliumBold.copyWith(fontSize: 20.sp)),
-                      SizedBox(height: 54.h),
+                      SizedBox(height: 48.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -82,15 +141,18 @@ class ProfileScreen extends StatelessWidget {
                               value: authCubit.user.phoneNumber),
                         ],
                       ),
-                      SizedBox(height: 60.h),
+                      SizedBox(height: 45.h),
                     ],
                   ),
                 ),
-                SizedBox(height: 32.h),
+                SizedBox(height: 28.h),
                 Text(translate('other_info_title', context),
                     style: titilliumBold.copyWith(
                         decoration: TextDecoration.underline)),
                 const SizedBox(height: 10),
+                InfoCard(
+                    title: translate('username', context),
+                    value: authCubit.user.username),
                 InfoCard(
                     title: translate('father_name_label', context),
                     value: authCubit.user.fatherName),

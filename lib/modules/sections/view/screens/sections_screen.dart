@@ -51,12 +51,9 @@ class SectionsScreen extends StatelessWidget {
               },
               child: CustomScrollView(
                 slivers: [
-                  SliverPadding(
-                      padding: EdgeInsets.symmetric(vertical: 18.h),
-                      sliver: SliverToBoxAdapter(
-                        child: Text(sectionsCubit.headerText,
-                            style: titilliumSemiBold),
-                      )),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 20.h),
+                  ),
                   SliverList.separated(
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 12.h),

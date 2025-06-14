@@ -122,15 +122,4 @@ final class ChangePasswordErrorState extends AuthState {
 }
 
 //
-final class UpdateEmailLoadingState extends AuthState {}
-
-final class UpdateEmailSuccessState extends AuthState {
-  final String email;
-
-  UpdateEmailSuccessState({required this.email});
-}
-
-final class UpdateEmailErrorState extends AuthState {
-  UpdateEmailErrorState({required this.message});
-  final String message;
-}
+ 

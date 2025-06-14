@@ -1,15 +1,19 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
+import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'dart:async';
-
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:my_project_new/modules/auth/models/profile_response.dart';
 import 'package:my_project_new/modules/auth/models/user.dart';
-
-import '../../../apis/urls.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -117,5 +121,67 @@ class AuthCubit extends Cubit<AuthState> {
         emit(ChangePasswordErrorState(message: unknownError()));
       }
     }
+  }
+
+  Future<void> editImage() async {
+    emit(EditProfileLoadingState());
+
+    try {
+      final FormData formData = FormData.fromMap({
+        "_method": "PUT",
+        "image": await MultipartFile.fromFile(userImageFile!.path)
+      });
+
+      await Network.postData(url: "${Urls.profile}/update", data: formData);
+      userImageFile = null;
+      emit(EditProfileSuccessState());
+    } on DioException catch (error) {
+      emit(EditProfileErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(EditProfileErrorState(message: unknownError()));
+    }
+  }
+
+  File? userImageFile;
+  Future<void> pickImage({required ImageSource imageSource}) async {
+    final ImagePicker picker = ImagePicker();
+
+    final pickedFile = await picker.pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      userImageFile = await compressImage(File(pickedFile.path));
+
+      editImage();
+    }
+  }
+
+  Future<File?> compressImage(File file) async {
+    int originalSize = file.lengthSync();
+    print(
+        "Original image size: ${(originalSize / 1024 / 1024).toStringAsFixed(2)} MB");
+
+    final dir = await getTemporaryDirectory();
+    final targetPath =
+        path.join(dir.path, 'compressed_${path.basename(file.path)}');
+
+    XFile? result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 80,
+      minWidth: 1024,
+      minHeight: 1024,
+    );
+
+    if (result != null) {
+      File compressedFile = File(result.path);
+
+      int compressedSize = compressedFile.lengthSync();
+      print(
+          "Compressed image size: ${(compressedSize / 1024 / 1024).toStringAsFixed(2)} MB");
+
+      return compressedFile;
+    }
+
+    return null;
   }
 }
