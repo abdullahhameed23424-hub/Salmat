@@ -49,9 +49,7 @@ class VideoCubit extends Cubit<VideoState> {
     controller = VideoPlayerController.networkUrl(
       Uri.parse(streamsList[selected].link),
       videoPlayerOptions: VideoPlayerOptions(
-        mixWithOthers: true,
-        allowBackgroundPlayback: true,
-      ),
+          mixWithOthers: true, allowBackgroundPlayback: true),
     );
 
     initStream = controller!.initialize();

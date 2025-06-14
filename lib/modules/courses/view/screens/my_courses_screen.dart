@@ -23,7 +23,7 @@ class MyCoursesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBarBorderRadius: BorderRadius.zero,
-      title: translate('my_courses', context),
+      title: translate('my_subjects', context),
       body: BlocProvider(
         create: (context) => CoursesCubit()..getMycourses(),
         child: BlocBuilder<CoursesCubit, CoursesState>(
@@ -116,7 +116,7 @@ class _CoursesHeader extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Text(
-            "${translate('my_courses', context)} $numOfCourses",
+            "${translate('my_subjects', context)} $numOfCourses",
             style: titilliumSemiBold,
           ),
           const Spacer(),

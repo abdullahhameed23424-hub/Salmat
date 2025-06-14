@@ -9,7 +9,6 @@ import 'package:my_project_new/apis/urls.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/models/lessons_response.dart';
 import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
-
 part 'lessons_state.dart';
 
 class LessonsCubit extends Cubit<LessonsState> {
@@ -17,7 +16,7 @@ class LessonsCubit extends Cubit<LessonsState> {
 
   static const List<String> lessonButtonsTitles = [
     "images",
-    "attachments",
+    "attachments" 
   ];
   static int _selectedButton = 0;
   static int get selectedButton => _selectedButton;
@@ -40,9 +39,10 @@ class LessonsCubit extends Cubit<LessonsState> {
       emit(GetLessonsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      emit(GetLessonsErrorState(message: unknownError()));
     }
+    // catch (error) {
+    //   emit(GetLessonsErrorState(message: unknownError()));
+    // }
   }
 
   late Lesson lessonDetails;

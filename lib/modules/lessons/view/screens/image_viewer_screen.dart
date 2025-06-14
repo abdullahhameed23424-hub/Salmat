@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_project_new/apis/urls.dart';
 
 class ImageViewerScreen extends StatelessWidget {
   final String imageUrl;
@@ -20,7 +21,7 @@ class ImageViewerScreen extends StatelessWidget {
           minScale: 1,
           maxScale: 5,
           child: Image.network(
-            imageUrl,
+            '${Urls.storageUrl}$imageUrl',
             loadingBuilder: (context, child, progress) {
               if (progress == null) return child;
               return const Center(child: CircularProgressIndicator());

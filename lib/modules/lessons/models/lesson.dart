@@ -17,7 +17,6 @@ class Lesson {
   final String videoUrl;
   final String videoFile;
   final String time;
-  final String coverImage;
   final bool isOpen;
   final List<AppFile> files;
   final List<String> images;
@@ -43,7 +42,6 @@ class Lesson {
     required this.videoUrl,
     required this.videoFile,
     required this.time,
-    required this.coverImage,
     required this.isOpen,
     required this.files,
     required this.nextLessonId,
@@ -97,7 +95,7 @@ class Lesson {
     }
 
     String audio = '';
-    
+
     if (!json['video_file'].toString().startsWith('lessons/videos')) {
       audio = json["video_streams"] != null &&
               json["video_streams"].isNotEmpty &&
@@ -127,7 +125,6 @@ class Lesson {
       videoUrl: json["video_url"] ?? '',
       videoFile: json["video_file"] ?? "",
       time: json["time"],
-      coverImage: json["cover_image"],
       files: json["files"] != null
           ? List<AppFile>.from(json["files"].map((x) => AppFile.fromJson(x)))
           : [],
