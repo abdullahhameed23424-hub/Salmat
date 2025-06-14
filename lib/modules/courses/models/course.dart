@@ -98,7 +98,7 @@ class Course {
       introVideo: json['introVideo'] ?? "",
       isFree: boolConverter(json['is_free']),
       price: stringOrZero(json['price']),
-      totalPrice: stringOrZero(json['totalPrice']),
+      totalPrice: stringOrZero(json['price']),
       discount: stringOrZero(json['discount']),
       description: json['description'] ?? "",
       lessonsCount: json["lessons_count"] ?? 0,

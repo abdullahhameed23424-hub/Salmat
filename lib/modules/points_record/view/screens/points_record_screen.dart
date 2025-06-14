@@ -110,6 +110,8 @@ class PointsRecordScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+                if(pointsRecordCubit
+                    .pointsResponse.data.pointsList.isNotEmpty)
                 SliverList.separated(
                   itemCount:
                       pointsRecordCubit.pointsResponse.data.totlaPoints.length,

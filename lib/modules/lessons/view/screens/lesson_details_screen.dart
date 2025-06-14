@@ -143,8 +143,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             }
             final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed =
-                ((lessonsCubit.lessonDetails.exam!.result.pass == true) ||
-                        (lessonsCubit.lessonDetails.exam!.studentExam.skipped)
+                ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
+                        (lessonsCubit.lessonDetails.exam?.studentExam.skipped!=null&& lessonsCubit.lessonDetails.exam!.studentExam.skipped)
                     ? true
                     : false);
             return ListView(

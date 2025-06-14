@@ -41,6 +41,7 @@ class LessonsCubit extends Cubit<LessonsState> {
     } on DioException catch (error) {
       emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      print("show the error $error");
       emit(GetLessonsErrorState(message: unknownError()));
     }
   }

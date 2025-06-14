@@ -16,10 +16,10 @@ class Lesson {
   final String name;
   final bool isFree;
   final String description;
-  final String videoUrl;
-  final String videoFile;
+  final String? videoUrl;
+  final String? videoFile;
   final String time;
-  final String coverImage;
+  final String? coverImage;
   final bool isOpen;
   final List<AppFile> files;
   final List<String> images;
@@ -42,10 +42,10 @@ class Lesson {
     required this.name,
     required this.isFree,
     required this.description,
-    required this.videoUrl,
-    required this.videoFile,
+     this.videoUrl,
+     this.videoFile,
     required this.time,
-    required this.coverImage,
+     this.coverImage,
     required this.isOpen,
     required this.files,
     required this.nextLessonId,

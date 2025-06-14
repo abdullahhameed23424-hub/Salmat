@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class Urls {
-  static const String domain = "https://slamat-back.icrcompany.net";
+  static const String domain = "https://back.salamatedu.com";
   // static const String domain = "https://m-back.muahep.com.sy";
   static const String storageUrl = "$domain/storage/";
   static const String baseUrl = "$domain/api/v1/";
