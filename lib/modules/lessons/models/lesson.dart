@@ -42,10 +42,10 @@ class Lesson {
     required this.name,
     required this.isFree,
     required this.description,
-     this.videoUrl,
-     this.videoFile,
+    this.videoUrl,
+    this.videoFile,
     required this.time,
-     this.coverImage,
+    this.coverImage,
     required this.isOpen,
     required this.files,
     required this.nextLessonId,
@@ -67,41 +67,15 @@ class Lesson {
 
     int index = -1;
     List<MyVideo> streems = [];
-    json['videos'].forEach((video){
+    json['videos'].forEach((video) {
       index++;
-      streems.add(MyVideo(link: '${Urls.storageUrl}${video['url']}', value: index, quality: '${video['qulaity']}p'));
-
+      streems.add(MyVideo(
+          link: '${Urls.storageUrl}${video['url']}',
+          value: index,
+          quality: '${video['qulaity']}'));
     });
 
-    // if (json["videos"] != null &&
-    //     json["video_streams"].isNotEmpty &&
-    //     json["video_streams"]["streams"] != null &&
-    //     json["video_streams"]["streams"].isNotEmpty) {
-    //   streems = List<MyVideo>.from(json["video_streams"]["streams"]
-    //       .map((x) {
-    //         index++;
-    //         if (x["resolution"].startsWith("audio")) {
-    //           return null;
-    //         } else if (x["resolution"].startsWith("360") && x['itag'] == 134) {
-    //           return MyVideo(
-    //               link: x["url"], value: index, quality: x["resolution"]);
-    //         } else {
-    //           return null;
-    //         }
-    //       })
-    //       .where((element) => element != null)
-    //       .toList());
-    //
-    //   if (streems.isEmpty) {
-    //     for (var x in json["video_streams"]["streams"]) {
-    //       if (x["type"].startsWith("video")) {
-    //         streems.add(MyVideo(
-    //             link: x["url"], value: index, quality: x["resolution"]));
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
+ 
 
     String audio = '';
 

@@ -5,6 +5,7 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
+import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/counters_squres.dart';
@@ -19,8 +20,9 @@ import 'package:my_project_new/widgets/custom_button.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
 class TestScreen extends StatelessWidget {
-  const TestScreen({super.key, required this.examId});
+  const TestScreen({super.key, required this.examId, required this.lesson});
   final int examId;
+  final Lesson lesson;
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -44,9 +46,9 @@ class TestScreen extends StatelessWidget {
               LessonDetailsScreen.refrshLessonScreen = true;
               ResultDialog.show(
                 context,
+                lesson: lesson,
                 result: state.result,
-                onTryAgainInFailed: () {
-                  Navigator.pop(context);
+                getTest: () {
                   testCubit.getTest(examId);
                 },
               );

@@ -20,7 +20,9 @@ class QuestionIcon extends StatelessWidget {
   final Question question;
   @override
   Widget build(BuildContext context) {
-    if (!examCubit.isSolving && (examCubit.test.result.pass != null)) {
+    if (!examCubit.isSolving &&
+        ((examCubit.test.result.pass == true) ||
+            (examCubit.test.studentExam.skipped))) {
       return _QuestionMarkButton(
         examCubit: examCubit,
         question: question,

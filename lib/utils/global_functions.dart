@@ -61,6 +61,11 @@ Future<dynamic> pushTo(
       .push(MaterialPageRoute(builder: (context) => toPage));
 }
 
+Future<dynamic> pushNamedTo(
+    {required BuildContext context, required String toPage , Object? arguments}) async {
+  return await Navigator.of(context).pushNamed(toPage, arguments: arguments);
+}
+
 void pushAndRemoveUntiTo(BuildContext context, {required Widget toPage}) {
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (context) => toPage),

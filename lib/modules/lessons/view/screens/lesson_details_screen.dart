@@ -12,8 +12,6 @@ import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.
 import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
@@ -27,8 +25,6 @@ import 'package:my_project_new/widgets/modern_loading_dialog.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 import 'package:no_screenshot/no_screenshot.dart';
-
-import '../widgets/lesson_video.dart';
 
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen({super.key, required this.lesson});
@@ -49,7 +45,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
   final _noScreenshot = NoScreenshot.instance;
 
-
   @override
   void initState() {
     controller = TabController(
@@ -63,7 +58,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     try {
       bool result = await _noScreenshot.screenshotOff();
       print('Screenshot Off: $result');
-    }catch(error){
+    } catch (error) {
       print('Screenshot error $error');
     }
   }
@@ -118,8 +113,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
               pushTo(
                   context: context,
-                  toPage:
-                      TestScreen(examId: lessonsCubit.lessonDetails.exam!.id));
+                  toPage: TestScreen(
+                    examId: lessonsCubit.lessonDetails.exam!.id,
+                    lesson: lessonsCubit.lessonDetails,
+                  ));
             } else if (state is SkipTestErrorState) {
               if (_loadingDialogKey.currentState != null) {
                 Navigator.pop(context);
@@ -144,13 +141,16 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed =
                 ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
-                        (lessonsCubit.lessonDetails.exam?.studentExam.skipped!=null&& lessonsCubit.lessonDetails.exam!.studentExam.skipped)
+                        (lessonsCubit.lessonDetails.exam?.studentExam.skipped !=
+                                null &&
+                            lessonsCubit
+                                .lessonDetails.exam!.studentExam.skipped)
                     ? true
                     : false);
             return ListView(
               clipBehavior: Clip.none,
               children: <Widget>[
-                LessonVideo(key: online,lesson: lessonsCubit.lessonDetails),
+                LessonVideo(key: online, lesson: lessonsCubit.lessonDetails),
                 const ServerOptions(),
                 _LessonHeader(lessonsCubit.lessonDetails),
                 Column(
@@ -173,6 +173,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                             await pushTo(
                                 context: context,
                                 toPage: TestScreen(
+                                    lesson: lessonsCubit.lessonDetails,
                                     examId:
                                         lessonsCubit.lessonDetails.examId!));
 
@@ -469,7 +470,7 @@ class _LessonHeader extends StatelessWidget {
                 style: titilliumBold.copyWith(
                     color: AppColors.WHITE, fontSize: 14.sp),
               ),
-             Spacer(),
+              Spacer(),
               Row(
                 children: [
                   Text(

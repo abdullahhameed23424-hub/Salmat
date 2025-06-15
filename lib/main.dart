@@ -10,9 +10,11 @@ import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/helper/cach_helper.dart';
+import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:my_project_new/modules/Theme/cubit/theme_cubit.dart';
 import 'package:my_project_new/modules/startup/splash_screen.dart';
+import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/screens/notifications_screen.dart';
 import 'package:my_project_new/utils/device_type.dart';
 import 'package:my_project_new/localization/cubit/localization_cubit.dart';
@@ -96,7 +98,6 @@ class _MyAppState extends State<MyApp> {
           designSize: getDeviceSize(context),
           minTextAdapt: true,
           splitScreenMode: true,
-
           builder: (context, child) {
             List<Locale> locals = [];
             for (LanguageModel language in languages) {
@@ -111,7 +112,7 @@ class _MyAppState extends State<MyApp> {
 
               return MaterialApp(
                 navigatorKey: navigatorKey,
-
+              
                 home: const SplashScreen(),
                 theme: ThemeData(
                     scaffoldBackgroundColor: AppColors.LIGHTGRAY,
