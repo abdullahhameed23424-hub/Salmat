@@ -1,4 +1,3 @@
-import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,7 @@ import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/try_again.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactWithAdminDialog extends StatelessWidget {
   const ContactWithAdminDialog({
@@ -46,9 +46,9 @@ class ContactWithAdminDialog extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      EasyLauncher.url(
-                          url:
-                              "https://wa.me/${cubit.infoResponse.adminContact.phone}");
+                      launchUrl(
+                          Uri.parse(
+                              "https://wa.me/${cubit.infoResponse.adminContact.phone}"),mode: LaunchMode.externalApplication);
                     },
                     child: Text(
                       translate("tap_to_contact", context),

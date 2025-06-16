@@ -46,7 +46,7 @@ class MoreInfoScreen extends StatelessWidget {
     if (AppSharedPreferences.hasToken)
       {
         "icon": Icons.person_outline_outlined,
-        "title": "my_profile",
+        "title": "profile",
         "onTap": (BuildContext context) {
           pushTo(
               context: context,
@@ -63,6 +63,8 @@ class MoreInfoScreen extends StatelessWidget {
           pushTo(context: context, toPage: const MyCoursesScreen());
         }
       },
+
+
     if (AppSharedPreferences.hasToken)
       {
         "image": Images.pointsIcon,
