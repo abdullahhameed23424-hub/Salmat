@@ -2,6 +2,7 @@
 
 class Urls {
   static const String domain = "https://slamat-back.icrcompany.net";
+  // static const String domain = "https://back.salamatedu.com";          
   static const String storageUrl = "$domain/storage/";
   static const String baseUrl = "$domain/api/v1/";
   static const String login = "login";

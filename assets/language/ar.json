@@ -48,7 +48,7 @@
   "question_explanation": "شرح السؤال",
   "cannot_open_unit": "صديقي لا يمكنك فتح هذه الوحدة لأنك لم تقم بإنهاء الوحدة السابقة..",
   "completed_tests": "اختباراتي المنجزة",
-  "my_profile":"ملفي الشخصي",
+  "profile":"ملفي الشخصي",
   "my_subjects":"موادي",
   "use_backup_server": "إن لم يعمل السيرفر الأساسي، قم بتشغيل السيرفر الاحتياطي",
   "attachments": "مرفقات",

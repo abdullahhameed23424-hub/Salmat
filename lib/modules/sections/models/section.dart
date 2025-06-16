@@ -14,7 +14,7 @@ class Section {
 
   factory Section.fromJson(Map<String, dynamic> json) {
     return Section(
-        smallImage: json['small_image'],
+        smallImage: json['small_image'] ?? "",
         id: json['id'],
         name: json['name'] ?? "",
         image: json['image'] ?? "",

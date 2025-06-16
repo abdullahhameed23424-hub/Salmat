@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/utils/bool_converter.dart';
 
@@ -11,19 +12,22 @@ class Unit {
   final int lessonsCount;
   final Course? course;
   final bool isLocked;
+  final String lockReason;
   Unit({
     required this.id,
-    required this.course,
     required this.parentId,
-    required this.isLocked,
     required this.name,
     required this.image,
     required this.description,
     required this.totalLessonsTime,
     required this.lessonsCount,
+    required this.course,
+    required this.isLocked,
+    required this.lockReason,
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) => Unit(
+        lockReason: json['lock_reason'] ?? "الوحدة مقفلة",
         isLocked: boolConverter(json['is_locked']),
         id: json["id"],
         course: json["parent_section"] != null

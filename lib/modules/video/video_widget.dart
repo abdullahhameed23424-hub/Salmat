@@ -2,6 +2,7 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:my_project_new/modules/video/custom_controls.dart';
 import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
+import 'package:video_player/video_player.dart';
 
 // class VideoWidget extends StatelessWidget {
 //   final PodPlayerController controller;
@@ -21,6 +22,7 @@ import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 //     );
 //   }
 // }
+
 final UniqueKey key = UniqueKey();
 
 class VideoWidget2 extends StatefulWidget {
@@ -37,15 +39,13 @@ class _VideoWidget2State extends State<VideoWidget2> {
   @override
   void initState() {
     chewieController = ChewieController(
-      videoPlayerController: widget.videoCubit.controller!,
-      aspectRatio: 16 / 9,
-      customControls: CustomControls(
-        videoCubit: widget.videoCubit,
-      ),
-      autoPlay: false,
-    );
+        videoPlayerController: widget.videoCubit.controller!,
+        aspectRatio: 16 / 9,
+        customControls: CustomControls(
+          videoCubit: widget.videoCubit,
+        ),
+        autoPlay: false);
 
-    // TODO: implement initState
     super.initState();
   }
 

@@ -5,7 +5,6 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/courses/models/course.dart';
 import 'package:my_project_new/utils/global_functions.dart';
 import 'package:my_project_new/modules/courses/view/screens/course_details_screen.dart';

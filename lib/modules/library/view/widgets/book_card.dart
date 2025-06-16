@@ -22,6 +22,8 @@ class BookCard extends StatelessWidget {
       onTap: () {
         EasyLauncher.url(
             url: "${Urls.storageUrl}${book.file}", mode: Mode.externalApp);
+        EasyLauncher.url(
+            url: "${Urls.storageUrl}${book.file}", mode: Mode.appNoneBrowser);
       },
       child: LayoutBuilder(builder: (context, constrains) {
         return ZoomIn(

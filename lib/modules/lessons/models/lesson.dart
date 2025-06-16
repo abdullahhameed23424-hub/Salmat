@@ -56,18 +56,10 @@ class Lesson {
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
-    // final bool? isOpen =
-    //     json['is_open'] != null ? boolConverter(json["is_open"]) : null;
-
-    // final bool isFree = boolConverter(json["is_free"]);
+     
     bool tempIsOpen =
         boolConverter(json['is_open']) || boolConverter(json['is_free']);
-    // if (isOpen == null) {
-    //   tempIsOpen = isFree;
-    // } else {
-    //   tempIsOpen = isOpen;
-    // }
-
+  
     int index = -1;
     List<MyVideo> streems = [];
     json['videos'].forEach((video) {

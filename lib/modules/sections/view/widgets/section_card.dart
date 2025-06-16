@@ -51,7 +51,7 @@ class SectionCard extends StatelessWidget {
                 child: CachedImage(
                     image: section.smallImage,
                     boxFit: BoxFit.cover,
-                    borderRadius: BorderRadius.circular(5))),
+                    borderRadius: BorderRadius.circular(15))),
           ],
         ),
       ),

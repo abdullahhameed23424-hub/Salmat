@@ -9,7 +9,6 @@ import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
 import 'package:my_project_new/modules/auth/view/screens/change_password_screen.dart';
-import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
 import 'package:my_project_new/modules/auth/view/widgets/delete_account_dialog.dart';
 import 'package:my_project_new/modules/startup/get_started_screen.dart';
 import 'package:my_project_new/utils/global_functions.dart';

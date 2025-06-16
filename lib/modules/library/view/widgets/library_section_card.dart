@@ -45,7 +45,7 @@ class LibrarySectionCard extends StatelessWidget {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    image: librarySection.image,
+                    image: librarySection.image??'',
                   ),
                 ),
               ),

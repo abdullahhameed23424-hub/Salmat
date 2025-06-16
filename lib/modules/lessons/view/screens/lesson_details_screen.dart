@@ -476,7 +476,7 @@ class _LessonHeader extends StatelessWidget {
                 style: titilliumBold.copyWith(
                     color: AppColors.WHITE, fontSize: 14.sp),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
                   Text(

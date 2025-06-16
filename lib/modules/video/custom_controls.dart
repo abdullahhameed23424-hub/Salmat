@@ -221,7 +221,7 @@ class _MaterialControlsState extends State<CustomControls>
   Widget _buildOptionsButton() {
     final options = <OptionItem>[
       OptionItem(
-        onTap: (context) {
+        onTap: () {
           Navigator.pop(context);
           _onSpeedButtonTap();
         },
@@ -234,7 +234,7 @@ class _MaterialControlsState extends State<CustomControls>
           widget.videoCubit.streamsList.length > 1)
         // if (false)
         OptionItem(
-            onTap: (context) async {
+            onTap: () async {
               Navigator.pop(context);
               _onQualityButtonTap();
             },

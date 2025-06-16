@@ -1,3 +1,4 @@
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
@@ -5,6 +6,7 @@ class CacheHelper {
 
   static Future<void> init() async {
     sharedPreferences = await SharedPreferences.getInstance();
+
   }
 
   static Future<bool> saveData({required String key, required value}) async {
@@ -22,6 +24,15 @@ class CacheHelper {
   static dynamic getData({required String key}) {
     return sharedPreferences.get(key);
   }
+
+  static dynamic getIntData({required String key}) {
+      if(sharedPreferences.containsKey(key) == false){
+        return -1;
+      }
+      return sharedPreferences.getInt(key) ?? -1;
+
+  }
+
 
   static bool contains(String key) {
     return sharedPreferences.containsKey(key);

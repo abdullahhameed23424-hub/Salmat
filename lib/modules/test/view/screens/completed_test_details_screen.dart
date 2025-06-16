@@ -5,7 +5,6 @@ import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
 import 'package:my_project_new/modules/test/view/widgets/final_result_card.dart';
-import 'package:my_project_new/modules/test/view/widgets/question_card.dart';
 import 'package:my_project_new/modules/test/view/widgets/read_only_question_card.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/top_banner.dart';

@@ -10,11 +10,9 @@ import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/helper/cach_helper.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:my_project_new/modules/Theme/cubit/theme_cubit.dart';
 import 'package:my_project_new/modules/startup/splash_screen.dart';
-import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
 import 'package:my_project_new/screens/notifications_screen.dart';
 import 'package:my_project_new/utils/device_type.dart';
 import 'package:my_project_new/localization/cubit/localization_cubit.dart';
@@ -24,6 +22,7 @@ import 'package:my_project_new/localization/language_model.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await CacheHelper.init();
   await Network.init();
 

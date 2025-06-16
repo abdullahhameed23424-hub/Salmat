@@ -45,9 +45,14 @@ class VideoCubit extends Cubit<VideoState> {
     this.audioStreams = audioStreams;
   }
 
-  Future<void> initFromNetwork2(int selected, Duration duration) async {
+  Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
+
+    selectedQuality = 0;
+    if (selected != -1 && selected < streamsList.length) {
+      selectedQuality = selected;
+    }
     controller = VideoPlayerController.networkUrl(
-      Uri.parse(streamsList[selected].link),
+      Uri.parse(streamsList[selectedQuality].link),
       videoPlayerOptions: VideoPlayerOptions(
           mixWithOthers: true, allowBackgroundPlayback: true),
     );
