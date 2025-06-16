@@ -24,6 +24,7 @@ import 'package:my_project_new/localization/language_model.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await CacheHelper.init();
   await Network.init();
 

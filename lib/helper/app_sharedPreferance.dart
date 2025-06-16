@@ -34,10 +34,9 @@ class AppSharedPreferences {
       CacheHelper.saveData(key: "quality", value: value);
 
   static int get getQuality =>
-      CacheHelper.getData(
+      CacheHelper.getIntData(
         key: "quality",
-      ) ??
-      -1;
+      );
 
   static void removeQuality() => CacheHelper.removeData(key: "quality");
 
