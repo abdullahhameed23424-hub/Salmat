@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
+import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
 import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
@@ -69,6 +70,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             CustomButton(
               label: translate('login_as_guest', context),
               onPressed: () {
+                AppSharedPreferences.saveGuest("true");
                 pushTo(context: context, toPage: const BottomNavScreen());
               },
               buttonStyle: titilliumBold,

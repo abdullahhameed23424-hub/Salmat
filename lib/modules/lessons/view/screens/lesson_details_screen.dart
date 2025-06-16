@@ -141,10 +141,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
             final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
             final bool isPassed =
                 ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
-                        (lessonsCubit.lessonDetails.exam?.studentExam.skipped !=
+                        (lessonsCubit
+                                    .lessonDetails.exam?.studentExam?.skipped !=
                                 null &&
-                            lessonsCubit
-                                .lessonDetails.exam!.studentExam.skipped)
+                            (lessonsCubit
+                                    .lessonDetails.exam!.studentExam?.skipped ??
+                                false))
                     ? true
                     : false);
             return ListView(
@@ -188,10 +190,13 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                           !lessonsCubit.lessonDetails.exam!.isSolving &&
                           lessonsCubit.lessonDetails.exam!.result.pass ==
                               null &&
-                          lessonsCubit.lessonDetails.exam!.studentExam
-                                  .attemptCount >
+                          (lessonsCubit.lessonDetails.exam!.studentExam
+                                      ?.attemptCount ??
+                                  0) >
                               0 &&
-                          !lessonsCubit.lessonDetails.exam!.studentExam.skipped)
+                          !(lessonsCubit
+                                  .lessonDetails.exam!.studentExam?.skipped ??
+                              false)) // يجب الاشتراك بالكورس و يوجد اختبار  وليس قيد الحل  ولم يتم النجاح بالاختبار وعدد المحاولات أكثر من مرة ولم يتم تخطيه من قبل
                         CustomButton(
                             backgroundColor: AppColors.PURPLE_LIGHT,
                             label: translate(
@@ -211,7 +216,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                               }
                             }),
                     ],
-                    NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
+                    if (lessonsCubit.lessonDetails.subscribed)
+                      NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
                   ],
                 ),
                 SizedBox(height: 40.h)

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:my_project_new/modules/video/custom_controls.dart';
 import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 
-
 // class VideoWidget extends StatelessWidget {
 //   final PodPlayerController controller;
 //   const VideoWidget({Key? key, required this.controller}) : super(key: key);
@@ -42,15 +41,9 @@ class _VideoWidget2State extends State<VideoWidget2> {
       aspectRatio: 16 / 9,
       customControls: CustomControls(
         videoCubit: widget.videoCubit,
-
       ),
-
       autoPlay: false,
-
     );
-
-
-
 
     // TODO: implement initState
     super.initState();
@@ -61,9 +54,6 @@ class _VideoWidget2State extends State<VideoWidget2> {
     return Chewie(
       key: key,
       controller: chewieController,
-
-
-
     );
   }
 }

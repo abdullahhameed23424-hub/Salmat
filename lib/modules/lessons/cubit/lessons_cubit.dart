@@ -14,10 +14,7 @@ part 'lessons_state.dart';
 class LessonsCubit extends Cubit<LessonsState> {
   LessonsCubit() : super(LessonsInitial());
 
-  static const List<String> lessonButtonsTitles = [
-    "images",
-    "attachments"
-  ];
+  static const List<String> lessonButtonsTitles = ["images", "attachments"];
   static int _selectedButton = 0;
   static int get selectedButton => _selectedButton;
   static void changeSelectedButton({required int index}) {
@@ -99,7 +96,7 @@ class LessonsCubit extends Cubit<LessonsState> {
       } else if ((lesson.nextUnitId != null) &&
           ((lesson.exam != null &&
                   (lesson.exam!.result.pass == true ||
-                      lesson.exam!.studentExam.skipped)) ||
+                      (lesson.exam!.studentExam?.skipped ?? false))) ||
               lesson.exam == null)) {
         _buttonStatus = NextLessonButtonStatus.OPEN_NEXT_UNIT;
       } else {
@@ -110,7 +107,7 @@ class LessonsCubit extends Cubit<LessonsState> {
       _buttonStatus = NextLessonButtonStatus.MOVE_ONLY;
     } else if (lesson.exam != null &&
         lesson.exam!.result.pass == null &&
-        !lesson.exam!.studentExam.skipped) {
+        !(lesson.exam!.studentExam?.skipped ?? false)) {
       _buttonStatus = NextLessonButtonStatus.DO_TEST_FIRST;
     } else {
       _buttonStatus = NextLessonButtonStatus.OPEN_AND_MOVE;

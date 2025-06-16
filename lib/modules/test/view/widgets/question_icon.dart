@@ -22,11 +22,9 @@ class QuestionIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!examCubit.isSolving &&
         ((examCubit.test.result.pass == true) ||
-            (examCubit.test.studentExam.skipped))) {
-      return _QuestionMarkButton(
-        examCubit: examCubit,
-        question: question,
-      );
+            ((examCubit.test.result.pass == null) &&
+                (examCubit.test.studentExam?.skipped ?? false)))) {
+      return _QuestionMarkButton(examCubit: examCubit, question: question);
     }
 
     return _OnlyIcon();

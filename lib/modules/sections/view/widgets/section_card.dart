@@ -42,29 +42,14 @@ class SectionCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5)),
                 child: Image.asset(Images.classIcon, width: 30.w)),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    section.name,
+                child: Text(section.name,
                     style: titilliumBold.copyWith(fontSize: 16.sp),
                     maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    section.description,
-                    style: titilliumRegular.copyWith(fontSize: 14.sp),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
+                    overflow: TextOverflow.ellipsis)),
             AspectRatio(
                 aspectRatio: 1,
                 child: CachedImage(
-                    image: section.image,
+                    image: section.smallImage,
                     boxFit: BoxFit.cover,
                     borderRadius: BorderRadius.circular(5))),
           ],

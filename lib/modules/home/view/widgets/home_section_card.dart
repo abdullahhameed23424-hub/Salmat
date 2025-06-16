@@ -44,7 +44,7 @@ class HomeSectionCard extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: CachedImage(
-                        image: section.image,
+                        image: section.smallImage,
                         height: 100.h,
                       ),
                     ),

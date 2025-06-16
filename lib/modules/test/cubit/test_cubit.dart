@@ -35,11 +35,11 @@ class TestCubit extends Cubit<TestState> {
       if (test.result.pass == null &&
           test.isSubscribed &&
           !test.isSolving &&
-          !test.studentExam.skipped) {
+          !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);
       }
-      
-      if ((test.result.pass == null && test.studentExam.skipped) ||
+
+      if ((test.result.pass == null && (test.studentExam?.skipped ?? false)) ||
           (test.result.pass == true)) {
         testTime = test.minutes * 60;
       } else if (test.isSolving) {
