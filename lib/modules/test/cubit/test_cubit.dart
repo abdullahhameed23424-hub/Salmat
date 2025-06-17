@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:my_project_new/apis/exception_handler.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/apis/urls.dart';
+import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/modules/test/models/completed_tests_response.dart';
 import 'package:my_project_new/modules/test/models/result.dart';
 import 'package:my_project_new/modules/test/models/test.dart';
@@ -32,8 +33,9 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (test.result.pass == null &&
-          test.isSubscribed &&
+      if (!AppSharedPreferences.isGuest &&
+          test.result.pass == null &&
+          // test.isSubscribed &&
           !test.isSolving &&
           !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);

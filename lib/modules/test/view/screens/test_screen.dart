@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
+import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/lessons/models/lesson.dart';
 import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
@@ -48,8 +49,8 @@ class TestScreen extends StatelessWidget {
                 context,
                 lesson: lesson,
                 result: state.result,
-                withSkipButton:
-                    (state.result.pass != true && testCubit.test.isSubscribed),
+                withSkipButton: (state.result.pass != true &&
+                    !AppSharedPreferences.isGuest),
                 getTest: () {
                   testCubit.getTest(examId);
                 },

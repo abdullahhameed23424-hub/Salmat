@@ -278,41 +278,35 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                             examId: lessonsCubit
                                                 .lessonDetails.examId!));
 
-                                    if (LessonDetailsScreen
-                                        .refrshLessonScreen) {
-                                      lessonsCubit.getLessonDetails(
-                                          lessonId:
-                                              lessonsCubit.lessonDetails.id,
-                                          unitId: lessonsCubit
-                                              .lessonDetails.unitId!);
-                                    }
-                                  }),
-                              SizedBox(height: 15.h),
-                              if (thereIsTest &&
-                                  !lessonsCubit.lessonDetails.exam!.isSolving &&
-                                  lessonsCubit
-                                          .lessonDetails.exam!.result.pass ==
-                                      null &&
-                                  (lessonsCubit.lessonDetails.exam!.studentExam
-                                              ?.attemptCount ??
-                                          0) >
-                                      0 &&
-                                  !(lessonsCubit.lessonDetails.exam!.studentExam
-                                          ?.skipped ??
-                                      false)) // يجب الاشتراك بالكورس و يوجد اختبار  وليس قيد الحل  ولم يتم النجاح بالاختبار وعدد المحاولات أكثر من مرة ولم يتم تخطيه من قبل
-                                CustomButton(
-                                    backgroundColor: AppColors.PURPLE_LIGHT,
-                                    label: translate(
-                                        'skip_test_and_show_answers', context),
-                                    onPressed: () async {
-                                      final bool? shouldSkip =
-                                          await ConfirmationDialog.show(
-                                              context: context,
-                                              title: translate(
-                                                  'skip_exam', context),
-                                              message: translate(
-                                                  'skip_exam_message',
-                                                  context));
+                            if (LessonDetailsScreen.refrshLessonScreen) {
+                              lessonsCubit.getLessonDetails(
+                                  lessonId: lessonsCubit.lessonDetails.id,
+                                  unitId: lessonsCubit.lessonDetails.unitId!);
+                            }
+                          }),
+                      SizedBox(height: 15.h),
+                      if (thereIsTest &&
+                          !lessonsCubit.lessonDetails.exam!.isSolving &&
+                          lessonsCubit.lessonDetails.exam!.result.pass !=
+                              true &&
+                          (lessonsCubit.lessonDetails.exam!.studentExam
+                                      ?.attemptCount ??
+                                  0) >
+                              0 &&
+                          !(lessonsCubit
+                                  .lessonDetails.exam!.studentExam?.skipped ??
+                              false)) // يجب الاشتراك بالكورس و يوجد اختبار  وليس قيد الحل  ولم يتم النجاح بالاختبار وعدد المحاولات أكثر من مرة ولم يتم تخطيه من قبل
+                        CustomButton(
+                            backgroundColor: AppColors.PURPLE_LIGHT,
+                            label: translate(
+                                'skip_test_and_show_answers', context),
+                            onPressed: () async {
+                              final bool? shouldSkip =
+                                  await ConfirmationDialog.show(
+                                      context: context,
+                                      title: translate('skip_exam', context),
+                                      message: translate(
+                                          'skip_exam_message', context));
 
                                       if (shouldSkip == true) {
                                         lessonsCubit.skipTest(
