@@ -27,7 +27,11 @@ class Lesson {
   final List<MyVideo> myVideos;
   final String? audio;
   final Test? exam;
-  final int unitId;
+  final String? unitName;
+  final int? unitId;
+
+  final String? courseName;
+  final int? courseId;
   final Unit? unit;
   Lesson({
     required this.id,
@@ -37,7 +41,10 @@ class Lesson {
     required this.nextUnitId,
     required this.examId,
     required this.images,
-    required this.unitId,
+     this.unitId,
+     this.unitName,
+     this.courseId,
+     this.courseName,
     required this.lessonOrder,
     required this.name,
     required this.isFree,
@@ -50,10 +57,10 @@ class Lesson {
     required this.files,
     required this.nextLessonId,
     required this.exam,
-    required this.unit,
+     this.unit,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json) {
+  factory Lesson.fromJson(Map<String, dynamic> json,Map<String, dynamic>? json2 ) {
     final bool? isOpen =
         json['is_open'] != null ? boolConverter(json["is_open"]) : null;
 
@@ -88,16 +95,20 @@ class Lesson {
           : "";
     }
 
+
     return Lesson(
-      unit: json["parent_section"] != null
-          ? Unit.fromJson(json["parent_section"])
-          : null,
+
+      unit:null,
+
       exam: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
       images: json["images"] != null
           ? List<String>.from(json["images"].map((x) => x))
           : [],
       lessonOrder: json["lesson_order"],
       unitId: json['section_id'],
+      unitName:json2?['parent_section']['name'],
+      courseId: json2?['parent_section']['parent_section']['id'] ,
+      courseName: json2?['parent_section']['parent_section']['name'] ,
       examId: json['exam_id'],
       nextUnitId: json["next_section_id"],
       nextLessonId: json["next_lesson_id"],
@@ -115,6 +126,7 @@ class Lesson {
       isOpen: tempIsOpen,
       myVideos: streems,
       audio: audio,
+
     );
   }
 }

@@ -54,12 +54,16 @@ class LessonsCubit extends Cubit<LessonsState> {
       final response = await Network.getData(
           url: "${Urls.sections}/$unitId/lessons/$lessonId");
 
-      lessonDetails = Lesson.fromJson(response.data['data']);
+
+
+      lessonDetails = Lesson.fromJson(response.data['data'],response.data);
+
       setNextLessonButtonStatus(lessonDetails);
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
       emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      print("error is $error");
       emit(GetLessonDetailsErrorState(message: unknownError()));
     }
   }
@@ -81,10 +85,10 @@ class LessonsCubit extends Cubit<LessonsState> {
   void openNextLessons() async {
     if (buttonStatus == NextLessonButtonStatus.OPEN_AND_MOVE ||
         buttonStatus == NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-      _openNextLesson(lessonDetails.unitId, lessonDetails.id);
+      _openNextLesson(lessonDetails.unitId!, lessonDetails.id);
     } else if (buttonStatus == NextLessonButtonStatus.MOVE_ONLY) {
       getLessonDetails(
-          lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId);
+          lessonId: lessonDetails.nextLessonId!, unitId: lessonDetails.unitId!);
     }
   }
 

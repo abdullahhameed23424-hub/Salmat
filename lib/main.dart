@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/apis/network.dart';
 import 'package:my_project_new/constant/app_colors.dart';
+import 'package:my_project_new/core/sqlite.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/helper/cach_helper.dart';
+import 'package:my_project_new/modules/downloads/file_manager/file_manager_cubit.dart';
 import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
 import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:my_project_new/modules/Theme/cubit/theme_cubit.dart';
@@ -27,6 +30,9 @@ void main() async {
 
   await CacheHelper.init();
   await Network.init();
+  await FileManagerCubit.init();
+  await SqliteHelper.init();
+  await FlutterDownloader.initialize();
 
   // await NotificationsFunctions.init();
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");

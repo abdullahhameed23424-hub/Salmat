@@ -42,20 +42,6 @@ class Course {
   factory Course.fromJson(Map<String, dynamic> json) {
 
 
-    print("section print");
-
-    print("ID: ${json['id']}");
-    print("Parent ID: ${json['parent_id']}");
-    print("Name: ${json['name']}");
-    print("Requirements: ${json['requirements'] ?? ""}");
-    print("Image: ${json['image'] ?? ""}");
-    print("Intro Video: ${json['introVideo'] ?? ""}");
-    print("Is Free: ${boolConverter(json['is_free'])}");
-    print("Price: ${stringOrZero(json['price'])}");
-    print("Total Price: ${stringOrZero(json['totalPrice'])}");
-    print("Discount: ${stringOrZero(json['discount'])}");
-    print("Description: ${json['description'] ?? ""}");
-    print("Lessons Count: ${json["lessons_count"] ?? 0}");
 
 // Teachers
     if (json["teachers"] != null) {

@@ -50,9 +50,6 @@ class OfferCard extends StatelessWidget {
                       fit: BoxFit.cover),
                   color: AppColors.SECONDRY,
                   borderRadius: BorderRadius.circular(10)),
-              foregroundDecoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(10)),
             ),
           ),
           AspectRatio(

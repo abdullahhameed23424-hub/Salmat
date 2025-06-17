@@ -7,11 +7,14 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
+import 'package:my_project_new/modules/video/models/my_viedeo.dart';
 
 class ResolutionCard extends StatelessWidget {
   const ResolutionCard({
     super.key,
+    required this.video
   });
+  final MyVideo video;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class ResolutionCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('480P', style: titilliumBold),
+            Text('${video.quality}P', style: titilliumBold),
             SizedBox(width: 3.w),
             Image.asset(
               Images.downloadArrow,

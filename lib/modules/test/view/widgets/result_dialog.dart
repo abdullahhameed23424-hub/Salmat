@@ -133,7 +133,7 @@ class ResultDialog extends StatelessWidget {
 
                             if (shouldSkip == true) {
                               lessonsCubit.skipTest(
-                                  lessonId: lesson.id, unitId: lesson.unitId);
+                                  lessonId: lesson.id, unitId: lesson.unitId!);
                             }
                           }),
                       SizedBox(height: 16.h),

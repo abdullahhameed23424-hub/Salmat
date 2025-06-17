@@ -73,7 +73,7 @@ class LessonsScreen extends StatelessWidget {
                                           await pushTo(
                                               context: context,
                                               toPage: LessonDetailsScreen(
-                                                  lesson: lesson));
+                                                  id: lesson.id,name: lesson.name,unitId: lesson.unitId!,));
                                       if (params != null &&
                                           params['next_unit_id'] != null) {
                                         lessonsCubit.getLessons(

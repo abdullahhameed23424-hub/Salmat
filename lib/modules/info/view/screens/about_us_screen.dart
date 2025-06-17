@@ -176,9 +176,13 @@ class _Info extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          Text(translate('platform_manager', context),
+          if(infoCubit.infoResponse.platformManager.show)
+            Text(translate('platform_manager', context),
               style: titilliumBold.copyWith(color: AppColors.PRIMARY)),
-          SizedBox(height: 20.h),
+          if(infoCubit.infoResponse.platformManager.show)
+
+            SizedBox(height: 20.h),
+          if(infoCubit.infoResponse.platformManager.show)
           PlatformManagerCard(
               platformManager: infoCubit.infoResponse.platformManager),
           SizedBox(height: 40.h),
@@ -197,8 +201,9 @@ class ContactUsLinks1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+
         children: [
           Text(
             'تواصل معنا الآن',
@@ -207,16 +212,18 @@ class ContactUsLinks1 extends StatelessWidget {
                 decoration: TextDecoration.underline,
                 decorationColor: Colors.teal),
           ),
-          SizedBox(height: 5.h),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(Images.whatsapp, width: 24.sp),
-              text: infoCubit.infoResponse.contact.whatsapp),
-          ContactRow(
-              icon: const Icon(Icons.facebook, color: Colors.blue),
-              text: infoCubit.infoResponse.contact.facebook),
-          ContactRow(
-              icon: const Icon(Icons.telegram, color: AppColors.PRIMARY),
-              text: infoCubit.infoResponse.contact.telegram),
+              text: ""),
+          SizedBox(width: 8,),
+          const ContactRow(
+              icon:  Icon(Icons.facebook, color: Colors.blue),
+              text: ""),
+          SizedBox(width: 8,),
+          const ContactRow(
+              icon:  Icon(Icons.telegram, color: AppColors.PRIMARY),
+              text: ""),
         ],
       ),
     );
@@ -232,8 +239,8 @@ class ContactUsLinks2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'تواصل معنا الآن',
@@ -246,19 +253,21 @@ class ContactUsLinks2 extends StatelessWidget {
           SizedBox(height: 5.h),
           ContactRow(
               icon: SvgPicture.asset(Images.insta, width: 24.sp),
-              text: infoCubit.infoResponse.contact.instagram),
+              text: ""),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.linkedin,
                 width: 24.sp,
               ),
-              text: infoCubit.infoResponse.contact.linkedin),
+              text: ""),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.youtube,
                 width: 24.sp,
               ),
-              text: infoCubit.infoResponse.contact.youtube),
+              text: ""),
         ],
       ),
     );

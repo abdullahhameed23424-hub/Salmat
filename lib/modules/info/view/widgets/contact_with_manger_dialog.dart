@@ -47,23 +47,23 @@ class ContactWithMangerDialog extends StatelessWidget {
                           Images.whatsapp,
                           width: 28.sp,
                         ),
-                        text: platformManager.whatsapp),
+                        text: ""),
                     ContactRow(
                         icon: Icon(
                             size: 30.sp, Icons.facebook, color: Colors.blue),
-                        text: platformManager.facebook),
+                        text: ""),
                     ContactRow(
                         icon: Icon(
                             size: 30.sp,
                             Icons.telegram,
                             color: AppColors.PRIMARY),
-                        text: platformManager.telegram),
+                        text: ""),
                     ContactRow(
                         icon: SvgPicture.asset(
                           Images.youtube,
                           width: 30.sp,
                         ),
-                        text: platformManager.youtube),
+                        text: ""),
                   ],
                 ),
               ),

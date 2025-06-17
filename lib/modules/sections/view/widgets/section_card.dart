@@ -48,16 +48,11 @@ class SectionCard extends StatelessWidget {
                 children: [
                   Text(
                     section.name,
-                    style: titilliumBold.copyWith(fontSize: 16.sp),
+                    style: titilliumBold.copyWith(fontSize: 18.sp),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Text(
-                    section.description,
-                    style: titilliumRegular.copyWith(fontSize: 14.sp),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+
                 ],
               ),
             ),

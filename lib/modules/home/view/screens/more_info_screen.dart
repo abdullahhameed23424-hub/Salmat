@@ -27,6 +27,9 @@ import 'package:my_project_new/modules/teachers/view/screens/teachers_screen.dar
 import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
+import '../../../downloads/materials/downloaded_material_cubit.dart';
+import '../../../downloads/materials/downloaded_material_screen.dart';
+
 class MoreInfoScreen extends StatelessWidget {
   MoreInfoScreen({super.key});
 
@@ -78,7 +81,8 @@ class MoreInfoScreen extends StatelessWidget {
         "icon": Icons.download_outlined,
         "title": "downloaded_lessons",
         "onTap": (BuildContext context) {
-          // pushTo(context: context, toPage: const PointsRecordScreen());
+          pushTo(context: context, toPage: const DownloadedMaterialScreen(
+            title: 'موادي',type: DownloadedMaterialType.subject,));
         }
       },
     {

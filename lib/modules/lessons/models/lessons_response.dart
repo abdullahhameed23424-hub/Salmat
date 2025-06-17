@@ -23,5 +23,5 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
       currentPage: json["current_page"],
       data: List<Lesson>.from(
-          json["data"].map((lesson) => Lesson.fromJson(lesson))));
+          json["data"].map((lesson) => Lesson.fromJson(lesson,null))));
 }

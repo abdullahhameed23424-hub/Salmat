@@ -1,3 +1,5 @@
+import 'package:my_project_new/utils/bool_converter.dart';
+
 class InfoResponse {
   final PrivacyPolicy privacyPolicy;
 
@@ -124,6 +126,7 @@ class PlatformManaGer {
   final String whatsapp;
   final String telegram;
   final String youtube;
+  final bool show;
 
   PlatformManaGer({
      required this.name,
@@ -134,6 +137,7 @@ class PlatformManaGer {
     required this.whatsapp,
     required this.telegram,
     required this.youtube,
+    required this.show
   });
 
   factory PlatformManaGer.fromJson(Map<String, dynamic> json) => PlatformManaGer(
@@ -146,6 +150,7 @@ class PlatformManaGer {
         whatsapp: json["whatsapp"],
         telegram: json["telegram"],
         youtube: json["youtube"],
+       show:boolConverter(json['show'])
       );
 }
 
