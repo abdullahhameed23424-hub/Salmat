@@ -188,8 +188,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                       SizedBox(height: 15.h),
                       if (thereIsTest &&
                           !lessonsCubit.lessonDetails.exam!.isSolving &&
-                          lessonsCubit.lessonDetails.exam!.result.pass ==
-                              null &&
+                          lessonsCubit.lessonDetails.exam!.result.pass !=
+                              true &&
                           (lessonsCubit.lessonDetails.exam!.studentExam
                                       ?.attemptCount ??
                                   0) >
