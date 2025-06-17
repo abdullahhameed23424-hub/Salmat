@@ -81,9 +81,13 @@ class _QuestionCardState extends State<QuestionCard> {
                         .onOptionTapped(widget.question, optionIndex, value!);
                     setState(() {});
                   },
-                  title: HtmlWidget(
-                    widget.question.options[optionIndex].name,
-                    textStyle: titilliumRegular,
+                  title: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: HtmlWidget(
+                      widget.question.options[optionIndex].name,
+                      textStyle: titilliumRegular,
+
+                    ),
                   ),
                 ),
               );

@@ -45,11 +45,11 @@ class Original {
 
 
 class OriginalData {
-  final int currentPage;
+  final int? currentPage;
   final List<Test> data;
 
   OriginalData({
-    required this.currentPage,
+     this.currentPage,
     required this.data,
   });
 
@@ -73,13 +73,13 @@ class ExtraData {
 }
 
 class AuthExams {
-  final String image;
+  final String? image;
 
   AuthExams({
-    required this.image,
+     this.image,
   });
 
   factory AuthExams.fromJson(Map<String, dynamic> json) => AuthExams(
-        image: json["image"],
+        image: json["image1"],
       );
 }

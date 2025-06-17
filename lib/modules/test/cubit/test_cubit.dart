@@ -163,12 +163,13 @@ class TestCubit extends Cubit<TestState> {
       final CompletedTestsResponse completedTestsResponse =
           CompletedTestsResponse.fromJson(response.data);
       tests = completedTestsResponse.data.original.data.data;
-      image = completedTestsResponse.extraData.authExams.image;
+      image = completedTestsResponse.extraData.authExams.image??'';
 
       emit(GetCompletedTestsSuccessState());
     } on DioException catch (e) {
       emit(GetCompletedTestsErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
+      print("show the error $error");
       emit(GetCompletedTestsErrorState(message: unknownError()));
     }
   }
