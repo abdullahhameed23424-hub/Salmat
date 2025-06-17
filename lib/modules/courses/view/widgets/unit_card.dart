@@ -15,20 +15,17 @@ class UnitCard extends StatelessWidget {
   const UnitCard({
     super.key,
     required this.unit,
-    required this.isLocked,
   });
   final Unit unit;
-  final bool isLocked;
   @override
   Widget build(BuildContext context) {
-    const bool isLocked = false;
     return InkWell(
       onTap: () {
-        // if (isLocked) {
-        //   return;
-        // } else {
-        pushTo(context: context, toPage: LessonsScreen(unit: unit));
-        // }
+        if (unit.isLocked) {
+          customSnackBar(context, success: 2, message: unit.lockReason);
+        } else {
+          pushTo(context: context, toPage: LessonsScreen(unit: unit));
+        }
       },
       child: FadeIn(
         duration: const Duration(milliseconds: 400),
@@ -44,7 +41,8 @@ class UnitCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
           child: Row(
             children: <Widget>[
-              Image.asset(!isLocked ? Images.unlockedUnit : Images.lockedUnit,
+              Image.asset(
+                  !unit.isLocked ? Images.unlockedUnit : Images.lockedUnit,
                   width: 24.w),
               SizedBox(width: 10.w),
               Expanded(

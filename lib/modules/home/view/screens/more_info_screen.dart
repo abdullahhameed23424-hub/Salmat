@@ -7,7 +7,6 @@ import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
 import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/core/validators/phone_number_validator.dart';
 import 'package:my_project_new/helper/app_sharedPreferance.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
@@ -221,7 +220,7 @@ class ContactAdminDialog extends StatelessWidget {
       context: context,
       builder: (context) => FadeInDown(
           duration: const Duration(milliseconds: 400),
-          child: ContactAdminDialog()),
+          child: const ContactAdminDialog()),
     );
   }
 

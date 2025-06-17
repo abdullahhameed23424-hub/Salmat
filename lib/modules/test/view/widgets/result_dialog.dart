@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart';
 
 import 'package:my_project_new/constant/app_colors.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
@@ -21,20 +20,27 @@ class ResultDialog extends StatelessWidget {
     required this.result,
     required this.getTest,
     required this.lesson,
+    required this.withSkipButton,
   });
   final GlobalKey<ModernLoadingDialogState> _loadingDialogKey =
       GlobalKey<ModernLoadingDialogState>();
   final Result result;
   final void Function() getTest;
   final Lesson lesson;
-  static void show(BuildContext context,
-      {required Result result,
-      required void Function() getTest,
-      required Lesson lesson}) {
+  final bool withSkipButton;
+
+  static void show(
+    BuildContext context, {
+    required Result result,
+    required void Function() getTest,
+    required Lesson lesson,
+    required bool withSkipButton,
+  }) {
     showDialog(
       context: context,
       builder: (_) => ResultDialog(
         result: result,
+        withSkipButton: withSkipButton,
         getTest: getTest,
         lesson: lesson,
       ),
@@ -114,10 +120,11 @@ class ResultDialog extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12.r),
                           label: translate('try_again', context),
                           onPressed: () {
+                            Navigator.pop(context);
                             getTest();
                           }),
                     SizedBox(height: 16.h),
-                    if (result.pass == false) ...[
+                    if (withSkipButton) ...[
                       CustomButton(
                           borderRadius: BorderRadius.circular(12.r),
                           backgroundColor: AppColors.PURPLE_LIGHT,

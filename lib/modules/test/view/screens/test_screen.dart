@@ -48,6 +48,8 @@ class TestScreen extends StatelessWidget {
                 context,
                 lesson: lesson,
                 result: state.result,
+                withSkipButton:
+                    (state.result.pass != true && testCubit.test.isSubscribed),
                 getTest: () {
                   testCubit.getTest(examId);
                 },

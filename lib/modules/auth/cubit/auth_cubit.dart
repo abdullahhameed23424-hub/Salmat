@@ -45,6 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
             response.data['data']['user']['token']);
         await AppSharedPreferences.saveUserID(
             response.data['data']['user']['id'].toString());
+        AppSharedPreferences.removeGust;
         await Network.init();
 
         emit(LoginSuccessState());
@@ -59,9 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(LogoutLoadingState());
     try {
-      await Network.postData(
-        url: Urls.logout,
-      );
+      await Network.postData(url: Urls.logout);
 
       emit(LogoutSuccessState());
 

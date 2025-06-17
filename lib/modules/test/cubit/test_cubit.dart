@@ -35,20 +35,23 @@ class TestCubit extends Cubit<TestState> {
       if (test.result.pass == null &&
           test.isSubscribed &&
           !test.isSolving &&
-          !test.studentExam.skipped) {
+          !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);
       }
-      
-      if ((test.result.pass == null && test.studentExam.skipped) ||
+
+      if ((test.result.pass == false && (test.studentExam?.skipped ?? false)) ||
           (test.result.pass == true)) {
+        print("case:1");
         testTime = test.minutes * 60;
       } else if (test.isSolving) {
+        print("case:2");
         isSolving = true;
         testTime = test.remainingTime.toInt();
         if (testTime.isNegative) {
           submitExam(examId: test.id, force: true);
         }
       } else {
+        print("case:3");
         testTime = test.minutes * 60;
         isSolving = true;
       }

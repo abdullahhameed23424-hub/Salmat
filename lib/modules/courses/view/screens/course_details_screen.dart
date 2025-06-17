@@ -23,6 +23,7 @@ import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
 import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
 import 'package:my_project_new/widgets/delete_dialog.dart';
+import 'package:my_project_new/widgets/no_data.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
@@ -200,7 +201,7 @@ class _Units extends StatelessWidget {
         units.length,
         (index) => UnitCard(
             unit: units[index],
-            isLocked: units[index].isLocked || !course.subscribed),
+     ),
       ),
     );
   }
@@ -334,7 +335,8 @@ class _CourseHeader extends StatelessWidget {
                               showModalBottomSheet(
                                 isScrollControlled: true,
                                 context: context,
-                                builder: (context) => ContactWithAdminDialog(),
+                                builder: (context) =>
+                                    const ContactWithAdminDialog(),
                               );
                             },
                             child: Stack(

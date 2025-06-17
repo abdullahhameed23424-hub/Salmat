@@ -13,6 +13,7 @@ import 'package:my_project_new/widgets/app_loading.dart';
 import 'package:my_project_new/widgets/app_scaffold.dart';
 import 'package:my_project_new/widgets/blue_circle.dart';
 import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:my_project_new/widgets/no_data.dart';
 import 'package:my_project_new/widgets/read_more_text.dart';
 import 'package:my_project_new/widgets/try_again.dart';
 
@@ -82,24 +83,27 @@ class _CoursesLayer extends StatelessWidget {
           translate('courses', context),
           style: titilliumBold.copyWith(color: AppColors.PRIMARY),
         ),
-        GridView.builder(
-          padding: EdgeInsets.symmetric(vertical: 20.h),
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: teacher.courses.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16.w,
-            mainAxisSpacing: 15.h,
-            childAspectRatio: 0.8,
+        if (teacher.courses.isEmpty)
+          const NoData(title: "لا يوجد كورسات حالياً ")
+        else
+          GridView.builder(
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: teacher.courses.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16.w,
+              mainAxisSpacing: 15.h,
+              childAspectRatio: 0.8,
+            ),
+            itemBuilder: (context, index) {
+              return TeacherCourseCard(
+                course: teacher.courses[index],
+                footerColor: AppColors.appColors[index % 4],
+              );
+            },
           ),
-          itemBuilder: (context, index) {
-            return TeacherCourseCard(
-              course: teacher.courses[index],
-              footerColor: AppColors.appColors[index % 4],
-            );
-          },
-        ),
       ],
     );
   }

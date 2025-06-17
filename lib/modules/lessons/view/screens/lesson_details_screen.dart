@@ -90,238 +90,251 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      backgroundColor: Colors.white,
-      appBarBorderRadius: BorderRadius.zero,
-      title: widget.name,
-      body: BlocProvider(
-        create: (context) => LessonsCubit()
-          ..getLessonDetails(lessonId: widget.id, unitId: widget.unitId),
-        child: BlocConsumer<LessonsCubit, LessonsState>(
-          listener: (context, state) {
-            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is OpenNextLessonErrorState) {
-              customSnackBar(context, success: 0, message: state.message);
-            } else if (state is OpenNextLessonSuccessState) {
-              LessonsScreen.refrshLessonsScreen = true;
-              if (lessonsCubit.buttonStatus ==
-                  NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-                Navigator.pop(context,
-                    {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
-                customSnackBar(context, success: 1, message: "تم إنهاء الوحدة");
-              } else if (lessonsCubit.buttonStatus ==
-                  NextLessonButtonStatus.OPEN_AND_MOVE) {
-                lessonsCubit.getLessonDetails(
-                    lessonId: state.nextLessonId,
-                    unitId: lessonsCubit.lessonDetails.unitId!);
-              }
-            } else if (state is SkipTestLoadingState) {
-              ModernLoadingDialog.show(context, _loadingDialogKey);
-            } else if (state is SkipTestSuccessState) {
-              LessonsScreen.refrshLessonsScreen = true;
-              if (_loadingDialogKey.currentState != null) {
-                Navigator.pop(context);
-              }
-              lessonsCubit.getLessonDetails(
-                  lessonId: lessonsCubit.lessonDetails.id,
-                  unitId: lessonsCubit.lessonDetails.unitId!);
-
-              pushTo(
-                  context: context,
-                  toPage: TestScreen(
-                    examId: lessonsCubit.lessonDetails.exam!.id,
-                    lesson: lessonsCubit.lessonDetails,
-                  ));
-            } else if (state is SkipTestErrorState) {
-              if (_loadingDialogKey.currentState != null) {
-                Navigator.pop(context);
-              }
-              customSnackBar(context, success: 0, message: state.message);
-            }
-          },
-          builder: (context, state) {
-            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is GetLessonDetailsLoadingState) {
-              return const AppLoading();
-            }
-            if (state is GetLessonDetailsErrorState) {
-              return TryAgain(
-                  onTap: () {
-                    lessonsCubit.getLessonDetails(
-                        lessonId: widget.id, unitId: widget.unitId);
-                  },
-                  message: state.message);
-            }
-            final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
-            final bool isPassed =
-                ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
-                        (lessonsCubit.lessonDetails.exam?.studentExam.skipped !=
-                                null &&
-                            lessonsCubit
-                                .lessonDetails.exam!.studentExam.skipped)
-                    ? true
-                    : false);
-
-            return BlocProvider(
-              create: (context) => DownloadCubit(
-                  link: "",
-                  fileName:
-                      "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
-                  localPath: FileManagerCubit.privatePath,
-                  showContentLength: true,
-                  metaId: lessonsCubit.lessonDetails.id)
-                ..init(),
-              child: BlocBuilder<DownloadCubit, DownloadState>(
-                  builder: (context, state) {
-                if (state is CompleteState) {
-                  if (onlineVideoCubit != null) {
-                    onlineVideoCubit!.dispose();
-                    onlineVideoCubit = null;
-
-                    offlineVideoCubit ??= VideoCubit();
-                  }
-                } else {
-                  if (offlineVideoCubit != null) {
-                    offlineVideoCubit!.dispose();
-                    offlineVideoCubit = null;
-
-                    onlineVideoCubit ??= VideoCubit();
-                  }
+        backgroundColor: Colors.white,
+        appBarBorderRadius: BorderRadius.zero,
+        title: widget.name,
+        body: BlocProvider(
+            create: (context) => LessonsCubit()
+              ..getLessonDetails(lessonId: widget.id, unitId: widget.unitId),
+            child: BlocConsumer<LessonsCubit, LessonsState>(
+                listener: (context, state) {
+              final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+              if (state is OpenNextLessonErrorState) {
+                customSnackBar(context, success: 0, message: state.message);
+              } else if (state is OpenNextLessonSuccessState) {
+                LessonsScreen.refrshLessonsScreen = true;
+                if (lessonsCubit.buttonStatus ==
+                    NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+                  Navigator.pop(context,
+                      {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+                  customSnackBar(context,
+                      success: 1, message: "تم إنهاء الوحدة");
+                } else if (lessonsCubit.buttonStatus ==
+                    NextLessonButtonStatus.OPEN_AND_MOVE) {
+                  lessonsCubit.getLessonDetails(
+                      lessonId: state.nextLessonId,
+                      unitId: lessonsCubit.lessonDetails.unitId!);
                 }
-                return ListView(
-                  clipBehavior: Clip.none,
-                  children: <Widget>[
-                    state is CompleteState
-                        ? BlocProvider(
-                            key: offline,
-                            lazy: false,
-                            create: (context) => offlineVideoCubit!
-                              ..initFromFile(
-                                  '${FileManagerCubit.privatePath}${context.read<DownloadCubit>().fileName}'),
-                            child: AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: BlocBuilder<VideoCubit, VideoState>(
-                                builder: (context, state) {
-                                  if (state is VideoLoadingState) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.PRIMARY,
-                                      ),
-                                    );
-                                  }
-                                  return VideoWidget2(
-                                    videoCubit: context.read<VideoCubit>(),
-                                  );
-                                },
-                              ),
-                            ),
-                          )
-                        : BlocProvider(
-                            lazy: false,
-                            create: (context) => onlineVideoCubit!
-                              ..setStreams(lessonsCubit.lessonDetails.myVideos)
-                              ..initFromNetwork2(
-                                  AppSharedPreferences.getQuality,
-                                  Duration.zero),
-                            child: AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: BlocBuilder<VideoCubit, VideoState>(
-                                builder: (context, state) {
-                                  if (state is VideoLoadingState) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(
-                                        color: AppColors.PRIMARY,
-                                      ),
-                                    );
-                                  }
+              } else if (state is SkipTestLoadingState) {
+                ModernLoadingDialog.show(context, _loadingDialogKey);
+              } else if (state is SkipTestSuccessState) {
+                LessonsScreen.refrshLessonsScreen = true;
+                if (_loadingDialogKey.currentState != null) {
+                  Navigator.pop(context);
+                }
+                lessonsCubit.getLessonDetails(
+                    lessonId: lessonsCubit.lessonDetails.id,
+                    unitId: lessonsCubit.lessonDetails.unitId!);
 
-                                  return VideoWidget2(
-                                    videoCubit: context.read<VideoCubit>(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                    const ServerOptions(),
-                    Builder(builder: (context) {
-                      return _LessonHeader(lessonsCubit.lessonDetails,
-                          context.read<DownloadCubit>());
-                    }),
-                    Column(
-                      children: [
-                        SizedBox(height: 22.h),
-                        _LessonDscription(
-                            lessonsCubit.lessonDetails.description),
-                        _LessonTaps(
-                            controller: controller, lessonsCubit: lessonsCubit),
-                        if (thereIsTest) ...[
-                          DoExamButton(
-                              color: isPassed ? AppColors.LIGHT_GREEN : null,
-                              label: isPassed
-                                  ? translate('view_exam', context)
-                                  : lessonsCubit
-                                              .lessonDetails.exam?.isSolving ==
-                                          true
-                                      ? "إتمام الاختبار"
-                                      : translate('do_exam', context),
-                              onTap: () async {
-                                LessonDetailsScreen.refrshLessonScreen = false;
-                                await pushTo(
-                                    context: context,
-                                    toPage: TestScreen(
-                                        lesson: lessonsCubit.lessonDetails,
-                                        examId: lessonsCubit
-                                            .lessonDetails.examId!));
-
-                                if (LessonDetailsScreen.refrshLessonScreen) {
-                                  lessonsCubit.getLessonDetails(
-                                      lessonId: lessonsCubit.lessonDetails.id,
-                                      unitId:
-                                          lessonsCubit.lessonDetails.unitId!);
-                                }
-                              }),
-                          SizedBox(height: 15.h),
-                          if (thereIsTest &&
-                              !lessonsCubit.lessonDetails.exam!.isSolving &&
-                              lessonsCubit.lessonDetails.exam!.result.pass ==
+                pushTo(
+                    context: context,
+                    toPage: TestScreen(
+                      examId: lessonsCubit.lessonDetails.exam!.id,
+                      lesson: lessonsCubit.lessonDetails,
+                    ));
+              } else if (state is SkipTestErrorState) {
+                if (_loadingDialogKey.currentState != null) {
+                  Navigator.pop(context);
+                }
+                customSnackBar(context, success: 0, message: state.message);
+              }
+            }, builder: (context, state) {
+              final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+              if (state is GetLessonDetailsLoadingState) {
+                return const AppLoading();
+              }
+              if (state is GetLessonDetailsErrorState) {
+                return TryAgain(
+                    onTap: () {
+                      lessonsCubit.getLessonDetails(
+                          lessonId: widget.id, unitId: widget.unitId);
+                    },
+                    message: state.message);
+              }
+              final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
+              final bool isPassed =
+                  ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
+                          (lessonsCubit.lessonDetails.exam?.studentExam
+                                      ?.skipped !=
                                   null &&
-                              lessonsCubit.lessonDetails.exam!.studentExam
-                                      .attemptCount >
-                                  0 &&
-                              !lessonsCubit
-                                  .lessonDetails.exam!.studentExam.skipped)
-                            CustomButton(
-                                backgroundColor: AppColors.PURPLE_LIGHT,
-                                label: translate(
-                                    'skip_test_and_show_answers', context),
-                                onPressed: () async {
-                                  final bool? shouldSkip =
-                                      await ConfirmationDialog.show(
-                                          context: context,
-                                          title:
-                                              translate('skip_exam', context),
-                                          message: translate(
-                                              'skip_exam_message', context));
+                              (lessonsCubit.lessonDetails.exam!.studentExam
+                                      ?.skipped ??
+                                  false))
+                      ? true
+                      : false);
 
-                                  if (shouldSkip == true) {
-                                    lessonsCubit.skipTest(
-                                        lessonId: lessonsCubit.lessonDetails.id,
-                                        unitId:
-                                            lessonsCubit.lessonDetails.unitId!);
-                                  }
-                                }),
-                        ],
-                        NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
+              return BlocProvider(
+                create: (context) => DownloadCubit(
+                    link: "",
+                    fileName:
+                        "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
+                    localPath: FileManagerCubit.privatePath,
+                    showContentLength: true,
+                    metaId: lessonsCubit.lessonDetails.id)
+                  ..init(),
+                child: BlocBuilder<DownloadCubit, DownloadState>(
+                  builder: (context, state) {
+                    if (state is CompleteState) {
+                      if (onlineVideoCubit != null) {
+                        onlineVideoCubit!.dispose();
+                        onlineVideoCubit = null;
+
+                        offlineVideoCubit ??= VideoCubit();
+                      }
+                    } else {
+                      if (offlineVideoCubit != null) {
+                        offlineVideoCubit!.dispose();
+                        offlineVideoCubit = null;
+
+                        onlineVideoCubit ??= VideoCubit();
+                      }
+                    }
+                    return ListView(
+                      clipBehavior: Clip.none,
+                      children: <Widget>[
+                        state is CompleteState
+                            ? BlocProvider(
+                                key: offline,
+                                lazy: false,
+                                create: (context) => offlineVideoCubit!
+                                  ..initFromFile(
+                                      '${FileManagerCubit.privatePath}${context.read<DownloadCubit>().fileName}'),
+                                child: AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: BlocBuilder<VideoCubit, VideoState>(
+                                    builder: (context, state) {
+                                      if (state is VideoLoadingState) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.PRIMARY,
+                                          ),
+                                        );
+                                      }
+                                      return VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            : BlocProvider(
+                                lazy: false,
+                                create: (context) => onlineVideoCubit!
+                                  ..setStreams(
+                                      lessonsCubit.lessonDetails.myVideos)
+                                  ..initFromNetwork2(
+                                      AppSharedPreferences.getQuality,
+                                      Duration.zero),
+                                child: AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: BlocBuilder<VideoCubit, VideoState>(
+                                    builder: (context, state) {
+                                      if (state is VideoLoadingState) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.PRIMARY,
+                                          ),
+                                        );
+                                      }
+
+                                      return VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                        const ServerOptions(),
+                        Builder(builder: (context) {
+                          return _LessonHeader(lessonsCubit.lessonDetails,
+                              context.read<DownloadCubit>());
+                        }),
+                        Column(
+                          children: [
+                            SizedBox(height: 22.h),
+                            _LessonDscription(
+                                lessonsCubit.lessonDetails.description),
+                            _LessonTaps(
+                                controller: controller,
+                                lessonsCubit: lessonsCubit),
+                            if (thereIsTest) ...[
+                              DoExamButton(
+                                  color:
+                                      isPassed ? AppColors.LIGHT_GREEN : null,
+                                  label: isPassed
+                                      ? translate('view_exam', context)
+                                      : lessonsCubit.lessonDetails.exam
+                                                  ?.isSolving ==
+                                              true
+                                          ? "إتمام الاختبار"
+                                          : translate('do_exam', context),
+                                  onTap: () async {
+                                    LessonDetailsScreen.refrshLessonScreen =
+                                        false;
+                                    await pushTo(
+                                        context: context,
+                                        toPage: TestScreen(
+                                            lesson: lessonsCubit.lessonDetails,
+                                            examId: lessonsCubit
+                                                .lessonDetails.examId!));
+
+                                    if (LessonDetailsScreen
+                                        .refrshLessonScreen) {
+                                      lessonsCubit.getLessonDetails(
+                                          lessonId:
+                                              lessonsCubit.lessonDetails.id,
+                                          unitId: lessonsCubit
+                                              .lessonDetails.unitId!);
+                                    }
+                                  }),
+                              SizedBox(height: 15.h),
+                              if (thereIsTest &&
+                                  !lessonsCubit.lessonDetails.exam!.isSolving &&
+                                  lessonsCubit
+                                          .lessonDetails.exam!.result.pass ==
+                                      null &&
+                                  (lessonsCubit.lessonDetails.exam!.studentExam
+                                              ?.attemptCount ??
+                                          0) >
+                                      0 &&
+                                  !(lessonsCubit.lessonDetails.exam!.studentExam
+                                          ?.skipped ??
+                                      false)) // يجب الاشتراك بالكورس و يوجد اختبار  وليس قيد الحل  ولم يتم النجاح بالاختبار وعدد المحاولات أكثر من مرة ولم يتم تخطيه من قبل
+                                CustomButton(
+                                    backgroundColor: AppColors.PURPLE_LIGHT,
+                                    label: translate(
+                                        'skip_test_and_show_answers', context),
+                                    onPressed: () async {
+                                      final bool? shouldSkip =
+                                          await ConfirmationDialog.show(
+                                              context: context,
+                                              title: translate(
+                                                  'skip_exam', context),
+                                              message: translate(
+                                                  'skip_exam_message',
+                                                  context));
+
+                                      if (shouldSkip == true) {
+                                        lessonsCubit.skipTest(
+                                            lessonId:
+                                                lessonsCubit.lessonDetails.id,
+                                            unitId: lessonsCubit
+                                                .lessonDetails.unitId!);
+                                      }
+                                    }),
+                            ],
+                            if (lessonsCubit.lessonDetails.subscribed)
+                              NextAndLastLessonButtons(
+                                  lessonsCubit: lessonsCubit),
+                          ],
+                        ),
+                        SizedBox(height: 40.h)
                       ],
-                    ),
-                    SizedBox(height: 40.h)
-                  ],
-                );
-              }),
-            );
-          },
-        ),
-      ),
-    );
+                    );
+                  },
+                ),
+              );
+            })));
   }
 }
 
@@ -578,7 +591,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
                 style: titilliumBold.copyWith(
                     color: AppColors.WHITE, fontSize: 14.sp),
               ),
-              Spacer(),
+              const Spacer(),
               Row(
                 children: [
                   Text(
@@ -632,7 +645,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
                               children: [
                                 InkWell(
                                   onTap: () {
-                                     if(widget.download.state is FailedState){
+                                    if (widget.download.state is FailedState) {
                                       widget.download.retry();
                                       return;
                                     }
@@ -657,7 +670,6 @@ class _LessonHeaderState extends State<_LessonHeader> {
                                           _VideoResolutions(
                                             videos: widget.lesson.myVideos,
                                             onResolutionSelected: (index) {
-
                                               widget.download.link = widget
                                                   .lesson.myVideos[index].link;
                                               widget.download.requestDownload(
@@ -676,37 +688,49 @@ class _LessonHeaderState extends State<_LessonHeader> {
                                     children: [
                                       Image.asset(Images.whiteShape,
                                           width: 150.w),
-
-                                      widget.download.state is CompleteState?
-                                      TextButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) => MyAlertDialog(
-                                                    onPressedOk: () {
-                                                      widget.download.deleteLesson(
-                                                          widget.lesson.id);
-                                                    },
-                                                    onPressedCancel: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                    title:
-                                                    'حذف الفيديو',
-                                                    okText: 'حذف',
-                                                    cancelText: 'تراجع'));
-                                          },
-                                          child:  Text(
-                                            "حذف الفيديو",
+                                      widget.download.state is CompleteState
+                                          ? TextButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        MyAlertDialog(
+                                                            onPressedOk: () {
+                                                              widget.download
+                                                                  .deleteLesson(
+                                                                      widget
+                                                                          .lesson
+                                                                          .id);
+                                                            },
+                                                            onPressedCancel:
+                                                                () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            title:
+                                                                'حذف الفيديو',
+                                                            okText: 'حذف',
+                                                            cancelText:
+                                                                'تراجع'));
+                                              },
+                                              child: Text("حذف الفيديو",
+                                                  style: titilliumBold.copyWith(
+                                                      color:
+                                                          AppColors.PRIMARY)))
+                                          : Text(
+                                              widget.download.state
+                                                      is FailedState
+                                                  ? "إعادة"
+                                                  : translate(
+                                                      'download', context),
                                               style: titilliumBold.copyWith(
-                                                  color: AppColors.PRIMARY)
-                                          )):
-                                      Text(widget.download.state is FailedState ? "إعادة":translate('download', context),
-                                          style: titilliumBold.copyWith(
-                                              color: AppColors.PRIMARY))
+                                                  color: AppColors.PRIMARY))
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 16,),
+                                const SizedBox(
+                                  height: 16,
+                                ),
                                 if (widget.download.state is FailedState)
                                   TextButton(
                                       onPressed: () {
@@ -727,8 +751,8 @@ class _LessonHeaderState extends State<_LessonHeader> {
                                       },
                                       child: const Text(
                                         "إزالة من عمليات التحميل",
-                                        style: TextStyle(
-                                            color: AppColors.WHITE),
+                                        style:
+                                            TextStyle(color: AppColors.WHITE),
                                       ))
                               ],
                             ),

@@ -15,6 +15,7 @@ class Lesson {
   final int? nextUnitId;
   final String name;
   final bool isFree;
+  final bool subscribed;
   final String description;
   final String? videoUrl;
   final String? videoFile;
@@ -36,6 +37,7 @@ class Lesson {
   Lesson({
     required this.id,
     required this.previousLessonId,
+    required this.subscribed,
     required this.myVideos,
     required this.audio,
     required this.nextUnitId,
@@ -60,17 +62,10 @@ class Lesson {
      this.unit,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json,Map<String, dynamic>? json2 ) {
-    final bool? isOpen =
-        json['is_open'] != null ? boolConverter(json["is_open"]) : null;
+  factory Lesson.fromJson(Map<String, dynamic> json,Map<String, dynamic>? json2) {
 
-    final bool isFree = boolConverter(json["is_free"]);
-    bool tempIsOpen;
-    if (isOpen == null) {
-      tempIsOpen = isFree;
-    } else {
-      tempIsOpen = isOpen;
-    }
+    bool tempIsOpen =
+        boolConverter(json['is_open']) || boolConverter(json['is_free']);
 
     int index = -1;
     List<MyVideo> streems = [];
@@ -81,8 +76,6 @@ class Lesson {
           value: index,
           quality: '${video['qulaity']}'));
     });
-
- 
 
     String audio = '';
 
@@ -105,6 +98,7 @@ class Lesson {
           ? List<String>.from(json["images"].map((x) => x))
           : [],
       lessonOrder: json["lesson_order"],
+      subscribed: boolConverter(json['subscribed']),
       unitId: json['section_id'],
       unitName:json2?['parent_section']['name'],
       courseId: json2?['parent_section']['parent_section']['id'] ,

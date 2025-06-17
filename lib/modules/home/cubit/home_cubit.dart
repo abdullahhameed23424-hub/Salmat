@@ -41,7 +41,9 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetHomeSuccessState());
     } on DioException catch (error) {
       emit(GetHomeErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
+    }
+
+    catch (error) {
       emit(GetHomeErrorState(message: unknownError()));
     } finally {
       refreshController.refreshCompleted();

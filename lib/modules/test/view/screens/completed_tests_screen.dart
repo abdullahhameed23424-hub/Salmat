@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
 import 'package:my_project_new/localization/language_constrants.dart';
 import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
 import 'package:my_project_new/modules/test/view/widgets/completed_test_card.dart';
@@ -23,7 +22,7 @@ class CompletedTestsScreen extends StatelessWidget {
         create: (context) => TestCubit()..getCompletedTests(),
         child: BlocBuilder<TestCubit, TestState>(
           builder: (context, state) {
-            print("state:${state}");
+            print("state:$state");
             final TestCubit testCubit = context.read<TestCubit>();
             if (state is GetCompletedTestsLoadingState) {
               return const AppLoading();
