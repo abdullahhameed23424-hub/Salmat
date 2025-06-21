@@ -8,21 +8,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tex/flutter_tex.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/core/sqlite.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/helper/cach_helper.dart';
-import 'package:my_project_new/modules/downloads/file_manager/file_manager_cubit.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
-import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
-import 'package:my_project_new/modules/Theme/cubit/theme_cubit.dart';
-import 'package:my_project_new/modules/startup/splash_screen.dart';
-import 'package:my_project_new/screens/notifications_screen.dart';
-import 'package:my_project_new/utils/device_type.dart';
-import 'package:my_project_new/localization/cubit/localization_cubit.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/localization/language_model.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/core/sqlite.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/helper/cach_helper.dart';
+import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
+import 'package:salamat/modules/lessons/view/screens/lesson_details_screen.dart';
+import 'package:salamat/modules/notifications/cubit/notifications_cubit.dart';
+import 'package:salamat/modules/Theme/cubit/theme_cubit.dart';
+import 'package:salamat/modules/startup/splash_screen.dart';
+import 'package:salamat/screens/notifications_screen.dart';
+import 'package:salamat/utils/device_type.dart';
+import 'package:salamat/localization/cubit/localization_cubit.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/localization/language_model.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
@@ -61,6 +61,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+
     super.initState();
 
     initDeepLinks();

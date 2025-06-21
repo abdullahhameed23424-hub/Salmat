@@ -3,12 +3,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/lessons/models/lessons_response.dart';
-import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/helper/reponse_cacher.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/models/lessons_response.dart';
+import 'package:salamat/modules/lessons/models/next_lesson_button_status.dart';
 part 'lessons_state.dart';
 
 class LessonsCubit extends Cubit<LessonsState> {
@@ -24,6 +25,19 @@ class LessonsCubit extends Cubit<LessonsState> {
   List<Lesson> lessons = [];
   Future<void> getLessons({required int unitId}) async {
     emit(GetLessonsLoadingState());
+    String key = "${Urls.sections}/$unitId/lessons";
+    try {
+      if (ResponseCacher.hasCache(key)) {
+        final LessonsResponse lessonsResponse =
+        LessonsResponse.fromJson(ResponseCacher.getCache(key));
+
+        lessons = lessonsResponse.data.data;
+
+        emit(GetLessonsSuccessState());
+      }
+    }catch(error){
+      //
+    }
     try {
       final response =
           await Network.getData(url: "${Urls.sections}/$unitId/lessons");
@@ -32,14 +46,22 @@ class LessonsCubit extends Cubit<LessonsState> {
           LessonsResponse.fromJson(response.data);
 
       lessons = lessonsResponse.data.data;
-
+      ResponseCacher.cache(key, response.data);
       emit(GetLessonsSuccessState());
     } on DioException catch (error) {
-      emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
+
+      if(error.type == DioExceptionType.badResponse){
+        ResponseCacher.removeCache(key);
+      }else{
+        if(ResponseCacher.hasCache(key)==false) {
+          emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
+        }
+
+      }
     }
-    // catch (error) {
-    //   emit(GetLessonsErrorState(message: unknownError()));
-    // }
+    catch (error) {
+      emit(GetLessonsErrorState(message: unknownError()));
+    }
   }
 
   late Lesson lessonDetails;
@@ -47,21 +69,39 @@ class LessonsCubit extends Cubit<LessonsState> {
   Future<void> getLessonDetails(
       {required int lessonId, required int unitId}) async {
     emit(GetLessonDetailsLoadingState());
+    String key = "${Urls.sections}/$unitId/lessons/$lessonId";
+
+    try{
+    if(ResponseCacher.hasCache(key)) {
+      ResponseCacher.getCache(key);
+      lessonDetails = Lesson.fromJson( ResponseCacher.getCache(key)['data'],ResponseCacher.getCache(key));
+      emit(GetLessonDetailsSuccessState());
+    }
+    }catch(error){
+     //
+    }
+
     try {
+
       final response = await Network.getData(
           url: "${Urls.sections}/$unitId/lessons/$lessonId");
-
-
 
       lessonDetails = Lesson.fromJson(response.data['data'],response.data);
 
       setNextLessonButtonStatus(lessonDetails);
+
+      ResponseCacher.cache(key,response.data);
+
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
-      emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
-    } catch (error) {
-      print("error is $error");
-      emit(GetLessonDetailsErrorState(message: unknownError()));
+      if(error.type == DioExceptionType.badResponse){
+        ResponseCacher.removeCache(key);
+        emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
+      }else{
+        if(ResponseCacher.hasCache(key) == false){
+          emit(GetLessonDetailsErrorState(message: unknownError()));
+        }
+      }
     }
   }
 

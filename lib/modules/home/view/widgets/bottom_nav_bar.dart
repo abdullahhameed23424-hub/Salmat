@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
-import 'package:my_project_new/modules/home/view/screens/home_screen.dart';
-import 'package:my_project_new/modules/home/view/widgets/nav_button.dart';
-import 'package:my_project_new/widgets/bottom_nav_package/curved_navigation_bar.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
+import 'package:salamat/modules/home/view/screens/home_screen.dart';
+import 'package:salamat/modules/home/view/widgets/nav_button.dart';
+import 'package:salamat/widgets/bottom_nav_package/curved_navigation_bar.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key, required this.onChange});

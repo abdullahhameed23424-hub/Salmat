@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
 
 class TeachersResponse {
   Data data;

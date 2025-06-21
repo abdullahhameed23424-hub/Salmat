@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
 
 class TopBanner extends StatelessWidget {
   const TopBanner({super.key, required this.title, required this.value});

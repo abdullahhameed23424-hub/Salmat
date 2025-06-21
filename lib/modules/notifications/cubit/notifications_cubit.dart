@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/modules/notifications/models/notification.dart';
-import 'package:my_project_new/modules/notifications/models/notifications_response.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/modules/notifications/models/notification.dart';
+import 'package:salamat/modules/notifications/models/notifications_response.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part 'notifications_state.dart';

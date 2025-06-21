@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/info/view/widgets/corner_border_box.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/modules/info/view/widgets/corner_border_box.dart';
 
 class PlatformFeatureCard extends StatelessWidget {
   final String number;

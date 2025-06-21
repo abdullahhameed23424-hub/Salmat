@@ -1,13 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/modules/library/models/library_section.dart';
-import 'package:my_project_new/modules/library/view/screens/books_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/modules/library/models/library_section.dart';
+import 'package:salamat/modules/library/view/screens/books_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/cached_image.dart';
 
 class LibrarySectionCard extends StatelessWidget {
   final LibrarySection librarySection;

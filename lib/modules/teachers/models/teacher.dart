@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/courses/models/course.dart';
+import 'package:salamat/modules/courses/models/course.dart';
 
 class Teacher {
   final int id;

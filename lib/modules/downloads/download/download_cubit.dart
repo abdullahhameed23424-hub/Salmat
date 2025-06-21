@@ -6,10 +6,10 @@ import 'dart:ui';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/core/sqlite.dart';
-import 'package:my_project_new/modules/downloads/download/download_state.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/core/sqlite.dart';
+import 'package:salamat/modules/downloads/download/download_state.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 @pragma('vm:entry-point')
@@ -115,7 +115,7 @@ class DownloadCubit extends Cubit<DownloadState> {
         taskId = tasks[0].taskId;
 
         ///We force to call listenNow because send port does not send messages to receive port
-        /// when download task is not changing. For example when task in COMPLETE status.
+        /// when download task is not changing. For icr when task in COMPLETE status.
         listenNow(tasks[0].taskId, tasks[0].status.index, tasks[0].progress);
 
         ///Register send port that send messages to the receive port. The port name is TASK ID

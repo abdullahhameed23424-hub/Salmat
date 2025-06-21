@@ -1,4 +1,4 @@
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class InfoResponse {
   final PrivacyPolicy privacyPolicy;

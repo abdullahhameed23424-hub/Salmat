@@ -1,8 +1,10 @@
 
 import 'package:dio/dio.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
+
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:salamat/apis/urls.dart';
+
+import '../helper/app_sharedPreferance.dart';
 
 class Network {
   static late Dio dio;
@@ -17,6 +19,7 @@ class Network {
         "Accept-Charset": "application/json",
         "Accept-Language": AppSharedPreferences.getLocale
       },
+
     ));
 
     dio.interceptors.add(PrettyDioLogger(

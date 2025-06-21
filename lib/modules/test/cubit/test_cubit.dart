@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/modules/test/models/completed_tests_response.dart';
-import 'package:my_project_new/modules/test/models/result.dart';
-import 'package:my_project_new/modules/test/models/test.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/test/models/completed_tests_response.dart';
+import 'package:salamat/modules/test/models/result.dart';
+import 'package:salamat/modules/test/models/test.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
 
 part 'test_state.dart';
 

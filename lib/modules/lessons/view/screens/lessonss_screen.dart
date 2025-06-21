@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/modules/courses/models/unit.dart';
-import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_card.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/no_data.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/modules/courses/models/unit.dart';
+import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/view/screens/lesson_details_screen.dart';
+import 'package:salamat/modules/lessons/view/widgets/lesson_card.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class LessonsScreen extends StatelessWidget {
   const LessonsScreen({super.key, required this.unit});

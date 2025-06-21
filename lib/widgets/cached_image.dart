@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/widgets/app_shimmer.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/widgets/app_shimmer.dart';
 
 class CachedImage extends StatelessWidget {
   const CachedImage({

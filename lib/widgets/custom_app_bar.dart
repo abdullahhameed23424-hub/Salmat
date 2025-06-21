@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
+import 'package:salamat/constant/app_colors.dart';
 
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/dimensions.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({

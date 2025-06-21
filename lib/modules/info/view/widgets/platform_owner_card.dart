@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/info/models/info_response.dart';
-import 'package:my_project_new/modules/info/view/widgets/contact_with_manger_dialog.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/info/models/info_response.dart';
+import 'package:salamat/modules/info/view/widgets/contact_with_manger_dialog.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/custom_button.dart';
 
 class PlatformManagerCard extends StatelessWidget {
   const PlatformManagerCard({

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:animate_do/animate_do.dart'; // Add this import
-import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
-import 'package:my_project_new/core/validators/confirm_password_validator.dart';
-import 'package:my_project_new/core/validators/password_validator.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/custom_textfield.dart';
+import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/core/validators/confirm_password_validator.dart';
+import 'package:salamat/core/validators/password_validator.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/custom_textfield.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
-import 'package:my_project_new/modules/comments/view/screens/comments_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/modules/comments/cubit/comments_cubit.dart';
+import 'package:salamat/modules/comments/view/screens/comments_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
 
 class CommentInputFieldToPush extends StatelessWidget {
   const CommentInputFieldToPush(

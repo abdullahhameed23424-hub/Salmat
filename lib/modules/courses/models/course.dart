@@ -1,6 +1,6 @@
-import 'package:my_project_new/modules/comments/models/comment.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/comments/models/comment.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class Course {
   final int id;

@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/comments/models/comment_writer.dart';
+import 'package:salamat/modules/comments/models/comment_writer.dart';
 
 class Comment {
   final int id;

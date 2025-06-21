@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
 
 class PickImageDialog extends StatelessWidget {
   const PickImageDialog({

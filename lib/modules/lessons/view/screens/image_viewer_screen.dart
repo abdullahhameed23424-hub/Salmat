@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_new/apis/urls.dart';
+import 'package:salamat/apis/urls.dart';
 
 class ImageViewerScreen extends StatelessWidget {
   final String imageUrl;

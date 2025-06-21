@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/app_colors.dart';
+import 'package:salamat/constant/app_colors.dart';
 
 class BlueCircle extends StatelessWidget {
   const BlueCircle({super.key, required this.diagram});

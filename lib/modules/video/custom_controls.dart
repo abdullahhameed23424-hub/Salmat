@@ -10,11 +10,11 @@ import 'package:chewie/src/models/option_item.dart';
 import 'package:chewie/src/models/subtitle_model.dart';
 import 'package:chewie/src/notifiers/index.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/modules/video/quality_dialog.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
-import 'package:my_project_new/utils/debouncer.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/video/quality_dialog.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/utils/debouncer.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -112,13 +112,13 @@ class _MaterialControlsState extends State<CustomControls>
             absorbing: notifier.hideStuff,
             child: Stack(
               children: [
-                // if (_displayBufferingIndicator)
-                //   const Center(
-                //     child: CircularProgressIndicator(
-                //       color: AppColors.PRIMARY,
-                //     ),
-                //   )
-                // else
+                if (_displayBufferingIndicator)
+                  const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.PRIMARY,
+                    ),
+                  )
+                else
                   _buildHitArea(),
                 _buildActionBar(),
                 Column(
@@ -221,7 +221,7 @@ class _MaterialControlsState extends State<CustomControls>
   Widget _buildOptionsButton() {
     final options = <OptionItem>[
       OptionItem(
-        onTap: () {
+        onTap: (context) {
           Navigator.pop(context);
           _onSpeedButtonTap();
         },
@@ -234,7 +234,7 @@ class _MaterialControlsState extends State<CustomControls>
           widget.videoCubit.streamsList.length > 1)
         // if (false)
         OptionItem(
-            onTap: () async {
+            onTap: (context) async {
               Navigator.pop(context);
               _onQualityButtonTap();
             },
@@ -474,13 +474,40 @@ class _MaterialControlsState extends State<CustomControls>
             });
           }
         },
-        child: CenterPlayButton(
+        child: widget.videoCubit.controller?.value.isInitialized == true
+            ? CenterPlayButton(
           backgroundColor: Colors.black54,
           iconColor: Colors.white,
           isFinished: isFinished,
           isPlaying: controller.value.isPlaying,
           show: showPlayButton,
           onPressed: _playPause,
+        )
+            :  Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const CircularProgressIndicator(
+                color: AppColors.LOGO_PRIMARY,
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Colors.white,
+                      Colors.white70,
+                    ]),
+                  ),
+                  child:  const Text(
+                    "يتم جلب الفيديو الرجاء الانتظار",
+                    style: TextStyle(color: AppColors.LOGO_PRIMARY),
+                  ))
+            ],
+          ),
         ),
       );
     });

@@ -1,6 +1,6 @@
-import 'package:my_project_new/modules/comments/models/comment.dart';
-import 'package:my_project_new/modules/offers/models/offer.dart';
-import 'package:my_project_new/modules/sections/models/section.dart';
+import 'package:salamat/modules/comments/models/comment.dart';
+import 'package:salamat/modules/offers/models/offer.dart';
+import 'package:salamat/modules/sections/models/section.dart';
 
 class HomeResponse {
   final Data data;

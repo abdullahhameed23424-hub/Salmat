@@ -1,6 +1,6 @@
-import 'package:my_project_new/modules/test/models/result.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/test/models/result.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class Test {
   final int id;

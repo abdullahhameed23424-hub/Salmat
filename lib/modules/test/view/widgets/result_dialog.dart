@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/test/models/result.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/confirmation_dialog.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/modern_loading_dialog.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/test/models/result.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/confirmation_dialog.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/modern_loading_dialog.dart';
 
 class ResultDialog extends StatelessWidget {
   ResultDialog({

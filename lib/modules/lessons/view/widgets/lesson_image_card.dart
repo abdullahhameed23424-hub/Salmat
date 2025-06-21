@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/widgets/image_viewer.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/widgets/image_viewer.dart';
+import 'package:salamat/utils/global_functions.dart';
 
 class LessonImageCard extends StatelessWidget {
   const LessonImageCard({

@@ -1,4 +1,4 @@
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
 
 const Map<String, Map<String, String>> messages = {
   "ar": {

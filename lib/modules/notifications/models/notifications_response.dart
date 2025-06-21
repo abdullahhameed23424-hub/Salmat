@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/notifications/models/notification.dart';
+import 'package:salamat/modules/notifications/models/notification.dart';
 
 class NotificationsResponse {
   final Notifications data;

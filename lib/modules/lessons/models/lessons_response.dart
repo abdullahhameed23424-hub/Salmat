@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
 
 class LessonsResponse {
   final Data data;

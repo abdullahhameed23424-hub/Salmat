@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/widgets/custom_button.dart';
 
 class TryAgain extends StatefulWidget {
   const TryAgain({
@@ -73,7 +73,7 @@ class _TryAgainState extends State<TryAgain>
 
   Future<bool> _checkConnection() async {
     try {
-      final result = await InternetAddress.lookup('example.com');
+      final result = await InternetAddress.lookup('icr.com');
       return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {
       return false;

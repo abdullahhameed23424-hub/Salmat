@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/teachers/cubit/teachers_cubit.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/modules/teachers/view/widgets/teacher_course_card.dart';
-import 'package:my_project_new/utils/clipper.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/blue_circle.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/no_data.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/teachers/cubit/teachers_cubit.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
+import 'package:salamat/modules/teachers/view/widgets/teacher_course_card.dart';
+import 'package:salamat/utils/clipper.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/blue_circle.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class TeacherDetailsScreen extends StatelessWidget {
   const TeacherDetailsScreen({super.key, required this.teacherId});

@@ -1,7 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/modules/video/custom_controls.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/modules/video/custom_controls.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
 import 'package:video_player/video_player.dart';
 
 // class VideoWidget extends StatelessWidget {

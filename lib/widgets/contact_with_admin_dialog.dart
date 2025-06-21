@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/info/cubit/info_cubit.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/try_again.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ContactWithAdminDialog extends StatelessWidget {

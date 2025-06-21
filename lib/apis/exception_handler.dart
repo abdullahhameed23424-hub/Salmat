@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
- 
+
+import '../helper/app_sharedPreferance.dart';
+
 
 const Map<String, Map> messages = {
   "ar": {

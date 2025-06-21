@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:my_project_new/modules/courses/models/course.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/courses/models/course.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class Unit {
   final int id;

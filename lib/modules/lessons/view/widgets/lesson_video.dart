@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
-import 'package:my_project_new/modules/video/cubit/video_state.dart';
-import 'package:my_project_new/modules/video/video_widget.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/modules/video/cubit/video_state.dart';
+import 'package:salamat/modules/video/video_widget.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class LessonVideo extends StatefulWidget {
   const LessonVideo({

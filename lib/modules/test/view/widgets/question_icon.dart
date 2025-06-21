@@ -3,12 +3,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
-import 'package:my_project_new/modules/test/view/screens/question_explanation_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/modules/test/cubit/test_cubit.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
+import 'package:salamat/modules/test/view/screens/question_explanation_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
 
 class QuestionIcon extends StatelessWidget {
   const QuestionIcon({

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lesson_details_screen.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
+import 'package:salamat/modules/lessons/view/screens/lesson_details_screen.dart';
+import 'package:salamat/modules/lessons/view/screens/lessonss_screen.dart';
 
 
 

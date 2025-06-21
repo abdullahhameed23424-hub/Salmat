@@ -1,8 +1,8 @@
-import 'package:my_project_new/modules/courses/models/unit.dart';
-import 'package:my_project_new/modules/lessons/models/app_file.dart';
-import 'package:my_project_new/modules/test/models/test.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/courses/models/unit.dart';
+import 'package:salamat/modules/lessons/models/app_file.dart';
+import 'package:salamat/modules/test/models/test.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 import '../../../apis/urls.dart';
 
@@ -72,7 +72,7 @@ class Lesson {
     json['videos'].forEach((video) {
       index++;
       streems.add(MyVideo(
-          link: '${Urls.storageUrl}${video['url']}',
+          link: video['url'],
           value: index,
           quality: '${video['qulaity']}'));
     });

@@ -1,8 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+
+
+import 'app_colors.dart';
+import 'dimensions.dart';
 
 const String FONTF_FAMILY = "NotoKufiArabic";
 final TextStyle titilliumRegular = TextStyle(

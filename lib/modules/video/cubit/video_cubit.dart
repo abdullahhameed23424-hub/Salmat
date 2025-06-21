@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/modules/video/custom_controls.dart';
-import 'package:my_project_new/modules/video/cubit/video_state.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';
-import 'package:my_project_new/utils/debouncer.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/video/custom_controls.dart';
+import 'package:salamat/modules/video/cubit/video_state.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/utils/debouncer.dart';
 import 'package:video_player/video_player.dart';
 
 class Restriction {

@@ -4,21 +4,21 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_input_field.dart';
-import 'package:my_project_new/modules/startup/get_started_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/delete_dialog.dart';
-import 'package:my_project_new/widgets/modern_loading_dialog.dart';
-import 'package:my_project_new/widgets/no_data.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/comments/cubit/comments_cubit.dart';
+import 'package:salamat/modules/comments/view/widgets/comment_card.dart';
+import 'package:salamat/modules/comments/view/widgets/comment_input_field.dart';
+import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/delete_dialog.dart';
+import 'package:salamat/widgets/modern_loading_dialog.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen(

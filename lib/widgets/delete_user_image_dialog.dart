@@ -2,10 +2,10 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/dimensions.dart';
-import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:salamat/constant/dimensions.dart';
+import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
 
 class DeleteUserImageDialog extends StatelessWidget {
   const DeleteUserImageDialog({

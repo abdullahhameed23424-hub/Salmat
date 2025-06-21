@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "my_project_new" "\0"
+            VALUE "CompanyName", "com.icr" "\0"
+            VALUE "FileDescription", "salamat" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "my_project_new" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "my_project_new.exe" "\0"
-            VALUE "ProductName", "my_project_new" "\0"
+            VALUE "InternalName", "salamat" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 com.icr. All rights reserved." "\0"
+            VALUE "OriginalFilename", "salamat.exe" "\0"
+            VALUE "ProductName", "salamat" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

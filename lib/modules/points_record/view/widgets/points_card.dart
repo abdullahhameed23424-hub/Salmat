@@ -3,11 +3,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart'; 
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/points_record/models/points.dart';
-import 'package:my_project_new/modules/points_record/view/widgets/text_row.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/points_record/models/points.dart';
+import 'package:salamat/modules/points_record/view/widgets/text_row.dart';
 
 class PointsCard extends StatelessWidget {
   const PointsCard({

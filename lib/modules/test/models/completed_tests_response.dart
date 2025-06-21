@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/test/models/test.dart';
+import 'package:salamat/modules/test/models/test.dart';
 
 class CompletedTestsResponse {
   final CompletedTestsResponseData data;

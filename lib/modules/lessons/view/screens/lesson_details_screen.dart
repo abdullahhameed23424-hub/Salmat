@@ -2,33 +2,32 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/downloads/download/download_cubit.dart';
-import 'package:my_project_new/modules/downloads/download/download_state.dart';
-import 'package:my_project_new/modules/downloads/file_manager/file_manager_cubit.dart';
-import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_video.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
-import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/confirmation_dialog.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/modern_loading_dialog.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/try_again.dart';
-import 'package:no_screenshot/no_screenshot.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/downloads/download/download_cubit.dart';
+import 'package:salamat/modules/downloads/download/download_state.dart';
+import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
+import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/models/next_lesson_button_status.dart';
+import 'package:salamat/modules/lessons/view/screens/lessonss_screen.dart';
+import 'package:salamat/modules/lessons/view/widgets/attachment_card.dart';
+import 'package:salamat/modules/lessons/view/widgets/custom_exam_button.dart';
+import 'package:salamat/modules/lessons/view/widgets/lesson_video.dart';
+import 'package:salamat/modules/lessons/view/widgets/resolution_card.dart';
+import 'package:salamat/modules/test/view/screens/test_screen.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/confirmation_dialog.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/modern_loading_dialog.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 import '../../../../helper/app_sharedPreferance.dart';
 import '../../../../widgets/my_alert_dialog.dart';
@@ -55,32 +54,35 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   VideoCubit? onlineVideoCubit = VideoCubit();
   VideoCubit? offlineVideoCubit = VideoCubit();
 
-  final _noScreenshot = NoScreenshot.instance;
+  late DownloadCubit downloadCubit;
+
 
   @override
   void initState() {
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
-    disableScreenshot();
+    // disableScreenshot();
 
     super.initState();
   }
 
-  void disableScreenshot() async {
-    try {
-      bool result = await _noScreenshot.screenshotOff();
-      print('Screenshot Off: $result');
-    } catch (error) {
-      print('Screenshot error $error');
-    }
-  }
+  // void disableScreenshot() async {
+  //   try {
+  //     bool result = await _noScreenshot.screenshotOff();
+  //     print('Screenshot Off: $result');
+  //   } catch (error) {
+  //     print('Screenshot error $error');
+  //   }
+  // }
 
   @override
   void dispose() {
-    _noScreenshot.screenshotOn();
+    // _noScreenshot.screenshotOn();
     offlineVideoCubit?.dispose();
 
     onlineVideoCubit?.dispose();
+
+    downloadCubit.dispose();
 
     super.dispose();
   }
@@ -164,14 +166,17 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                       : false);
 
               return BlocProvider(
-                create: (context) => DownloadCubit(
-                    link: "",
-                    fileName:
-                        "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
-                    localPath: FileManagerCubit.privatePath,
-                    showContentLength: true,
-                    metaId: lessonsCubit.lessonDetails.id)
-                  ..init(),
+                create: (context) {
+                 downloadCubit = DownloadCubit(
+                      link: "",
+                      fileName:
+                      "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
+                      localPath: FileManagerCubit.privatePath,
+                      showContentLength: true,
+                      metaId: lessonsCubit.lessonDetails.id)
+                    ..init();
+                 return downloadCubit;
+                } ,
                 child: BlocBuilder<DownloadCubit, DownloadState>(
                   builder: (context, state) {
                     if (state is CompleteState) {
@@ -618,19 +623,20 @@ class _LessonHeaderState extends State<_LessonHeader> {
                                     Text(
                                       widget.download.mbProgress ?? "",
                                       textDirection: TextDirection.ltr,
-                                      style: TextStyle(color: AppColors.RED),
+                                      style: TextStyle(color: AppColors.LOGO_PRIMARY),
                                     )
                                   ],
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    widget.download
-                                        .cancelLesson(widget.lesson.id);
-                                  },
-                                  child: Padding(
-                                    padding: EdgeInsets.all(1.w),
-                                    child: const Icon(Icons.cancel,
-                                        color: AppColors.RED),
+                                Padding(
+                                  padding: EdgeInsets.all(1.w),
+                                  child:  TextButton(
+                                    onPressed: (){
+                                      widget.download
+                                          .cancelLesson(widget.lesson.id);
+                                    },
+                                  child:const Text("إلغاء التحميل",style:
+                                    TextStyle(color:
+                                    AppColors.LOGO_PRIMARY),),
                                   ),
                                 )
                               ],

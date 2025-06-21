@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+import 'package:salamat/constant/dimensions.dart';
 
-import 'package:my_project_new/widgets/custom_app_bar.dart';
+import 'package:salamat/widgets/custom_app_bar.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({
