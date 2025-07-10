@@ -49,6 +49,7 @@ class SubjectsScreen extends StatelessWidget {
               return SmartRefresher(
                 header: const AppRefresherHeader(),
                 footer: const AppFooter(),
+                enablePullDown: false,
                 enablePullUp: true,
                 controller: subjectsCubit.refreshController,
                 onLoading: () {

@@ -36,8 +36,9 @@ class SectionsScreen extends StatelessWidget {
 
             return SmartRefresher(
               enablePullUp: state is! GetSectionsLoadingState,
-              enablePullDown: state is! GetSectionsLoadingState,
+              enablePullDown: false,
               controller: sectionsCubit.refreshController,
+
               footer: CustomFooter(builder: (context, mode) {
                 return const SizedBox.shrink();
               }),
@@ -45,9 +46,9 @@ class SectionsScreen extends StatelessWidget {
                 sectionsCubit.getSections();
               },
               onRefresh: () {
-                sectionsCubit.refreshController.loadComplete();
-                sectionsCubit.page = 1;
-                sectionsCubit.getSections();
+                // sectionsCubit.refreshController.loadComplete();
+                // sectionsCubit.page = 1;
+                // sectionsCubit.getSections();
               },
               child: CustomScrollView(
                 slivers: [

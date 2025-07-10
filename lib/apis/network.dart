@@ -1,5 +1,8 @@
 
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:salamat/apis/urls.dart';
@@ -32,13 +35,14 @@ class Network {
         compact: true,
         maxWidth: 1000));
 
-    // (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-    //     (HttpClient client) {
-    //   client.badCertificateCallback =
-    //       (X509Certificate cert, String host, int port) => true;
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
+        () {
+      HttpClient client = HttpClient();
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
 
-    //   return client;
-    // };
+      return client;
+    };
   }
 
   static Future<Response> getData({

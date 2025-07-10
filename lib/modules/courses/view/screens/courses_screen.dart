@@ -54,6 +54,7 @@ class CoursesScreen extends StatelessWidget {
                   header: const AppRefresherHeader(),
                   footer: const AppFooter(),
                   enablePullUp: true,
+                  enablePullDown: false,
                   controller: coursesCubit.refreshController,
                   onLoading: () {
                     coursesCubit.getCourses(subjectId: subject.id);

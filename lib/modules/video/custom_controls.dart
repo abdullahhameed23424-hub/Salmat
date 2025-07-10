@@ -503,7 +503,7 @@ class _MaterialControlsState extends State<CustomControls>
                     ]),
                   ),
                   child:  const Text(
-                    "يتم جلب الفيديو الرجاء الانتظار",
+                    "يتم تحضير الفيديو الرجاء الانتظار..",
                     style: TextStyle(color: AppColors.LOGO_PRIMARY),
                   ))
             ],
