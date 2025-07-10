@@ -115,14 +115,14 @@ class ResultDialog extends StatelessWidget {
                     _buildRow(translate('pass_percentage', context),
                         '${result.examPassPercentage}%'),
                     SizedBox(height: 24.h),
-                    if (result.pass != true)
-                      CustomButton(
-                          borderRadius: BorderRadius.circular(12.r),
-                          label: translate('try_again', context),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            getTest();
-                          }),
+                    // if (result.pass != true)
+                    //   CustomButton(
+                    //       borderRadius: BorderRadius.circular(12.r),
+                    //       label: translate('try_again', context),
+                    //       onPressed: () {
+                    //         Navigator.pop(context);
+                    //         getTest();
+                    //       }),
                     SizedBox(height: 16.h),
                     if (withSkipButton) ...[
                       CustomButton(

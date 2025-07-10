@@ -26,6 +26,6 @@ class Urls {
   static const String myCourses = 'auth/courses';
   static const String points = 'points';
   static const String home = "home/mobile";
-   static String notifications({required int read, required int page}) =>
+  static String notifications({required int read, required int page}) =>
       'notifications?paginate=1&page=$page&mark_read=$read';
 }

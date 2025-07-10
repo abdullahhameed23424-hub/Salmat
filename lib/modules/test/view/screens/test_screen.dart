@@ -140,7 +140,7 @@ class SubmitButton extends StatelessWidget {
           onPressed: () {
             examCubit.submitExam(examId: examCubit.test.id);
           },
-          label: 'تحقق من الإجابات',
+          label: "إرسال الإجابات",
         ),
       ),
     );

@@ -28,9 +28,12 @@ class AppSharedPreferences {
   // ignore: constant_identifier_names
   static const String GUEST = 'GUEST';
   static String get getIsGuest => CacheHelper.getData(key: GUEST) ?? "ar";
+  
 
   static saveGuest(String value) =>
       CacheHelper.saveData(key: GUEST, value: value);
+
+
 
   static bool get isGuest => CacheHelper.contains(GUEST);
   static void get removeGust => CacheHelper.removeData(key: GUEST);

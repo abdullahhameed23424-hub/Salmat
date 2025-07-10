@@ -37,7 +37,7 @@ void main() async {
 
   // await NotificationsFunctions.init();
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");
-  // AppSharedPreferences.removeToken;
+  AppSharedPreferences.removeToken;
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -61,7 +61,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-
     super.initState();
 
     initDeepLinks();
@@ -121,7 +120,7 @@ class _MyAppState extends State<MyApp> {
 
               return MaterialApp(
                 navigatorKey: navigatorKey,
-              
+
                 home: const SplashScreen(),
                 theme: ThemeData(
                     scaffoldBackgroundColor: AppColors.LIGHTGRAY,

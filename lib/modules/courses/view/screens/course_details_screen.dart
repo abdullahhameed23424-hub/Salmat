@@ -200,8 +200,8 @@ class _Units extends StatelessWidget {
       children: List.generate(
         units.length,
         (index) => UnitCard(
-            unit: units[index],
-     ),
+          unit: units[index],
+        ),
       ),
     );
   }
@@ -325,7 +325,7 @@ class _CourseHeader extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               course.isFree
                                   ? translate('free', context)
-                                  : "${course.totalPrice} SP",
+                                  : "${course.totalPrice} ل.س",
                               style: titilliumBold.copyWith(
                                   fontWeight: FontWeight.w900,
                                   fontSize: 18.sp,
@@ -351,9 +351,7 @@ class _CourseHeader extends StatelessWidget {
                                         BlendMode.srcIn)),
                                 Positioned(
                                   child: Text(
-                                    course.isFree
-                                        ? translate('subscribe', context)
-                                        : translate('buy', context),
+                                    translate('subscribe', context),
                                     style: titilliumBold.copyWith(
                                         color: AppColors.WHITE),
                                   ),
