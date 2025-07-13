@@ -122,4 +122,13 @@ final class ChangePasswordErrorState extends AuthState {
 }
 
 //
- 
+final class DeleteImageLoadingState extends AuthState {}
+
+final class DeleteImageSuccessState extends AuthState {}
+
+final class DeleteImageErrorState extends AuthState {
+  DeleteImageErrorState({required this.message});
+  final String message;
+}
+
+  

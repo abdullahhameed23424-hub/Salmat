@@ -7,17 +7,19 @@ import 'package:salamat/constant/images.dart';
 import 'package:salamat/constant/public_constant.dart';
 import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/delete_dialog.dart';
 import 'package:salamat/widgets/image_viewer.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/pick_image_dialog.dart';
 import 'package:salamat/widgets/try_again.dart';
 
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key, required this.authCubit});
-  final AuthCubit authCubit;
+  ProfileScreen({super.key});
+
   final GlobalKey<ModernLoadingDialogState> loadingKey =
       GlobalKey<ModernLoadingDialogState>();
   @override
@@ -25,9 +27,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0),
       body: BlocProvider.value(
-        value: authCubit, //..getProfile(),
+        value: BottomNavScreen.authCubit..getProfile(),
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
+            final AuthCubit authCubit = context.read<AuthCubit>();
             if (state is EditProfileLoadingState) {
               ModernLoadingDialog.show(context, loadingKey);
             } else if (state is EditProfileSuccessState) {
@@ -36,6 +39,20 @@ class ProfileScreen extends StatelessWidget {
               }
               authCubit.getProfile();
             } else if (state is EditProfileErrorState) {
+              if (loadingKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              customSnackBar(context, success: 0, message: state.message);
+            } else if (state is DeleteImageLoadingState) {
+              ModernLoadingDialog.show(context, loadingKey);
+            } else if (state is DeleteImageSuccessState) {
+              if (loadingKey.currentState != null) {
+                Navigator.pop(context);
+              }
+              authCubit.getProfile();
+              customSnackBar(context,
+                  success: 1, message: translate('image_deleted', context));
+            } else if (state is DeleteImageErrorState) {
               if (loadingKey.currentState != null) {
                 Navigator.pop(context);
               }
@@ -112,7 +129,30 @@ class ProfileScreen extends StatelessWidget {
                                   Icons.edit_outlined,
                                   color: AppColors.LOGO_PRIMARY,
                                 )),
-                          )
+                          ),
+                          if (!authCubit.user.image.contains("default"))
+                            Positioned(
+                              bottom: -3,
+                              right: 0,
+                              child: IconButton(
+                                  style: IconButton.styleFrom(
+                                      backgroundColor:
+                                          AppColors.RED.withAlpha(120)),
+                                  onPressed: () {
+                                    DeleteDialog.show(context,
+                                        title:
+                                            translate('delete_image', context),
+                                        content: translate(
+                                            'delete_image_message', context),
+                                        onConfirm: () {
+                                      authCubit.deleteImage();
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: AppColors.WHITE,
+                                  )),
+                            )
                         ],
                       ),
                       SizedBox(height: 8.h),

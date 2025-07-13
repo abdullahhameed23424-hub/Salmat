@@ -38,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.pop(context);
                   }
                   AppSharedPreferences.removeToken;
-                  pushAndRemoveUntiTo(context,
+                  pushAndRemoveUntilTo(context,
                       toPage: const GetStartedScreen());
                 }
                 if (state is LogoutErrorState) {

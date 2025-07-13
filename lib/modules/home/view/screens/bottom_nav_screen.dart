@@ -24,6 +24,7 @@ final ValueNotifier selectedPage = ValueNotifier<int>(1);
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
+  static final AuthCubit authCubit = AuthCubit();
 
   @override
   State<BottomNavScreen> createState() => BottomNavScreenState();
@@ -47,11 +48,10 @@ class BottomNavScreenState extends State<BottomNavScreen> {
 
   final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey();
 
-  final AuthCubit authCubit = AuthCubit();
   @override
   void initState() {
     if (AppSharedPreferences.hasToken) {
-      authCubit.getProfile();
+      BottomNavScreen.authCubit.getProfile();
     }
     super.initState();
   }
@@ -65,7 +65,7 @@ class BottomNavScreenState extends State<BottomNavScreen> {
             key: scaffoldkey,
             appBar: PreferredSize(
               preferredSize: Size(1.sw, 90.h),
-              child: _AppBar(scaffoldkey, authCubit),
+              child: _AppBar(scaffoldkey   ),
             ),
             extendBody: true,
             body: taps[selectedPage.value]["screen"],
@@ -79,15 +79,15 @@ class BottomNavScreenState extends State<BottomNavScreen> {
 }
 
 class _AppBar extends StatelessWidget {
-  const _AppBar(this.scaffoldkey, this.authCubit);
+  const _AppBar(this.scaffoldkey   );
   final GlobalKey<ScaffoldState> scaffoldkey;
-  final AuthCubit authCubit;
+ 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: authCubit,
+      value: BottomNavScreen.authCubit,
       child: BlocBuilder<AuthCubit, AuthState>(
-        bloc: authCubit,
+        bloc: BottomNavScreen.authCubit,
         builder: (context, state) {
           final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
           if (state is GetProfileErrorState) {
@@ -162,7 +162,7 @@ class _UserHeader extends StatelessWidget {
         pushTo(
             context: context,
             toPage: ProfileScreen(
-              authCubit: authCubit,
+             
             ));
       },
       child: Row(

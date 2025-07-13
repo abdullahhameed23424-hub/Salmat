@@ -131,7 +131,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 else
                   TextButton(
                     onPressed: () {
-                      pushAndRemoveUntiTo(context, toPage: const GetStartedScreen());
+                      pushAndRemoveUntilTo(context,
+                          toPage: const GetStartedScreen());
                     },
                     child: Text(
                       'لكتابة تعليق عليك تسجيل الدخول',

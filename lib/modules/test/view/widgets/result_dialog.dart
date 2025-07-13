@@ -123,28 +123,28 @@ class ResultDialog extends StatelessWidget {
                     //         Navigator.pop(context);
                     //         getTest();
                     //       }),
-                    SizedBox(height: 16.h),
-                    if (withSkipButton) ...[
-                      CustomButton(
-                          borderRadius: BorderRadius.circular(12.r),
-                          backgroundColor: AppColors.PURPLE_LIGHT,
-                          label:
-                              translate('skip_test_and_show_answers', context),
-                          onPressed: () async {
-                            final bool? shouldSkip =
-                                await ConfirmationDialog.show(
-                                    context: context,
-                                    title: translate('skip_exam', context),
-                                    message: translate(
-                                        'skip_exam_message', context));
+                    // SizedBox(height: 16.h),
+                    // if (withSkipButton) ...[
+                    //   CustomButton(
+                    //       borderRadius: BorderRadius.circular(12.r),
+                    //       backgroundColor: AppColors.PURPLE_LIGHT,
+                    //       label:
+                    //           translate('skip_test_and_show_answers', context),
+                    //       onPressed: () async {
+                    //         final bool? shouldSkip =
+                    //             await ConfirmationDialog.show(
+                    //                 context: context,
+                    //                 title: translate('skip_exam', context),
+                    //                 message: translate(
+                    //                     'skip_exam_message', context));
 
-                            if (shouldSkip == true) {
-                              lessonsCubit.skipTest(
-                                  lessonId: lesson.id, unitId: lesson.unitId!);
-                            }
-                          }),
-                      SizedBox(height: 16.h),
-                    ],
+                    //         if (shouldSkip == true) {
+                    //           lessonsCubit.skipTest(
+                    //               lessonId: lesson.id, unitId: lesson.unitId!);
+                    //         }
+                    //       }),
+                    //   SizedBox(height: 16.h),
+                    // ],
                     CustomButton(
                       onPressed: () => Navigator.pop(context),
                       label: translate('close', context),

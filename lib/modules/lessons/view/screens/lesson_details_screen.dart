@@ -15,12 +15,12 @@ import 'package:salamat/modules/lessons/models/next_lesson_button_status.dart';
 import 'package:salamat/modules/lessons/view/screens/lessonss_screen.dart';
 import 'package:salamat/modules/lessons/view/widgets/attachment_card.dart';
 import 'package:salamat/modules/lessons/view/widgets/custom_exam_button.dart';
-import 'package:salamat/modules/lessons/view/widgets/lesson_video.dart';
 import 'package:salamat/modules/lessons/view/widgets/resolution_card.dart';
 import 'package:salamat/modules/test/view/screens/test_screen.dart';
 import 'package:salamat/modules/video/cubit/video_cubit.dart';
 import 'package:salamat/modules/video/models/my_viedeo.dart';
 import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/utils/screen_recording_utils.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/app_scaffold.dart';
 import 'package:salamat/widgets/confirmation_dialog.dart';
@@ -60,28 +60,23 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   void initState() {
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
-    // disableScreenshot();
+
+    // Enable screen recording blocking for lesson screen
+    ScreenRecordingUtils.enableScreenRecordingBlock();
 
     super.initState();
   }
 
-  // void disableScreenshot() async {
-  //   try {
-  //     bool result = await _noScreenshot.screenshotOff();
-  //     print('Screenshot Off: $result');
-  //   } catch (error) {
-  //     print('Screenshot error $error');
-  //   }
-  // }
-
   @override
   void dispose() {
-    // _noScreenshot.screenshotOn();
     offlineVideoCubit?.dispose();
 
     onlineVideoCubit?.dispose();
 
     downloadCubit.dispose();
+
+    // Disable screen recording blocking when leaving lesson screen
+    ScreenRecordingUtils.disableScreenRecordingBlock();
 
     super.dispose();
   }

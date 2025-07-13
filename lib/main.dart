@@ -37,7 +37,7 @@ void main() async {
 
   // await NotificationsFunctions.init();
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");
-  AppSharedPreferences.removeToken;
+  // AppSharedPreferences.removeToken;
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
