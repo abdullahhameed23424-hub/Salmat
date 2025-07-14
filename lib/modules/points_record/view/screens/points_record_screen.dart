@@ -75,8 +75,9 @@ class PointsRecordScreen extends StatelessWidget {
                                       translate(
                                           'greeting_message',
                                           args: [
-                                            pointsRecordCubit
-                                                .pointsResponse.data.totlaPoints
+                                            pointsRecordCubit.pointsResponse
+                                                .data.original.data.points
+                                                .toString()
                                           ],
                                           context),
                                       style: titilliumBold.copyWith(
@@ -104,22 +105,24 @@ class PointsRecordScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       label: translate("how_get_pints", context),
                       onPressed: () {
-                        GettingPointsSheet.show(context);
+                        GettingPointsSheet.show(context,
+                            pointsRecordCubit.pointsResponse.infoPoints.text);
                       },
                       backgroundColor: AppColors.PURPLE_LIGHT,
                     ),
                   ),
                 ),
-                if(pointsRecordCubit
-                    .pointsResponse.data.pointsList.isNotEmpty)
-                SliverList.separated(
-                  itemCount:
-                      pointsRecordCubit.pointsResponse.data.totlaPoints.length,
-                  itemBuilder: (context, index) => PointsCard(
-                      points: pointsRecordCubit
-                          .pointsResponse.data.pointsList[index]),
-                  separatorBuilder: (context, index) => SizedBox(height: 10.h),
-                )
+                if (pointsRecordCubit
+                    .pointsResponse.data.original.data.history.isNotEmpty)
+                  SliverList.separated(
+                    itemCount: pointsRecordCubit
+                        .pointsResponse.data.original.data.history.length,
+                    itemBuilder: (context, index) => PointsCard(
+                        points: pointsRecordCubit
+                            .pointsResponse.data.original.data.history[index]),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 10.h),
+                  )
               ],
             );
           },

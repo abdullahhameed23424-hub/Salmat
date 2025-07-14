@@ -18,13 +18,15 @@ import 'package:salamat/modules/test/view/widgets/test_headar.dart';
 import 'package:salamat/modules/test/view/widgets/final_result_card.dart';
 import 'package:salamat/modules/test/view/widgets/questions_list.dart';
 import 'package:salamat/utils/global_functions.dart';
-import 'package:salamat/utils/screen_recording_utils.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/app_scaffold.dart';
 import 'package:salamat/widgets/confirmation_dialog.dart';
 import 'package:salamat/widgets/custom_button.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/try_again.dart';
+
+
+
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key, required this.examId, required this.lesson});
@@ -41,14 +43,10 @@ class _TestScreenState extends State<TestScreen> {
   @override
   void initState() {
     super.initState();
-    // Enable screen recording blocking for test screen
-    ScreenRecordingUtils.enableScreenRecordingBlock();
   }
 
   @override
   void dispose() {
-    // Disable screen recording blocking when leaving test screen
-    ScreenRecordingUtils.disableScreenRecordingBlock();
     super.dispose();
   }
 
