@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
 class Urls {
-  // static const String domain = "https://slamat-back.icrcompany.net";
-  static const String domain = "https://back.salamatedu.com";
+  static const String domain = "https://slamat-back.icrcompany.net";
+  // static const String domain = "https://back.salamatedu.com";
   static const String storageUrl = "$domain/storage/";
   static const String baseUrl = "$domain/api/v1/";
   static const String login = "login";
@@ -26,6 +26,6 @@ class Urls {
   static const String myCourses = 'auth/courses';
   static const String points = 'points';
   static const String home = "home/mobile";
-   static String notifications({required int read, required int page}) =>
+  static String notifications({required int read, required int page}) =>
       'notifications?paginate=1&page=$page&mark_read=$read';
 }

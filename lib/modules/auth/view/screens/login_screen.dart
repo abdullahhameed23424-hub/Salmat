@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                         customSnackBar(context,
                             success: 0, message: state.message);
                       } else if (state is LoginSuccessState) {
-                        pushAndRemoveUntiTo(context,
+                        pushAndRemoveUntilTo(context,
                             toPage: const BottomNavScreen());
                       }
                     },

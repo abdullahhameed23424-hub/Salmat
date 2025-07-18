@@ -62,6 +62,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                       color: Colors.green,
                     ),
                     ContactItem(
+                      icon: FontAwesomeIcons.whatsapp,
+                      label: "قناة سلامات على الواتساب",
+                      link: infoCubit.infoResponse.contact.whatsappChannel,
+                      color: Colors.green,
+                    ),
+                    ContactItem(
                       icon: FontAwesomeIcons.phone,
                       label: 'اتصال',
                       link: infoCubit.infoResponse.contact.phone,

@@ -36,6 +36,7 @@ class CoursesScreen extends StatelessWidget {
               builder: (context, state) {
                 final CoursesCubit coursesCubit = context.read<CoursesCubit>();
 
+                print("state is: $state");
                 if (state is GetCoursesLoadingState) {
                   return const AppLoading();
                 }

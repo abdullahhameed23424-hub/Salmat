@@ -141,6 +141,21 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> deleteImage() async {
+    emit(DeleteImageLoadingState());
+    try {
+      final FormData formData =
+          FormData.fromMap({"_method": "PUT", "image": null});
+
+      await Network.postData(url: "${Urls.profile}/update", data: formData);
+      emit(DeleteImageSuccessState());
+    } on DioException catch (error) {
+      emit(DeleteImageErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(DeleteImageErrorState(message: unknownError()));
+    }
+  }
+
   File? userImageFile;
   Future<void> pickImage({required ImageSource imageSource}) async {
     final ImagePicker picker = ImagePicker();
@@ -162,25 +177,28 @@ class AuthCubit extends Cubit<AuthState> {
     final dir = await getTemporaryDirectory();
     final targetPath =
         path.join(dir.path, 'compressed_${path.basename(file.path)}');
+    try {
+      XFile? result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 80,
+        minWidth: 1024,
+        minHeight: 1024,
+      );
 
-    XFile? result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      targetPath,
-      quality: 80,
-      minWidth: 1024,
-      minHeight: 1024,
-    );
+      if (result != null) {
+        File compressedFile = File(result.path);
 
-    if (result != null) {
-      File compressedFile = File(result.path);
+        int compressedSize = compressedFile.lengthSync();
+        print(
+            "Compressed image size: ${(compressedSize / 1024 / 1024).toStringAsFixed(2)} MB");
 
-      int compressedSize = compressedFile.lengthSync();
-      print(
-          "Compressed image size: ${(compressedSize / 1024 / 1024).toStringAsFixed(2)} MB");
-
-      return compressedFile;
+        return compressedFile;
+      }
+    } catch (e) {
+      return file;
     }
 
-    return null;
+    return file;
   }
 }

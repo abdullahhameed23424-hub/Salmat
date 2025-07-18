@@ -42,7 +42,7 @@ class MoreInfoScreen extends StatelessWidget {
         "icon": Icons.login_outlined,
         "title": "login",
         "onTap": (BuildContext context) {
-          pushAndRemoveUntiTo(context, toPage: const GetStartedScreen());
+          pushAndRemoveUntilTo(context, toPage: const GetStartedScreen());
         }
       },
     if (AppSharedPreferences.hasToken)
@@ -50,23 +50,18 @@ class MoreInfoScreen extends StatelessWidget {
         "icon": Icons.person_outline_outlined,
         "title": "profile",
         "onTap": (BuildContext context) {
-          pushTo(
-              context: context,
-              toPage: ProfileScreen(
-                authCubit: AuthCubit()..getProfile(),
-              ));
+          pushTo(context: context, toPage: ProfileScreen());
         }
       },
     if (AppSharedPreferences.hasToken)
       {
         "icon": Icons.play_lesson,
-        "title": "my_subjects",// app owner wants its name my_subjects but it is Courses screen
+        "title":
+            "my_subjects", // app owner wants its name my_subjects but it is Courses screen
         "onTap": (BuildContext context) {
           pushTo(context: context, toPage: const MyCoursesScreen());
         }
       },
-
-
     if (AppSharedPreferences.hasToken)
       {
         "image": Images.pointsIcon,
@@ -80,8 +75,12 @@ class MoreInfoScreen extends StatelessWidget {
         "icon": Icons.download_outlined,
         "title": "downloaded_lessons",
         "onTap": (BuildContext context) {
-          pushTo(context: context, toPage: const DownloadedMaterialScreen(
-            title: 'موادي',type: DownloadedMaterialType.subject,));
+          pushTo(
+              context: context,
+              toPage: const DownloadedMaterialScreen(
+                title: 'موادي',
+                type: DownloadedMaterialType.subject,
+              ));
         }
       },
     {

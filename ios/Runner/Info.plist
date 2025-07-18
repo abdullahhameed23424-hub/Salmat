@@ -45,5 +45,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Screen recording detection support -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to detect screen recording for security purposes.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs microphone access to detect screen recording for security purposes.</string>
 </dict>
 </plist>

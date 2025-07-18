@@ -11,7 +11,7 @@ class Unit {
   final String totalLessonsTime;
   final int lessonsCount;
   final Course? course;
-  final isLocke
+  final bool isLockedByAdmin;
   final bool isLocked;
   final String lockReason;
   Unit({
@@ -23,6 +23,7 @@ class Unit {
     required this.totalLessonsTime,
     required this.lessonsCount,
     required this.course,
+    required this.isLockedByAdmin,
     required this.isLocked,
     required this.lockReason,
   });
@@ -31,6 +32,7 @@ class Unit {
         lockReason: json['lock_reason'] ?? "الوحدة مقفلة",
 
         isLocked: boolConverter(json['is_locked']),
+        isLockedByAdmin: boolConverter(json['is_locked_by_admin']),
         id: json["id"],
         course: json["parent_section"] != null
             ? Course.fromJson(json["parent_section"])

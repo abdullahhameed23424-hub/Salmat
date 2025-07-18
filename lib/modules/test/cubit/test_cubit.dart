@@ -35,7 +35,7 @@ class TestCubit extends Cubit<TestState> {
 
       if (!AppSharedPreferences.isGuest &&
           test.result.pass == null &&
-          // test.isSubscribed &&
+          // test.isSubscribed &&   
           !test.isSolving &&
           !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);
