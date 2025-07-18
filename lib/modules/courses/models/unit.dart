@@ -11,6 +11,7 @@ class Unit {
   final String totalLessonsTime;
   final int lessonsCount;
   final Course? course;
+  final isLocke
   final bool isLocked;
   final String lockReason;
   Unit({
@@ -28,6 +29,7 @@ class Unit {
 
   factory Unit.fromJson(Map<String, dynamic> json) => Unit(
         lockReason: json['lock_reason'] ?? "الوحدة مقفلة",
+
         isLocked: boolConverter(json['is_locked']),
         id: json["id"],
         course: json["parent_section"] != null

@@ -24,6 +24,7 @@ class CoursesCubit extends Cubit<CoursesState> {
 
   Future<void> getCourses({required int subjectId}) async {
     if (page == 1) {
+      print("show loading");
       emit(GetCoursesLoadingState());
     }
     String key = "${Urls.sections}/$subjectId?type=courses&page=1";
@@ -34,10 +35,10 @@ class CoursesCubit extends Cubit<CoursesState> {
 
 
           courses = coursesResponse.data.courses;
-
+          emit(GetCoursesSuccessState());
 
       }
-      emit(GetCoursesSuccessState());
+
 
     }catch(error){
       //
