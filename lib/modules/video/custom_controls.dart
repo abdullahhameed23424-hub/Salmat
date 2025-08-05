@@ -112,13 +112,13 @@ class _MaterialControlsState extends State<CustomControls>
             absorbing: notifier.hideStuff,
             child: Stack(
               children: [
-                if (_displayBufferingIndicator)
-                  const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.PRIMARY,
-                    ),
-                  )
-                else
+                // if (_displayBufferingIndicator)
+                //   const Center(
+                //     child: CircularProgressIndicator(
+                //       color: AppColors.PRIMARY,
+                //     ),
+                //   )
+                // else
                   _buildHitArea(),
                 _buildActionBar(),
                 Column(
@@ -721,6 +721,7 @@ class _MaterialControlsState extends State<CustomControls>
         _displayBufferingIndicator = false;
       }
     } else {
+
       _displayBufferingIndicator = controller.value.isBuffering;
     }
 

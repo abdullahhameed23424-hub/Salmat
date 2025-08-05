@@ -47,6 +47,8 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
 
+    emit(VideoLoadingState());
+
     selectedQuality = 0;
     if (selected != -1 && selected < streamsList.length) {
       selectedQuality = selected;
@@ -58,7 +60,12 @@ class VideoCubit extends Cubit<VideoState> {
     );
 
     initStream = controller!.initialize();
-    await initStream;
+    try {
+      await initStream;
+    }catch(error){
+      emit(VideoErrorState(error.toString()));
+      return;
+    }
     await controller!.seekTo(duration);
 
     chewieController = ChewieController(
@@ -69,6 +76,7 @@ class VideoCubit extends Cubit<VideoState> {
       ),
       autoPlay: false,
     );
+    emit(VideoSuccessfulState());
 
 
     return await initStream;

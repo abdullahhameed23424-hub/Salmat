@@ -202,8 +202,22 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                           ),
                                         );
                                       }
-                                      return VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
+
+                                      if (state is VideoErrorState) {
+                                        return TryAgain(
+                                          withImage: false,
+                                          small: true,
+                                          message: state.error,
+                                          onTap: () {
+                                            context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                          },
+                                        );
+                                      }
+                                      return AspectRatio(
+                                        aspectRatio:context.read<VideoCubit>().controller!.value.aspectRatio ,
+                                        child: VideoWidget2(
+                                          videoCubit: context.read<VideoCubit>(),
+                                        ),
                                       );
                                     },
                                   ),
@@ -217,23 +231,37 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                   ..initFromNetwork2(
                                       AppSharedPreferences.getQuality,
                                       Duration.zero),
-                                child: AspectRatio(
-                                  aspectRatio: 16 / 9,
-                                  child: BlocBuilder<VideoCubit, VideoState>(
-                                    builder: (context, state) {
-                                      if (state is VideoLoadingState) {
-                                        return const Center(
+                                child: BlocBuilder<VideoCubit, VideoState>(
+                                  builder: (context, state) {
+                                    if (state is VideoLoadingState) {
+                                      return const AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child:  Center(
                                           child: CircularProgressIndicator(
                                             color: AppColors.PRIMARY,
                                           ),
-                                        );
-                                      }
-
-                                      return VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
+                                        ),
                                       );
-                                    },
-                                  ),
+                                    }
+
+                                    if (state is VideoErrorState) {
+                                      return TryAgain(
+                                        withImage: false,
+                                        small: true,
+                                        message: state.error,
+                                        onTap: () {
+                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                        },
+                                      );
+                                    }
+                                
+                                    return AspectRatio(
+                                      aspectRatio: context.read<VideoCubit>().controller!.value.aspectRatio,
+                                      child: VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                         // const ServerOptions(),

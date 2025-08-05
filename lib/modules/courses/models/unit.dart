@@ -29,7 +29,7 @@ class Unit {
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) => Unit(
-        lockReason: json['lock_reason'] ?? "الوحدة مقفلة",
+        lockReason: json['lock_reason'] ?? "الوحدة مقفلة من الادارة",
 
         isLocked: boolConverter(json['is_locked']),
         isLockedByAdmin: boolConverter(json['is_locked_by_admin']),
