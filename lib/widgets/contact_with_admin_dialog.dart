@@ -48,7 +48,8 @@ class ContactWithAdminDialog extends StatelessWidget {
                     onPressed: () {
                       launchUrl(
                           Uri.parse(
-                              "https://wa.me/${cubit.infoResponse.adminContact.phone}"),mode: LaunchMode.externalApplication);
+                              "https://wa.me/${cubit.infoResponse.contact.phone}"),
+                          mode: LaunchMode.externalApplication);
                     },
                     child: Text(
                       translate("tap_to_contact", context),
