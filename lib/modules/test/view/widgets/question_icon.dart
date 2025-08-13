@@ -24,7 +24,6 @@ class QuestionIcon extends StatelessWidget {
         ((examCubit.test.result.pass == true) ||
             ((examCubit.test.result.pass == false) &&
                 (examCubit.test.studentExam?.skipped ?? false)))) {
-                  
       if (question.note == '' && question.video == '' && question.image == '') {
         return _OnlyIcon();
       }
@@ -48,10 +47,7 @@ class _OnlyIcon extends StatelessWidget {
             color: Colors.white,
             shape: BoxShape.circle,
           ),
-          child: Image.asset(
-            Images.questionIcon,
-            width: 45.w,
-          )),
+          child: Image.asset(Images.questionIcon, width: 45.w)),
     );
   }
 }

@@ -8,8 +8,8 @@ import 'package:salamat/modules/test/cubit/test_cubit.dart';
 import 'package:salamat/modules/test/view/widgets/test_info.dart';
 import 'package:salamat/utils/sliver_delegate.dart';
 
-class CountersSqures extends StatelessWidget {
-  const CountersSqures({
+class CountersSquares extends StatelessWidget {
+  const CountersSquares({
     super.key,
     required this.testCubit,
   });
