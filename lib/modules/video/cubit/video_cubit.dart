@@ -55,8 +55,7 @@ class VideoCubit extends Cubit<VideoState> {
     }
     controller = VideoPlayerController.networkUrl(
       Uri.parse(streamsList[selectedQuality].link),
-      videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true, allowBackgroundPlayback: true),
+      viewType: VideoViewType.platformView,
     );
 
     initStream = controller!.initialize();
@@ -117,10 +116,8 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromFile(String path) async {
     controller = VideoPlayerController.file(File(path),
-        videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true,
-          allowBackgroundPlayback: true,
-        ));
+      viewType: VideoViewType.platformView,
+        );
     initStream = controller!.initialize();
     await initStream;
     chewieController = ChewieController(
