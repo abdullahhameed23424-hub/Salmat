@@ -90,6 +90,10 @@ class AuthCubit extends Cubit<AuthState> {
       notificationCount = response.data['notifications_count'];
       emit(GetProfileSuccessState());
     } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        emit(UnAuthenticatedState());
+        return;
+      }
       emit(GetProfileErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
       emit(GetProfileErrorState(message: unknownError()));

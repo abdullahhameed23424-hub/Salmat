@@ -130,5 +130,6 @@ final class DeleteImageErrorState extends AuthState {
   DeleteImageErrorState({required this.message});
   final String message;
 }
-
+ 
+final class UnauthenticatedState extends AuthState {}
   
