@@ -40,7 +40,7 @@ class ContactWithAdminDialog extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                   child: Text(
-                    translate('contact_admin_to_buy', context),
+                    translate('purchase_contact_department', context),
                     style: titilliumRegular,
                   ),
                 ),
@@ -58,7 +58,7 @@ class ContactWithAdminDialog extends StatelessWidget {
                     )),
                 const Spacer(),
                 Image.asset(
-                  Images.contactWhatsapp,
+                  Images.contact,
                   width: 1.sw,
                 )
               ],

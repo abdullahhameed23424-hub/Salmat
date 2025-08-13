@@ -30,7 +30,7 @@ class CreateAccountSheet extends StatelessWidget {
           Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               child: Text(
-                translate('welcome_salamat', context),
+                translate('account_creation_contact_department', context),
                 style: titilliumBold.copyWith(color: AppColors.WHITE),
                 textAlign: TextAlign.center,
               )),

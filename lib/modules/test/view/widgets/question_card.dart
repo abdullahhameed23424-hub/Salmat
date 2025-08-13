@@ -48,8 +48,6 @@ class _QuestionCardState extends State<QuestionCard> {
                   widget.question.options[optionIndex].isChosen;
               final bool isTrue = widget.question.options[optionIndex].isTrue;
               Color? tileColor;
-              print(
-                  "==2====Option: ${widget.question.options[optionIndex].name}, is_true: ${widget.question.options[optionIndex].isTrue} (is_chosen: ${widget.question.options[optionIndex].isChosen})");
               final bool isSuccessIn = (widget.test.result.pass == true ||
                   (widget.test.result.pass == false &&
                       (widget.test.studentExam?.skipped ?? false)));
@@ -86,7 +84,6 @@ class _QuestionCardState extends State<QuestionCard> {
                     child: HtmlWidget(
                       widget.question.options[optionIndex].name,
                       textStyle: titilliumRegular,
-
                     ),
                   ),
                 ),

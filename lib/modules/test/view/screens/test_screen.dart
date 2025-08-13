@@ -25,9 +25,6 @@ import 'package:salamat/widgets/custom_button.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/try_again.dart';
 
-
-
-
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key, required this.examId, required this.lesson});
   final int examId;
@@ -121,7 +118,7 @@ class _TestScreenState extends State<TestScreen> {
               child: CustomScrollView(
                 slivers: [
                   ExamHeader(description: testCubit.test.description),
-                  CountersSqures(testCubit: testCubit),
+                  CountersSquares(testCubit: testCubit),
                   QuestionsList(examCubit: testCubit),
                   if (!testCubit.isSolving)
                     SliverToBoxAdapter(

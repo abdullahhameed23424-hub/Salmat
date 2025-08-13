@@ -145,13 +145,11 @@ class LoginScreen extends StatelessWidget {
                                     CreateAccountSheet.show(
                                       context,
                                       onCall: () {
-                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit.infoResponse.adminContact
-                                                .phone)) {
-                                          EasyLauncher.call(
-                                              number: infoCubit.infoResponse
-                                                  .adminContact.phone);
-                                        }
+                                        EasyLauncher.url(
+                                            url:
+                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                                            mode: Mode.externalApp);
+
                                         Navigator.pop(context);
                                       },
                                     );
@@ -167,13 +165,11 @@ class LoginScreen extends StatelessWidget {
                                     RecoverAccountSheet.show(
                                       context,
                                       onCall: () {
-                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit.infoResponse.adminContact
-                                                .phone)) {
-                                          EasyLauncher.call(
-                                              number: infoCubit.infoResponse
-                                                  .adminContact.phone);
-                                        }
+                                        EasyLauncher.url(
+                                            url:
+                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                                            mode: Mode.externalApp);
+
                                         Navigator.pop(context);
                                       },
                                     );
