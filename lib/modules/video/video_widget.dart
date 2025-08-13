@@ -36,11 +36,12 @@ class VideoWidget2 extends StatefulWidget {
 
 class _VideoWidget2State extends State<VideoWidget2> {
   late ChewieController chewieController;
+
   @override
   void initState() {
     chewieController = ChewieController(
         videoPlayerController: widget.videoCubit.controller!,
-        aspectRatio: 16 / 9,
+        aspectRatio: widget.videoCubit.controller!.value.aspectRatio,
         customControls: CustomControls(
           videoCubit: widget.videoCubit,
         ),

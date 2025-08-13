@@ -21,7 +21,7 @@ class UnitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (unit.isLocked) {
+        if (unit.isLocked || unit.isLockedByAdmin) {
           customSnackBar(context, success: 2, message: unit.lockReason);
         } else {
           pushTo(context: context, toPage: LessonsScreen(unit: unit));
@@ -42,7 +42,7 @@ class UnitCard extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Image.asset(
-                  !unit.isLocked ? Images.unlockedUnit : Images.lockedUnit,
+                  !unit.isLocked && !unit.isLockedByAdmin ? Images.unlockedUnit : Images.lockedUnit,
                   width: 24.w),
               SizedBox(width: 10.w),
               Expanded(
