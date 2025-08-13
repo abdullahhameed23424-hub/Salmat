@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/test/cubit/test_cubit.dart';
 import 'package:salamat/modules/test/models/test_response.dart';
 import 'package:salamat/modules/test/view/widgets/question_card.dart';
@@ -60,16 +61,18 @@ class _QuestionFormState extends State<QuestionForm> {
           QuestionIcon(
               question: widget.question,
               examCubit: widget.examCubit), // to go to explanation screen
-          QutionNumber(widget: widget),
+          QuestionNumber(widget: widget),
+          QuestionNumber(widget: widget),
+          QuestionDegree(widget: widget)
         ],
       ),
     );
   }
 }
 
-class QutionNumber extends StatelessWidget {
-  const QutionNumber({
-    super.key, 
+class QuestionNumber extends StatelessWidget {
+  const QuestionNumber({
+    super.key,
     required this.widget,
   });
 
@@ -88,6 +91,35 @@ class QutionNumber extends StatelessWidget {
         child: Text(
           (widget.index + 1).toString(),
           style: titilliumBold.copyWith(color: Colors.white, fontSize: 20.sp),
+        ),
+      ),
+    );
+  }
+}
+
+class QuestionDegree extends StatelessWidget {
+  const QuestionDegree({
+    super.key,
+    required this.widget,
+  });
+
+  final QuestionForm widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        decoration: BoxDecoration(
+            color: AppColors.PRIMARY, borderRadius: BorderRadius.circular(5)),
+        child: Text(
+          translate("marks", context,
+              args: [widget.question.degree.toString()]),
+          style:
+              titilliumBold.copyWith(color: AppColors.WHITE, fontSize: 14.sp),
         ),
       ),
     );

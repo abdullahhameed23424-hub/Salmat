@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:salamat/apis/network.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/modules/auth/view/screens/login_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 
 import 'package:salamat/constant/images.dart';
@@ -65,7 +67,7 @@ class BottomNavScreenState extends State<BottomNavScreen> {
             key: scaffoldkey,
             appBar: PreferredSize(
               preferredSize: Size(1.sw, 90.h),
-              child: _AppBar(scaffoldkey   ),
+              child: _AppBar(scaffoldkey),
             ),
             extendBody: true,
             body: taps[selectedPage.value]["screen"],
@@ -79,15 +81,22 @@ class BottomNavScreenState extends State<BottomNavScreen> {
 }
 
 class _AppBar extends StatelessWidget {
-  const _AppBar(this.scaffoldkey   );
+  const _AppBar(this.scaffoldkey);
   final GlobalKey<ScaffoldState> scaffoldkey;
- 
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: BottomNavScreen.authCubit,
-      child: BlocBuilder<AuthCubit, AuthState>(
+      child: BlocConsumer<AuthCubit, AuthState>(
         bloc: BottomNavScreen.authCubit,
+        listener: (context, state) {
+          if (state is UnAuthenticatedState) {
+            AppSharedPreferences.removeToken;
+            Network.init();
+            pushAndRemoveUntilTo(context, toPage: LoginScreen());
+          }
+        },
         builder: (context, state) {
           final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
           if (state is GetProfileErrorState) {
@@ -159,11 +168,7 @@ class _UserHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(
-            context: context,
-            toPage: ProfileScreen(
-             
-            ));
+        pushTo(context: context, toPage: ProfileScreen());
       },
       child: Row(
         spacing: 10.w,

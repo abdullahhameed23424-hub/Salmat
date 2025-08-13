@@ -50,7 +50,7 @@ class Images {
   static const String hoursCircle = "assets/Images/hours_circle.png";
   static const String lessonsCircle = "assets/Images/lessons_circle.png";
   static const String unitsCircle = "assets/Images/units_circle.png";
-  static const String contactWhatsapp = "assets/Images/contact_whatsapp.png";
+  static const String contact = "assets/Images/contact.png";
   static const String privacyPolicyTop = "assets/Images/privacy_policy_top.png";
   static const String completedTestResult =
       "assets/Images/completed_test_result.png";

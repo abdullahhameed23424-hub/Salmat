@@ -40,7 +40,7 @@ class _LessonVideoState extends State<LessonVideo> {
   @override
   Widget build(BuildContext context) {
     if (widget.lesson.myVideos.isEmpty) {
-      return AspectRatio(
+      return const AspectRatio(
           aspectRatio: 16 / 9, child: Center(child: Text('لا يوجد فيديو ):')));
     }
     return ClipRRect(

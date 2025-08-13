@@ -20,7 +20,6 @@ import 'package:salamat/modules/test/view/screens/test_screen.dart';
 import 'package:salamat/modules/video/cubit/video_cubit.dart';
 import 'package:salamat/modules/video/models/my_viedeo.dart';
 import 'package:salamat/utils/global_functions.dart';
-import 'package:salamat/utils/screen_recording_utils.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/app_scaffold.dart';
 import 'package:salamat/widgets/confirmation_dialog.dart';
@@ -61,9 +60,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
 
-    // Enable screen recording blocking for lesson screen
-    ScreenRecordingUtils.enableScreenRecordingBlock();
-
     super.initState();
   }
 
@@ -74,9 +70,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     onlineVideoCubit?.dispose();
 
     downloadCubit.dispose();
-
-    // Disable screen recording blocking when leaving lesson screen
-    ScreenRecordingUtils.disableScreenRecordingBlock();
 
     super.dispose();
   }
@@ -209,8 +202,22 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                           ),
                                         );
                                       }
-                                      return VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
+
+                                      if (state is VideoErrorState) {
+                                        return TryAgain(
+                                          withImage: false,
+                                          small: true,
+                                          message: state.error,
+                                          onTap: () {
+                                            context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                          },
+                                        );
+                                      }
+                                      return AspectRatio(
+                                        aspectRatio:context.read<VideoCubit>().controller!.value.aspectRatio ,
+                                        child: VideoWidget2(
+                                          videoCubit: context.read<VideoCubit>(),
+                                        ),
                                       );
                                     },
                                   ),
@@ -224,26 +231,41 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                   ..initFromNetwork2(
                                       AppSharedPreferences.getQuality,
                                       Duration.zero),
-                                child: AspectRatio(
-                                  aspectRatio: 16 / 9,
-                                  child: BlocBuilder<VideoCubit, VideoState>(
-                                    builder: (context, state) {
-                                      if (state is VideoLoadingState) {
-                                        return const Center(
+                                child: BlocBuilder<VideoCubit, VideoState>(
+                                  builder: (context, state) {
+                                    if (state is VideoLoadingState) {
+                                      return const AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child:  Center(
                                           child: CircularProgressIndicator(
                                             color: AppColors.PRIMARY,
                                           ),
-                                        );
-                                      }
-
-                                      return VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
+                                        ),
                                       );
-                                    },
-                                  ),
+                                    }
+
+                                    if (state is VideoErrorState) {
+                                      return TryAgain(
+                                        withImage: false,
+                                        small: true,
+                                        message: state.error,
+                                        onTap: () {
+                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                        },
+                                      );
+                                    }
+                                
+                                    return AspectRatio(
+                                      aspectRatio: context.read<VideoCubit>().controller!.value.aspectRatio,
+                                      child: VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                        const ServerOptions(),
+                        // const ServerOptions(),
+                        const SizedBox(height: 10),
                         Builder(builder: (context) {
                           return _LessonHeader(lessonsCubit.lessonDetails,
                               context.read<DownloadCubit>());

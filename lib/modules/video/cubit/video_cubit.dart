@@ -47,18 +47,24 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
 
+    emit(VideoLoadingState());
+
     selectedQuality = 0;
     if (selected != -1 && selected < streamsList.length) {
       selectedQuality = selected;
     }
     controller = VideoPlayerController.networkUrl(
       Uri.parse(streamsList[selectedQuality].link),
-      videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true, allowBackgroundPlayback: true),
+      viewType: VideoViewType.platformView,
     );
 
     initStream = controller!.initialize();
-    await initStream;
+    try {
+      await initStream;
+    }catch(error){
+      emit(VideoErrorState(error.toString()));
+      return;
+    }
     await controller!.seekTo(duration);
 
     chewieController = ChewieController(
@@ -69,6 +75,7 @@ class VideoCubit extends Cubit<VideoState> {
       ),
       autoPlay: false,
     );
+    emit(VideoSuccessfulState());
 
 
     return await initStream;
@@ -109,10 +116,8 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromFile(String path) async {
     controller = VideoPlayerController.file(File(path),
-        videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true,
-          allowBackgroundPlayback: true,
-        ));
+      viewType: VideoViewType.platformView,
+        );
     initStream = controller!.initialize();
     await initStream;
     chewieController = ChewieController(
