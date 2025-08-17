@@ -41,11 +41,12 @@ class LibrarySectionCard extends StatelessWidget {
                 child: SizedBox(
                   width: 1.sw,
                   child: CachedImage(
+                    boxFit: BoxFit.cover,
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
-                    image: librarySection.image??'',
+                    image: librarySection.image ?? '',
                   ),
                 ),
               ),

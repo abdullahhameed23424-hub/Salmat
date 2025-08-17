@@ -121,10 +121,8 @@ class LoginScreen extends StatelessWidget {
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero),
                                   onPressed: () {
-                                    ContactAdminDialog.show(
-                                        context,
-                                        infoCubit
-                                            .infoResponse.adminContact.phone);
+                                    ContactAdminDialog.show(context,
+                                        infoCubit.infoResponse.contact.phone);
                                   },
                                   child: Text(
                                     translate("forgot_password", context),
@@ -239,13 +237,6 @@ class ContactAdminDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _makePhoneCall(BuildContext context) async {
-    if (RegExp(r'^[0-9]{10,15}$').hasMatch(phoneNumber)) {
-      EasyLauncher.call(number: phoneNumber);
-    }
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -289,7 +280,7 @@ class ContactAdminDialog extends StatelessWidget {
         ElevatedButton.icon(
           icon: const Icon(Icons.phone, color: Colors.white),
           label: Text(
-            translate('call_button', context),
+            'انقر للتواصل', // translate('call_button', context),
             style: titilliumSemiBold.copyWith(color: Colors.white),
           ),
           style: ElevatedButton.styleFrom(
@@ -301,7 +292,10 @@ class ContactAdminDialog extends StatelessWidget {
             elevation: 4,
             shadowColor: AppColors.PRIMARY.withOpacity(0.4),
           ),
-          onPressed: () => _makePhoneCall(context),
+          onPressed: () {
+            EasyLauncher.url(
+                url: "https://wa.me/$phoneNumber", mode: Mode.externalApp);
+          },
         ),
       ],
     );
