@@ -234,12 +234,31 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                 child: BlocBuilder<VideoCubit, VideoState>(
                                   builder: (context, state) {
                                     if (state is VideoLoadingState) {
-                                      return const AspectRatio(
+                                      return AspectRatio(
                                         aspectRatio: 16 / 9,
-                                        child:  Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.PRIMARY,
-                                          ),
+                                        child:  Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const CircularProgressIndicator(
+                                              color: AppColors.LOGO_PRIMARY,
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: const BoxDecoration(
+                                                  gradient: LinearGradient(colors: [
+                                                    Colors.white,
+                                                    Colors.white70,
+                                                  ]),
+                                                ),
+                                                child:  const Text(
+                                                  "يتم تحضير الفيديو الرجاء الانتظار..",
+                                                  style: TextStyle(color: AppColors.LOGO_PRIMARY),
+                                                ))
+                                          ],
+
                                         ),
                                       );
                                     }

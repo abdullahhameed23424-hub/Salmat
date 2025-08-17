@@ -20,6 +20,7 @@ class Network {
         'Content-Type': 'application/json',
         "Accept": 'application/json',
         "Accept-Charset": "application/json",
+        "locale": "ar",
         "Accept-Language": AppSharedPreferences.getLocale
       },
 
