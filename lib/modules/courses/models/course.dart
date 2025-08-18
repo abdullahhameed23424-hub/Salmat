@@ -7,9 +7,7 @@ class Course {
   final String name;
   final String image;
   final bool isFree;
-  final bool subscribed;
-  final String price; //before discount
-  final String totalPrice; //  after discount
+  final bool subscribed; 
   final String discount;
   final String introVideo;
   final int? parentId;
@@ -25,9 +23,7 @@ class Course {
     required this.name,
     required this.image,
     required this.isFree,
-    required this.subscribed,
-    required this.price,
-    required this.totalPrice,
+    required this.subscribed, 
     required this.discount,
     required this.introVideo,
     required this.description,
@@ -82,9 +78,7 @@ class Course {
       requirements: json['requirements'] ?? "",
       image: json['image'] ?? "",
       introVideo: json['introVideo'] ?? "",
-      isFree: boolConverter(json['is_free']),
-      price: stringOrZero(json['price']),
-      totalPrice: stringOrZero(json['price']),
+      isFree: boolConverter(json['is_free']), 
       discount: stringOrZero(json['discount']),
       description: json['description'] ?? "",
       lessonsCount: json["lessons_count"] ?? 0,
