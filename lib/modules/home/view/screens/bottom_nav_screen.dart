@@ -8,6 +8,7 @@ import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
 import 'package:salamat/modules/auth/view/screens/login_screen.dart';
+import 'package:salamat/modules/startup/get_started_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 
 import 'package:salamat/constant/images.dart';
@@ -57,7 +58,8 @@ class BottomNavScreenState extends State<BottomNavScreen> {
     }
     Future.delayed(
         const Duration(
-          milliseconds: 200,// to ensure that screen is been built then call after build it 
+          milliseconds:
+              200, // to ensure that screen is been built then call after build it
         ), () {
       SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
           statusBarColor: AppColors.SECONDRY,
@@ -65,7 +67,7 @@ class BottomNavScreenState extends State<BottomNavScreen> {
           statusBarBrightness: Brightness.dark,
           systemNavigationBarColor: AppColors.SECONDRY,
           systemNavigationBarIconBrightness: Brightness.light
- 
+
           // iOS
           ));
     });
@@ -110,7 +112,7 @@ class _AppBar extends StatelessWidget {
           if (state is UnAuthenticatedState) {
             AppSharedPreferences.removeToken;
             Network.init();
-            pushAndRemoveUntilTo(context, toPage: LoginScreen());
+            pushAndRemoveUntilTo(context, toPage: GetStartedScreen());
           }
         },
         builder: (context, state) {
