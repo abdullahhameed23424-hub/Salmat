@@ -48,13 +48,27 @@ class BottomNavScreenState extends State<BottomNavScreen> {
     {"title": "more", "image": Images.more, "screen": MoreInfoScreen()},
   ];
 
-  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   void initState() {
     if (AppSharedPreferences.hasToken) {
       BottomNavScreen.authCubit.getProfile();
     }
+    Future.delayed(
+        const Duration(
+          milliseconds: 200,// to ensure that screen is been built then call after build it 
+        ), () {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          statusBarColor: AppColors.SECONDRY,
+          statusBarIconBrightness: Brightness.light, // Android
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: AppColors.SECONDRY,
+          systemNavigationBarIconBrightness: Brightness.light
+ 
+          // iOS
+          ));
+    });
     super.initState();
   }
 
@@ -62,27 +76,29 @@ class BottomNavScreenState extends State<BottomNavScreen> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: selectedPage,
-        builder: (context, value, child) => Scaffold(
-            backgroundColor: Colors.white,
-            key: scaffoldkey,
-            appBar: PreferredSize(
-              preferredSize: Size(1.sw, 90.h),
-              child: _AppBar(scaffoldkey),
-            ),
-            extendBody: true,
-            body: taps[selectedPage.value]["screen"],
-            bottomNavigationBar: BottomNavBar(
-              onChange: (index) {
-                selectedPage.value = index;
-                setState(() {});
-              },
-            )));
+        builder: (context, value, child) => SafeArea(
+              child: Scaffold(
+                  backgroundColor: Colors.white,
+                  key: scaffoldKey,
+                  appBar: PreferredSize(
+                    preferredSize: Size(1.sw, 90.h),
+                    child: _AppBar(scaffoldKey),
+                  ),
+                  extendBody: true,
+                  body: taps[selectedPage.value]["screen"],
+                  bottomNavigationBar: BottomNavBar(
+                    onChange: (index) {
+                      selectedPage.value = index;
+                      setState(() {});
+                    },
+                  )),
+            ));
   }
 }
 
 class _AppBar extends StatelessWidget {
-  const _AppBar(this.scaffoldkey);
-  final GlobalKey<ScaffoldState> scaffoldkey;
+  const _AppBar(this.scaffoldKey);
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +131,6 @@ class _AppBar extends StatelessWidget {
               backgroundColor: AppColors.SECONDRY,
               titleSpacing: 10,
               automaticallyImplyLeading: false,
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: AppColors.SECONDRY),
               toolbarHeight: 90.h,
               title: AppSharedPreferences.hasToken
                   ? Row(

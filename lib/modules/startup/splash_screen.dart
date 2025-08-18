@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salamat/constant/app_colors.dart';
@@ -44,6 +45,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: AppColors.SECONDRY,
+        statusBarIconBrightness: Brightness.light, // Android
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: AppColors.SECONDRY,
+        systemNavigationBarIconBrightness: Brightness.light
+
+        // iOS
+        ));
     return Scaffold(
         backgroundColor: AppColors.SECONDRY,
         body: Center(
