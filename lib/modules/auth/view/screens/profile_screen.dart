@@ -78,7 +78,8 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     color: AppColors.SECONDRY,
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 16.w),
+                  margin:
+                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   padding: EdgeInsets.only(top: 40.h),
                   child: Column(
                     children: [
@@ -108,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           Positioned(
                             bottom: -3,
-                            left: -3,
+                            right: 0,
                             child: IconButton(
                                 style: IconButton.styleFrom(
                                     backgroundColor:
@@ -133,11 +134,11 @@ class ProfileScreen extends StatelessWidget {
                           if (!authCubit.user.image.contains("default"))
                             Positioned(
                               bottom: -3,
-                              right: 0,
+                              left: -3,
                               child: IconButton(
                                   style: IconButton.styleFrom(
                                       backgroundColor:
-                                          AppColors.RED.withAlpha(120)),
+                                          AppColors.WHITE.withAlpha(120)),
                                   onPressed: () {
                                     DeleteDialog.show(context,
                                         title:
@@ -150,7 +151,7 @@ class ProfileScreen extends StatelessWidget {
                                   },
                                   icon: const Icon(
                                     Icons.delete_outline,
-                                    color: AppColors.WHITE,
+                                    color: AppColors.LOGO_PRIMARY,
                                   )),
                             )
                         ],

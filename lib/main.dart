@@ -21,6 +21,7 @@ import 'package:salamat/utils/device_type.dart';
 import 'package:salamat/localization/cubit/localization_cubit.dart';
 import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/localization/language_model.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,8 +41,6 @@ void main() async {
   print("token is: ${AppSharedPreferences.getToken}");
   print("userID is: ${AppSharedPreferences.getUserID}");
   print("has token is: ${AppSharedPreferences.hasToken}");
-
-
 
   runApp(const MyApp());
 }
@@ -122,6 +121,18 @@ class _MyAppState extends State<MyApp> {
 
                 home: const SplashScreen(),
                 theme: ThemeData(
+                    appBarTheme: const AppBarTheme(
+                      backgroundColor: AppColors.SECONDRY,
+                      systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarColor: AppColors.SECONDRY,
+                          statusBarIconBrightness: Brightness.light, // Android
+                          statusBarBrightness: Brightness.dark,
+                          systemNavigationBarColor: AppColors.SECONDRY,
+                          systemNavigationBarIconBrightness: Brightness.light
+                          
+                          // iOS
+                          ),
+                    ),
                     scaffoldBackgroundColor: AppColors.LIGHTGRAY,
                     colorScheme: const ColorScheme.light(
                         primary: AppColors.LOGO_PRIMARY),

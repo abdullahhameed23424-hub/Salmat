@@ -321,16 +321,16 @@ class _CourseHeader extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              course.isFree
-                                  ? translate('free', context)
-                                  : "${course.totalPrice} ل.س",
-                              style: titilliumBold.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 18.sp,
-                                  color: AppColors.PRIMARY)),
+                          // Text(
+                          //     maxLines: 2,
+                          //     overflow: TextOverflow.ellipsis,
+                          //     course.isFree
+                          //         ? translate('free', context)
+                          //         : "${course.totalPrice} ل.س",
+                          //     style: titilliumBold.copyWith(
+                          //         fontWeight: FontWeight.w900,
+                          //         fontSize: 18.sp,
+                          //         color: AppColors.PRIMARY)),
                           InkWell(
                             onTap: () {
                               showModalBottomSheet(
