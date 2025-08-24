@@ -13,7 +13,9 @@ class Unit {
   final Course? course;
   final bool isLockedByAdmin;
   final bool isLocked;
-  final String lockReason;
+  final String? lockReason;
+
+  final bool isSubscribed;
   Unit({
     required this.id,
     required this.parentId,
@@ -25,13 +27,15 @@ class Unit {
     required this.course,
     required this.isLockedByAdmin,
     required this.isLocked,
-    required this.lockReason,
+    required this.isSubscribed,
+    this.lockReason,
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) => Unit(
-        lockReason: json['lock_reason'] ?? "الوحدة مقفلة من الادارة",
+        lockReason: json['lock_reason'] ,
 
         isLocked: boolConverter(json['is_locked']),
+        isSubscribed: boolConverter(json['subscribed']),
         isLockedByAdmin: boolConverter(json['is_locked_by_admin']),
         id: json["id"],
         course: json["parent_section"] != null

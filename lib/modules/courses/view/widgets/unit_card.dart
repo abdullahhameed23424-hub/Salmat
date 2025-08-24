@@ -15,14 +15,24 @@ class UnitCard extends StatelessWidget {
   const UnitCard({
     super.key,
     required this.unit,
+    this.isSubscribed = false,
   });
   final Unit unit;
+  final bool isSubscribed;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
         if (unit.isLocked || unit.isLockedByAdmin) {
-          customSnackBar(context, success: 2, message: unit.lockReason);
+          String message = "مغلق";
+          if(unit.isLockedByAdmin && (isSubscribed || unit.isSubscribed)){
+            message = "مشترك ولكن مغلق من قبل الإدارة";
+          }else if(isSubscribed == false && unit.isSubscribed == false){
+            message = "غير مشترك";
+          }
+
+
+          customSnackBar(context, success: 2, message: message);
         } else {
           pushTo(context: context, toPage: LessonsScreen(unit: unit));
         }

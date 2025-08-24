@@ -201,6 +201,7 @@ class _Units extends StatelessWidget {
         units.length,
         (index) => UnitCard(
           unit: units[index],
+          isSubscribed: course.subscribed,
         ),
       ),
     );
