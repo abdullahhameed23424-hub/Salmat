@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tex/flutter_tex.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
@@ -37,10 +38,18 @@ class _QuestionCardState extends State<QuestionCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          HtmlWidget(
-            widget.question.text,
-            textStyle: titilliumRegular,
+          TeXView(
+            child:TeXViewDocument(widget.question.text,
+                style: const TeXViewStyle(textAlign: TeXViewTextAlign.right)),
           ),
+
+
+
+
+          // HtmlWidget(
+          //   widget.question.text,
+          //   textStyle: titilliumRegular,
+          // ),
           ...List.generate(
             widget.question.options.length,
             (optionIndex) {
