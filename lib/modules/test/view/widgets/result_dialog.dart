@@ -2,9 +2,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
 import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:salamat/modules/lessons/models/lesson.dart';
@@ -85,16 +87,17 @@ class ResultDialog extends StatelessWidget {
                         padding: EdgeInsets.all(10.w),
                         decoration: BoxDecoration(
                           color: result.pass == true
-                              ? Colors.green.shade200
-                              : Colors.red.shade200,
+                              ? Colors.green.shade300
+                              : Colors.red.shade300,
                           shape: BoxShape.circle,
                         ),
-                        child: Icon(
+                        child: SvgPicture.asset(
                           result.pass == true
-                              ? Icons.check_circle
-                              : Icons.cancel,
-                          color: AppColors.WHITE,
-                          size: 40.sp,
+                              ? Images.happyFace
+                              : Images.sadFace,
+                          width: 40.sp,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn),
                         ),
                       ),
                     ),
@@ -112,8 +115,12 @@ class ResultDialog extends StatelessWidget {
                         translate('exam_degree', context), result.examDegree),
                     _buildRow(
                         translate('your_score', context), result.studentDegree),
-                    _buildRow(translate('pass_percentage', context),
-                        '${result.examPassPercentage}%'),
+                    _buildRow(
+                        translate('min_degree', context),
+                        ((num.parse(result.examPassPercentage) / 100) *
+                                num.parse(result.examDegree))
+                            .toString()
+                            .replaceAll(".0", "")),
                     SizedBox(height: 24.h),
                     // if (result.pass != true)
                     //   CustomButton(

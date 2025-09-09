@@ -43,10 +43,10 @@ class Lesson {
     required this.nextUnitId,
     required this.examId,
     required this.images,
-     this.unitId,
-     this.unitName,
-     this.courseId,
-     this.courseName,
+    this.unitId,
+    this.unitName,
+    this.courseId,
+    this.courseName,
     required this.lessonOrder,
     required this.name,
     required this.isFree,
@@ -59,22 +59,21 @@ class Lesson {
     required this.files,
     required this.nextLessonId,
     required this.exam,
-     this.unit,
+    this.unit,
   });
 
-  factory Lesson.fromJson(Map<String, dynamic> json,Map<String, dynamic>? json2) {
-
+  factory Lesson.fromJson(
+      Map<String, dynamic> json, Map<String, dynamic>? json2) {
     bool tempIsOpen =
-        boolConverter(json['is_open']) || boolConverter(json['is_free']);
+        (boolConverter(json['is_open']) || boolConverter(json['is_free'])) &&
+            !boolConverter(json['is_locked']);
 
     int index = -1;
     List<MyVideo> streems = [];
     json['videos'].forEach((video) {
       index++;
       streems.add(MyVideo(
-          link: video['url'],
-          value: index,
-          quality: '${video['qulaity']}'));
+          link: video['url'], value: index, quality: '${video['qulaity']}'));
     });
 
     String audio = '';
@@ -88,11 +87,8 @@ class Lesson {
           : "";
     }
 
-
     return Lesson(
-
-      unit:null,
-
+      unit: null,
       exam: json["exam"] != null ? Test.fromJson(json["exam"]) : null,
       images: json["images"] != null
           ? List<String>.from(json["images"].map((x) => x))
@@ -100,9 +96,9 @@ class Lesson {
       lessonOrder: json["lesson_order"],
       subscribed: boolConverter(json['subscribed']),
       unitId: json['section_id'],
-      unitName:json2?['parent_section']['name'],
-      courseId: json2?['parent_section']['parent_section']['id'] ,
-      courseName: json2?['parent_section']['parent_section']['name'] ,
+      unitName: json2?['parent_section']['name'],
+      courseId: json2?['parent_section']['parent_section']['id'],
+      courseName: json2?['parent_section']['parent_section']['name'],
       examId: json['exam_id'],
       nextUnitId: json["next_section_id"],
       nextLessonId: json["next_lesson_id"],
@@ -120,7 +116,6 @@ class Lesson {
       isOpen: tempIsOpen,
       myVideos: streems,
       audio: audio,
-
     );
   }
 }
