@@ -176,35 +176,65 @@ class _Units extends StatelessWidget {
   final Course course;
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      collapsedBackgroundColor: AppColors.PURPLE_LIGHT,
 
-      collapsedShape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      collapsedIconColor: Colors.white,
-      collapsedTextColor: Colors.white,
-      textColor: Colors.black, // ← هذا اللي يضبط اللون عند الفتح
-      iconColor: Colors.black, // ← لتوحيد لون الأيقونة المفتوحة
-      shape: const RoundedRectangleBorder(),
-      tilePadding: EdgeInsets.symmetric(horizontal: 14.w),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+          [
+          Text(
+              translate('units', context),
+              style: TextStyle(
+                fontFamily: FONTF_FAMILY,
+                fontSize: Dimensions.FONT_SIZE_DEFAULT,
+                fontWeight: FontWeight.w700,
+                color: AppColors.PRIMARY
+              ),
+            ),
+            ... List.generate(
+              units.length,
+                  (index) => UnitCard(
+                unit: units[index],
+                isSubscribed: course.subscribed,
+              ),
+            )
 
-      childrenPadding: EdgeInsets.zero,
-      title: Text(
-        translate('units', context),
-        style: TextStyle(
-          fontFamily: FONTF_FAMILY,
-          fontSize: Dimensions.FONT_SIZE_DEFAULT,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      children: List.generate(
-        units.length,
-        (index) => UnitCard(
-          unit: units[index],
-          isSubscribed: course.subscribed,
-        ),
-      ),
+
+          ]
+
+      ,
     );
+    // return  ExpansionTile(
+    //   collapsedBackgroundColor: AppColors.PURPLE_LIGHT,
+    //
+    //   initiallyExpanded: true,
+    //
+    //   collapsedShape:
+    //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    //   collapsedIconColor: Colors.white,
+    //   collapsedTextColor: Colors.white,
+    //   textColor: Colors.black, // ← هذا اللي يضبط اللون عند الفتح
+    //   iconColor: Colors.black, // ← لتوحيد لون الأيقونة المفتوحة
+    //   shape: const RoundedRectangleBorder(),
+    //   tilePadding: EdgeInsets.symmetric(horizontal: 14.w),
+    //   // backgroundColor: AppColors.PURPLE_LIGHT,
+    //
+    //   childrenPadding: EdgeInsets.zero,
+    //   title: Text(
+    //     translate('units', context),
+    //     style: TextStyle(
+    //       fontFamily: FONTF_FAMILY,
+    //       fontSize: Dimensions.FONT_SIZE_DEFAULT,
+    //       fontWeight: FontWeight.w700,
+    //     ),
+    //   ),
+    //   children: List.generate(
+    //     units.length,
+    //     (index) => UnitCard(
+    //       unit: units[index],
+    //       isSubscribed: course.subscribed,
+    //     ),
+    //   ),
+    // );
   }
 }
 

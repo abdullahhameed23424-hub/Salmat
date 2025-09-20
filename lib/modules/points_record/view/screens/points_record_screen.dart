@@ -106,7 +106,7 @@ class PointsRecordScreen extends StatelessWidget {
                       label: translate("how_get_pints", context),
                       onPressed: () {
                         GettingPointsSheet.show(context,
-                            pointsRecordCubit.pointsResponse.infoPoints.text);
+                            pointsRecordCubit.pointsResponse.infoPoints!.text.toString());
                       },
                       backgroundColor: AppColors.PURPLE_LIGHT,
                     ),

@@ -78,23 +78,23 @@ class BottomNavScreenState extends State<BottomNavScreen> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
         valueListenable: selectedPage,
-        builder: (context, value, child) => SafeArea(
-              child: Scaffold(
-                  backgroundColor: Colors.white,
-                  key: scaffoldKey,
-                  appBar: PreferredSize(
-                    preferredSize: Size(1.sw, 90.h),
-                    child: _AppBar(scaffoldKey),
-                  ),
-                  extendBody: true,
-                  body: taps[selectedPage.value]["screen"],
-                  bottomNavigationBar: BottomNavBar(
-                    onChange: (index) {
-                      selectedPage.value = index;
-                      setState(() {});
-                    },
-                  )),
-            ));
+        builder: (context, value, child) => Scaffold(
+            backgroundColor: Colors.white,
+            key: scaffoldKey,
+            appBar: PreferredSize(
+              preferredSize: Size(1.sw, 90.h),
+              child: _AppBar(scaffoldKey),
+            ),
+            extendBody: true,
+            body: SafeArea(child: taps[selectedPage.value]["screen"]) ,
+            bottomNavigationBar: SafeArea(
+              child: BottomNavBar(
+                onChange: (index) {
+                  selectedPage.value = index;
+                  setState(() {});
+                },
+              ),
+            )));
   }
 }
 

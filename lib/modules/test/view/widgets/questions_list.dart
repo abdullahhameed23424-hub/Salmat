@@ -18,14 +18,78 @@ class QuestionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverList.builder(
-      itemCount: examCubit.questions.length,
-      itemBuilder: (context, index) {
-        final question = examCubit.questions[index];
-        return QuestionForm(
-            question: question, examCubit: examCubit, index: index);
-      },
+
+    return SliverList.list(
+
+      //
+      // itemCount: examCubit.questions.length,
+      //
+      // itemBuilder: (context, index) {
+      //   final question = examCubit.questions[index];
+      //   return QuestionForm(
+      //       question: question, examCubit: examCubit, index: index);
+      // },
+      children: [
+        for(int index=0;index<examCubit.questions.length;index++)
+          QuestionForm(
+              question: examCubit.questions[index], examCubit: examCubit, index: index),
+      ],
+
+
+
     );
+    // return SliverToBoxAdapter(
+    //   child: TeXView(
+    //     child: TeXViewColumn(
+    //       Tex
+    //       children: [
+    //         for (int index = 0; index < examCubit.questions.length; index++)
+    //           TeXViewContainer(
+    //             style: const TeXViewStyle(
+    //                 backgroundColor: AppColors.WHITE,
+    //               margin: TeXViewMargin.all(32),
+    //             ),
+    //
+    //
+    //               child:  TeXViewColumn(
+    //               children: [
+    //                   TeXViewDocument(examCubit.questions[index].text,
+    //                       style: const TeXViewStyle(
+    //                           textAlign: TeXViewTextAlign.right)),
+    //
+    //
+    //                   TeXViewColumn(
+    //                     style: TeXViewStyle(
+    //
+    //                     ),
+    //                     children: [
+    //                       for(int i=0;i<examCubit.questions[index].options.length;i++)
+    //                         TeXViewDocument(
+    //                           examCubit.questions[index].options[i].name,
+    //                           style: const TeXViewStyle(
+    //                               textAlign: TeXViewTextAlign.right),
+    //
+    //                         )
+    //
+    //
+    //                     ],
+    //                   )
+    //                 ],
+    //               )
+    //           )
+    //
+    //       ],
+    //
+    //       // itemCount: examCubit.questions.length,
+    //       //
+    //       // itemBuilder: (context, index) {
+    //       //   final question = examCubit.questions[index];
+    //       //   return QuestionForm(
+    //       //       question: question, examCubit: examCubit, index: index);
+    //       // },
+    //     ),
+    //   ),
+    // );
   }
 }
 

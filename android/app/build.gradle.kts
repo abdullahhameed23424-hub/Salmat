@@ -48,7 +48,7 @@ android {
 
     defaultConfig {
         applicationId = "com.icr.salamat"
-        minSdk = 22
+        minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutterVersionCode
         versionName = flutterVersionName

@@ -4,20 +4,36 @@ class PointsResponse {
   final ResponseData data;
   final int code;
   final String serverTime;
-  final InfoPoints infoPoints;
+  final InfoPoints? infoPoints;
 
   PointsResponse({
     required this.data,
     required this.code,
     required this.serverTime,
-    required this.infoPoints,
+     this.infoPoints,
   });
 
   factory PointsResponse.fromJson(Map<String, dynamic> json) => PointsResponse(
         data: ResponseData.fromJson(json['data']),
         code: json['code'],
         serverTime: json['server_time'],
-        infoPoints: InfoPoints.fromJson(json['info_points']),
+        infoPoints: InfoPoints(text:
+          '''
+          آلية جميع النقاط في منصة سلامات التعليمية
+
+عزيزي الطالب يمكنك الحصول على النقاط من تقديمك للاختبارات المؤتمتة داخل المنصة وفق الشروط التالية:
+
+أن تحصل على 75٪ على الأقل من علامة الاختبار.
+
+أن تُرسل حل الاختبار كاملاً قبل انتهاء وقت الاختبار المذكور بأعلى كل اختبار.
+
+أن تكون المحاولة الأولى لتقديم الاختبار، بعد المحاولة الأولى لإرسال الاختبار لن تُضاف النقاط لمجموع نقاطك.
+
+يتم الاعتماد على مجموع النقاط لتحديد مستوى الطالب وترتيبه.\n
+
+منصة سلامات التعليمية
+          '''
+        ),
       );
 }
 

@@ -43,14 +43,15 @@ class PointsCard extends StatelessWidget {
                     TextRow(
                         title: "${translate('points', context)}:",
                         value: points.points.toString()),
-                    TextRow(
-                      title: "${translate('time', context)}:",
-                      value:
-                          " ${DateFormat('hh:MM a').format(points.createdAt)} ",
+                    Text(
+                        DateFormat("yyyy-MM-dd HH:mm").format(points.createdAt)
                     ),
-                    TextRow(
-                        title: "${translate('reason', context)}:",
-                        value: points.reason),
+
+                    Text(points.reason),
+
+                    // TextRow(
+                    //     title: "${translate('reason', context)}:",
+                    //     value: points.reason),
                   ],
                 ),
               ),

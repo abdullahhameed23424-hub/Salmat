@@ -55,6 +55,7 @@ class HomeScreen extends StatelessWidget {
           return SmartRefresher(
             header: const AppRefresherHeader(),
             controller: homeCubit.refreshController,
+            enablePullDown: false,
             onRefresh: () {
               homeCubit.getHomeInfo();
             },
@@ -92,7 +93,7 @@ class HomeScreen extends StatelessWidget {
                     child: Image.asset(Images.homeCompanyLogo, width: 1.sw),
                   ),
                 ),
-                SliverToBoxAdapter(child: SizedBox(height: 100.h))
+                // SliverToBoxAdapter(child: SizedBox(height: 100.h))
               ],
             ),
           );

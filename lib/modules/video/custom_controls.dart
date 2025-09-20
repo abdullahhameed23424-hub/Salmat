@@ -274,7 +274,7 @@ class _MaterialControlsState extends State<CustomControls>
           }
         },
         icon: const Icon(
-          Icons.more_vert,
+          Icons.settings,
           color: Colors.white,
         ),
       ),
@@ -458,7 +458,6 @@ class _MaterialControlsState extends State<CustomControls>
     return LayoutBuilder(builder: (context, s) {
       return GestureDetector(
         onTapDown: (TapDownDetails details) {
-          print("build hit area");
 
           if (_latestValue.isPlaying) {
             if (_displayTapped) {

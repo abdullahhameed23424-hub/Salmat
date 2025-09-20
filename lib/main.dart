@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:salamat/apis/network.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/core/sqlite.dart';
@@ -33,7 +32,6 @@ void main() async {
   await SqliteHelper.init();
   await FlutterDownloader.initialize();
 
-  await TeXRenderingServer.start();
 
   // await NotificationsFunctions.init();
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");

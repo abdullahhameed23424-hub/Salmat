@@ -69,7 +69,7 @@ class VideoCubit extends Cubit<VideoState> {
 
     chewieController = ChewieController(
       videoPlayerController: controller!,
-      aspectRatio: 16 / 9,
+      aspectRatio: controller!.value.aspectRatio,
       customControls: CustomControls(
         videoCubit: this,
       ),
@@ -115,6 +115,7 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   Future<void> initFromFile(String path) async {
+    emit(VideoLoadingState());
     controller = VideoPlayerController.file(File(path),
       viewType: VideoViewType.platformView,
         );
@@ -122,12 +123,13 @@ class VideoCubit extends Cubit<VideoState> {
     await initStream;
     chewieController = ChewieController(
       videoPlayerController: controller!,
-      aspectRatio: 16 / 9,
+      aspectRatio: controller!.value.aspectRatio,
       customControls: CustomControls(
         videoCubit: this,
       ),
       autoPlay: false,
     );
+    emit(VideoSuccessfulState());
     return await initStream;
   }
 
