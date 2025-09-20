@@ -1,5 +1,5 @@
-import 'package:my_project_new/modules/courses/models/course.dart';
-import 'package:my_project_new/modules/courses/models/unit.dart';
+import 'package:salamat/modules/courses/models/course.dart';
+import 'package:salamat/modules/courses/models/unit.dart';
 
 class CourseResponse {
   final CourseResponseData data;

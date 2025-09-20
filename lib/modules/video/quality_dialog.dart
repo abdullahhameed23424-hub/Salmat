@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';  
+import 'package:salamat/modules/video/models/my_viedeo.dart';
 
 class QualityDialog extends StatelessWidget {
   const QualityDialog({super.key,

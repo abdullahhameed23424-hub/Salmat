@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/points_record/models/points_response.dart';
+import 'package:salamat/modules/points_record/models/points_response.dart';
 
 class Points {
   final int id;

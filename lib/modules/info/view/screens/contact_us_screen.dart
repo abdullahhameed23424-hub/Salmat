@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/modules/info/cubit/info_cubit.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class ContactInfoScreen extends StatefulWidget {
   const ContactInfoScreen({super.key, required this.infoCubit});
@@ -59,6 +59,12 @@ class _ContactInfoScreenState extends State<ContactInfoScreen> {
                       icon: FontAwesomeIcons.whatsapp,
                       label: 'واتساب',
                       link: infoCubit.infoResponse.contact.whatsapp,
+                      color: Colors.green,
+                    ),
+                    ContactItem(
+                      icon: FontAwesomeIcons.whatsapp,
+                      label: "قناة سلامات على الواتساب",
+                      link: infoCubit.infoResponse.contact.whatsappChannel,
                       color: Colors.green,
                     ),
                     ContactItem(

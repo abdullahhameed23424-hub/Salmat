@@ -2,29 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/dimensions.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
-import 'package:my_project_new/modules/comments/view/screens/comments_screen.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_card.dart';
-import 'package:my_project_new/modules/comments/view/widgets/comment_input_field_to_push.dart';
-import 'package:my_project_new/modules/courses/cubit/courses_cubit.dart';
-import 'package:my_project_new/modules/courses/models/course.dart';
-import 'package:my_project_new/modules/courses/models/unit.dart';
-import 'package:my_project_new/modules/courses/view/widgets/unit_card.dart';
-import 'package:my_project_new/modules/teachers/view/widgets/teacher_card.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/contact_with_admin_dialog.dart';
-import 'package:my_project_new/widgets/delete_dialog.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/dimensions.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/comments/cubit/comments_cubit.dart';
+import 'package:salamat/modules/comments/view/screens/comments_screen.dart';
+import 'package:salamat/modules/comments/view/widgets/comment_card.dart';
+import 'package:salamat/modules/comments/view/widgets/comment_input_field_to_push.dart';
+import 'package:salamat/modules/courses/cubit/courses_cubit.dart';
+import 'package:salamat/modules/courses/models/course.dart';
+import 'package:salamat/modules/courses/models/unit.dart';
+import 'package:salamat/modules/courses/view/widgets/unit_card.dart';
+import 'package:salamat/modules/teachers/view/widgets/teacher_card.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/contact_with_admin_dialog.dart';
+import 'package:salamat/widgets/delete_dialog.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class CourseDetailsScreen extends StatelessWidget {
   const CourseDetailsScreen({super.key, required this.course});
@@ -36,7 +37,17 @@ class CourseDetailsScreen extends StatelessWidget {
       body: BlocProvider(
         create: (context) =>
             CoursesCubit()..getCourseDetails(courseId: course.id),
-        child: BlocBuilder<CoursesCubit, CoursesState>(
+        child: BlocConsumer<CoursesCubit, CoursesState>(
+          listener: (context, state) {
+            if (state is SubscribeToCourseSuccessState) {
+              context
+                  .read<CoursesCubit>()
+                  .getCourseDetails(courseId: course.id);
+            }
+            if (state is SubscribeToCourseErrorState) {
+              customSnackBar(context, success: 0, message: state.message);
+            }
+          },
           builder: (context, state) {
             final CoursesCubit coursesCubit =
                 BlocProvider.of<CoursesCubit>(context);
@@ -54,7 +65,7 @@ class CourseDetailsScreen extends StatelessWidget {
             return ListView(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
               children: [
-                _CourseHeader(coursesCubit.couresDetails),
+                _CourseHeader(coursesCubit.couresDetails, coursesCubit),
                 _InfoCircles(coursesCubit.couresDetails, coursesCubit.units),
                 _CourseDetails(course: coursesCubit.couresDetails),
                 SizedBox(height: 20.h),
@@ -165,35 +176,65 @@ class _Units extends StatelessWidget {
   final Course course;
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      collapsedBackgroundColor: AppColors.PURPLE_LIGHT,
 
-      collapsedShape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-      collapsedIconColor: Colors.white,
-      collapsedTextColor: Colors.white,
-      textColor: Colors.black, // ← هذا اللي يضبط اللون عند الفتح
-      iconColor: Colors.black, // ← لتوحيد لون الأيقونة المفتوحة
-      shape: const RoundedRectangleBorder(),
-      tilePadding: EdgeInsets.symmetric(horizontal: 14.w),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:
+          [
+          Text(
+              translate('units', context),
+              style: TextStyle(
+                fontFamily: FONTF_FAMILY,
+                fontSize: Dimensions.FONT_SIZE_DEFAULT,
+                fontWeight: FontWeight.w700,
+                color: AppColors.PRIMARY
+              ),
+            ),
+            ... List.generate(
+              units.length,
+                  (index) => UnitCard(
+                unit: units[index],
+                isSubscribed: course.subscribed,
+              ),
+            )
 
-      childrenPadding: EdgeInsets.zero,
-      title: Text(
-        translate('units', context),
-        style: TextStyle(
-          fontFamily: FONTF_FAMILY,
-          // color: Colors.black, // we dont use titilliumBold to use pernt color
-          fontSize: Dimensions.FONT_SIZE_DEFAULT,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      children: List.generate(
-        units.length,
-        (index) => UnitCard(
-            unit: units[index],
-            isLocked: units[index].isLocked && !course.subscribed),
-      ),
+
+          ]
+
+      ,
     );
+    // return  ExpansionTile(
+    //   collapsedBackgroundColor: AppColors.PURPLE_LIGHT,
+    //
+    //   initiallyExpanded: true,
+    //
+    //   collapsedShape:
+    //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    //   collapsedIconColor: Colors.white,
+    //   collapsedTextColor: Colors.white,
+    //   textColor: Colors.black, // ← هذا اللي يضبط اللون عند الفتح
+    //   iconColor: Colors.black, // ← لتوحيد لون الأيقونة المفتوحة
+    //   shape: const RoundedRectangleBorder(),
+    //   tilePadding: EdgeInsets.symmetric(horizontal: 14.w),
+    //   // backgroundColor: AppColors.PURPLE_LIGHT,
+    //
+    //   childrenPadding: EdgeInsets.zero,
+    //   title: Text(
+    //     translate('units', context),
+    //     style: TextStyle(
+    //       fontFamily: FONTF_FAMILY,
+    //       fontSize: Dimensions.FONT_SIZE_DEFAULT,
+    //       fontWeight: FontWeight.w700,
+    //     ),
+    //   ),
+    //   children: List.generate(
+    //     units.length,
+    //     (index) => UnitCard(
+    //       unit: units[index],
+    //       isSubscribed: course.subscribed,
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -264,9 +305,9 @@ class _InfoCircles extends StatelessWidget {
 }
 
 class _CourseHeader extends StatelessWidget {
-  const _CourseHeader(this.course);
+  const _CourseHeader(this.course, this.courseCubit);
   final Course course;
-
+  final CoursesCubit courseCubit;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -310,36 +351,38 @@ class _CourseHeader extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          if (!course.isFree)
-                            Text(
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                "${course.totalPrice} SP",
-                                style: titilliumBold.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 18.sp,
-                                    color: AppColors.PRIMARY))
-                          else
-                            const Spacer(),
+                          // Text(
+                          //     maxLines: 2,
+                          //     overflow: TextOverflow.ellipsis,
+                          //     course.isFree
+                          //         ? translate('free', context)
+                          //         : "${course.totalPrice} ل.س",
+                          //     style: titilliumBold.copyWith(
+                          //         fontWeight: FontWeight.w900,
+                          //         fontSize: 18.sp,
+                          //         color: AppColors.PRIMARY)),
                           InkWell(
                             onTap: () {
                               showModalBottomSheet(
                                 isScrollControlled: true,
                                 context: context,
-                                builder: (context) => ContactWithAdminDialog(),
+                                builder: (context) =>
+                                    const ContactWithAdminDialog(),
                               );
                             },
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
                                 SvgPicture.asset(Images.buyIcon,
-                                    width: 80.w,
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.PRIMARY, BlendMode.srcIn)),
+                                    width: 90.w,
+                                    colorFilter: ColorFilter.mode(
+                                        course.isFree
+                                            ? Colors.green
+                                            : AppColors.PRIMARY,
+                                        BlendMode.srcIn)),
                                 Positioned(
-                                  top: 25.h,
                                   child: Text(
-                                    translate('buy', context),
+                                    translate('subscribe', context),
                                     style: titilliumBold.copyWith(
                                         color: AppColors.WHITE),
                                   ),

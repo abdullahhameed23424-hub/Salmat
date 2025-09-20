@@ -1,13 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/modules/test/models/completed_tests_response.dart';
-import 'package:my_project_new/modules/test/models/result.dart';
-import 'package:my_project_new/modules/test/models/test.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/test/models/completed_tests_response.dart';
+import 'package:salamat/modules/test/models/result.dart';
+import 'package:salamat/modules/test/models/test.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
 
 part 'test_state.dart';
 
@@ -32,23 +33,27 @@ class TestCubit extends Cubit<TestState> {
       selectedOptions = List.generate(questions.length,
           (index) => {'question_id': questions[index].id, 'option_id': -1});
 
-      if (test.result.pass == null &&
-          test.isSubscribed &&
+      if (!AppSharedPreferences.isGuest &&
+          test.result.pass == null &&
+          // test.isSubscribed &&   
           !test.isSolving &&
-          !test.studentExam.skipped) {
+          !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);
       }
-      
-      if ((test.result.pass == null && test.studentExam.skipped) ||
+
+      if ((test.result.pass == false && (test.studentExam?.skipped ?? false)) ||
           (test.result.pass == true)) {
+        print("case:1");
         testTime = test.minutes * 60;
       } else if (test.isSolving) {
+        print("case:2");
         isSolving = true;
         testTime = test.remainingTime.toInt();
         if (testTime.isNegative) {
           submitExam(examId: test.id, force: true);
         }
       } else {
+        print("case:3");
         testTime = test.minutes * 60;
         isSolving = true;
       }
@@ -160,12 +165,13 @@ class TestCubit extends Cubit<TestState> {
       final CompletedTestsResponse completedTestsResponse =
           CompletedTestsResponse.fromJson(response.data);
       tests = completedTestsResponse.data.original.data.data;
-      image = completedTestsResponse.extraData.authExams.image;
+      image = completedTestsResponse.extraData.authExams.image??'';
 
       emit(GetCompletedTestsSuccessState());
     } on DioException catch (e) {
       emit(GetCompletedTestsErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
+      print("show the error $error");
       emit(GetCompletedTestsErrorState(message: unknownError()));
     }
   }

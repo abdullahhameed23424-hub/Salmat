@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/main.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/main.dart';
 
 class NotificationsFunctions {
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(

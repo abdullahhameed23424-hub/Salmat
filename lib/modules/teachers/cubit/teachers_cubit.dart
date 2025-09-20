@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/modules/teachers/models/teachers_response.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
+import 'package:salamat/modules/teachers/models/teachers_response.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 part 'teachers_state.dart';

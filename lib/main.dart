@@ -5,33 +5,44 @@ import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/helper/cach_helper.dart';
-import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
-import 'package:my_project_new/modules/Theme/cubit/theme_cubit.dart';
-import 'package:my_project_new/modules/startup/splash_screen.dart';
-import 'package:my_project_new/screens/notifications_screen.dart';
-import 'package:my_project_new/utils/device_type.dart';
-import 'package:my_project_new/localization/cubit/localization_cubit.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/localization/language_model.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/core/sqlite.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/helper/cach_helper.dart';
+import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
+import 'package:salamat/modules/notifications/cubit/notifications_cubit.dart';
+import 'package:salamat/modules/Theme/cubit/theme_cubit.dart';
+import 'package:salamat/modules/startup/splash_screen.dart';
+import 'package:salamat/screens/notifications_screen.dart';
+import 'package:salamat/utils/device_type.dart';
+import 'package:salamat/localization/cubit/localization_cubit.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/localization/language_model.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await CacheHelper.init();
   await Network.init();
+  await FileManagerCubit.init();
+  await SqliteHelper.init();
+  await FlutterDownloader.initialize();
+
 
   // await NotificationsFunctions.init();
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");
   // AppSharedPreferences.removeToken;
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   print("token is: ${AppSharedPreferences.getToken}");
   print("userID is: ${AppSharedPreferences.getUserID}");
   print("has token is: ${AppSharedPreferences.hasToken}");
+
   runApp(const MyApp());
 }
 
@@ -78,7 +89,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -112,7 +122,21 @@ class _MyAppState extends State<MyApp> {
 
                 home: const SplashScreen(),
                 theme: ThemeData(
+                    appBarTheme: const AppBarTheme(
+                      backgroundColor: AppColors.SECONDRY,
+                      systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarColor: AppColors.SECONDRY,
+                          statusBarIconBrightness: Brightness.light, // Android
+                          statusBarBrightness: Brightness.dark,
+                          systemNavigationBarColor: AppColors.SECONDRY,
+                          systemNavigationBarIconBrightness: Brightness.light
+                          
+                          // iOS
+                          ),
+                    ),
                     scaffoldBackgroundColor: AppColors.LIGHTGRAY,
+                    colorScheme: const ColorScheme.light(
+                        primary: AppColors.LOGO_PRIMARY),
                     fontFamily: "NotoKufiArabic"),
                 debugShowCheckedModeBanner: false,
                 locale: const Locale('ar'), //localizationCubit.appLocale,

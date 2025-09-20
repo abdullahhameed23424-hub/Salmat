@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/modules/sections/models/section.dart';
-import 'package:my_project_new/modules/subjects/view/screens/subjects_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/modules/sections/models/section.dart';
+import 'package:salamat/modules/subjects/view/screens/subjects_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/cached_image.dart';
 
 class SectionCard extends StatelessWidget {
   const SectionCard({
@@ -42,33 +42,16 @@ class SectionCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5)),
                 child: Image.asset(Images.classIcon, width: 30.w)),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    section.name,
-                    style: titilliumBold.copyWith(fontSize: 14.sp),
+                child: Text(section.name,
+                    style: titilliumBold.copyWith(fontSize: 16.sp),
                     maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Align(
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(
-                      section.description,
-                      style: titilliumRegular.copyWith(fontSize: 14.sp),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                    overflow: TextOverflow.ellipsis)),
             AspectRatio(
                 aspectRatio: 1,
                 child: CachedImage(
-                    image: section.image,
+                    image: section.smallImage ?? section.image,
                     boxFit: BoxFit.cover,
-                    borderRadius: BorderRadius.circular(5))),
+                    borderRadius: BorderRadius.circular(15))),
           ],
         ),
       ),

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/comments/cubit/comments_cubit.dart';
-import 'package:my_project_new/modules/comments/models/comment.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/comments/cubit/comments_cubit.dart';
+import 'package:salamat/modules/comments/models/comment.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/read_more_text.dart';
 import 'package:intl/intl.dart';
 
 class CommentCard extends StatelessWidget {
@@ -40,7 +39,7 @@ class CommentCard extends StatelessWidget {
           child: AspectRatio(
               aspectRatio: 1,
               child: CachedImage(
-                image: comment.user.image,
+                image: comment.user?.image ?? "",
                 boxFit: BoxFit.cover,
               )),
         ),
@@ -63,7 +62,7 @@ class CommentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  comment.user.username,
+                  comment.user?.username ?? "",
                   style: titilliumBold,
                 ),
                 Align(
@@ -75,10 +74,10 @@ class CommentCard extends StatelessWidget {
                 ),
                 SizedBox(height: 8.h),
                 ReadMoreText(
-                  text: comment.body,
+                  text: comment.body??'',
                   maxLength: 100,
                 ),
-                if (comment.user.id.toString() ==
+                if (comment.user?.id.toString() ==
                     AppSharedPreferences.getUserID)
                   BlocConsumer(
                       bloc: commentsCubit,

@@ -1,3 +1,5 @@
+import 'package:salamat/utils/bool_converter.dart';
+
 class InfoResponse {
   final PrivacyPolicy privacyPolicy;
 
@@ -18,7 +20,7 @@ class InfoResponse {
 
   factory InfoResponse.fromJson(Map<String, dynamic> json) => InfoResponse(
         privacyPolicy: PrivacyPolicy.fromJson(json["privacy_policy"]),
-            platformManager: PlatformManaGer.fromJson(json["owner_teacher"]),
+        platformManager: PlatformManaGer.fromJson(json["owner_teacher"]),
         contact: Contact.fromJson(json["contact"]),
         features: Features.fromJson(json["features"]),
         aboutUs: AboutUs.fromJson(json["about_us"]),
@@ -26,10 +28,10 @@ class InfoResponse {
       );
 }
 
-class AboutUs { 
+class AboutUs {
   final String description;
 
-  AboutUs({ 
+  AboutUs({
     required this.description,
   });
 
@@ -37,11 +39,10 @@ class AboutUs {
         description: json["description"],
       );
 }
- 
- 
 
 class Contact {
   final String whatsapp;
+  final String whatsappChannel;
   final String linkedin;
   final String facebook;
   final String telegram;
@@ -52,6 +53,7 @@ class Contact {
   final String twitter;
   Contact({
     required this.whatsapp,
+    required this.whatsappChannel,
     required this.linkedin,
     required this.facebook,
     required this.telegram,
@@ -64,6 +66,7 @@ class Contact {
 
   factory Contact.fromJson(Map<String, dynamic> json) => Contact(
         whatsapp: json["whatsapp"] ?? "",
+        whatsappChannel: json["whatsapp_channel"] ?? "",
         linkedin: json["linkedin"] ?? "",
         facebook: json["facebook"] ?? "",
         telegram: json["telegram"] ?? "",
@@ -116,7 +119,7 @@ class Features {
 }
 
 class PlatformManaGer {
-   final String name;
+  final String name;
   final String description;
   final String image;
   final String facebook;
@@ -124,29 +127,30 @@ class PlatformManaGer {
   final String whatsapp;
   final String telegram;
   final String youtube;
+  final bool show;
 
-  PlatformManaGer({
-     required this.name,
-    required this.description,
-    required this.image,
-    required this.facebook,
-    required this.instagram,
-    required this.whatsapp,
-    required this.telegram,
-    required this.youtube,
-  });
+  PlatformManaGer(
+      {required this.name,
+      required this.description,
+      required this.image,
+      required this.facebook,
+      required this.instagram,
+      required this.whatsapp,
+      required this.telegram,
+      required this.youtube,
+      required this.show});
 
-  factory PlatformManaGer.fromJson(Map<String, dynamic> json) => PlatformManaGer(
-  
-        name: json["name"],
-        description: json["description"],
-        image: json["image"],
-        facebook: json["facebook"],
-        instagram: json["instagram"],
-        whatsapp: json["whatsapp"],
-        telegram: json["telegram"],
-        youtube: json["youtube"],
-      );
+  factory PlatformManaGer.fromJson(Map<String, dynamic> json) =>
+      PlatformManaGer(
+          name: json["name"],
+          description: json["description"],
+          image: json["image"],
+          facebook: json["facebook"],
+          instagram: json["instagram"],
+          whatsapp: json["whatsapp"],
+          telegram: json["telegram"],
+          youtube: json["youtube"],
+          show: boolConverter(json['show']));
 }
 
 class Subjects {
@@ -179,7 +183,7 @@ class AdminContact {
   final String phone;
 
   AdminContact({required this.email, required this.phone});
-  
+
   factory AdminContact.fromJson(Map<String, dynamic> json) => AdminContact(
         email: json["email"],
         phone: json["phone"],

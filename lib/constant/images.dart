@@ -50,7 +50,7 @@ class Images {
   static const String hoursCircle = "assets/Images/hours_circle.png";
   static const String lessonsCircle = "assets/Images/lessons_circle.png";
   static const String unitsCircle = "assets/Images/units_circle.png";
-  static const String contactWhatsapp = "assets/Images/contact_whatsapp.png";
+  static const String contact = "assets/Images/contact.png";
   static const String privacyPolicyTop = "assets/Images/privacy_policy_top.png";
   static const String completedTestResult =
       "assets/Images/completed_test_result.png";
@@ -93,9 +93,13 @@ class Images {
   static const String completedTests = "assets/Images/temp/completed_tests.png";
   static const String books = 'assets/Images/temp/books.png';
   static const String arabic = 'assets/Images/temp/arabic.png';
+
 // icons
+
   static const String gb = "assets/icons/gb.svg";
   static const String ar = "assets/icons/ar.svg";
+  static const String happyFace = "assets/icons/happy_face.svg";
+  static const String sadFace = "assets/icons/sad_face.svg";
 
   static const String whatsapp = "assets/icons/whatsapp.svg";
   static const String youtube = "assets/icons/youtube.svg";

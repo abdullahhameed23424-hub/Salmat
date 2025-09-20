@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/widgets.dart';
-import 'package:my_project_new/Animation/animation_do_state.dart';
+import 'package:salamat/Animation/animation_do_state.dart';
 
 class FadeInDown extends StatefulWidget {
   final Widget child;

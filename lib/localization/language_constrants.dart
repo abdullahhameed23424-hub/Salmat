@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/app_localization.dart';
-import 'package:my_project_new/localization/custom_delegate.dart';
-import 'package:my_project_new/localization/language_model.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/app_localization.dart';
+import 'package:salamat/localization/custom_delegate.dart';
+import 'package:salamat/localization/language_model.dart';
 
 String translate(String key, BuildContext context, {List<String>? args}) {
   String translation = AppLocalization.of(context).translate(key);

@@ -4,10 +4,9 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/modules/lessons/models/app_file.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/modules/lessons/models/app_file.dart';
 
 class AttachmentCard extends StatelessWidget {
   const AttachmentCard({
@@ -24,7 +23,7 @@ class AttachmentCard extends StatelessWidget {
       delay: Duration(milliseconds: 100 * (1 + Random().nextInt(5))),
       child: InkWell(
         onTap: () {
-          EasyLauncher.url(url: file.url);
+          EasyLauncher.url(url: file.url, mode: Mode.externalApp);
         },
         borderRadius: BorderRadius.circular(20.r),
         child: Container(
@@ -33,7 +32,7 @@ class AttachmentCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20.r),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Colors.black12,
                 blurRadius: 12,

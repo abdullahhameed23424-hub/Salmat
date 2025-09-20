@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/library/models/library_section.dart';
+import 'package:salamat/modules/library/models/library_section.dart';
 
 class LibrarySectionsResponse {
   final LibrarySectionsResponseData data;

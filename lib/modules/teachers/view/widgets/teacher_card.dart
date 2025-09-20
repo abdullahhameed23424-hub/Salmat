@@ -2,15 +2,15 @@ import 'dart:math';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/modules/teachers/view/screens/teacher_details_screen.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
+import 'package:salamat/modules/teachers/view/screens/teacher_details_screen.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/utils/global_functions.dart';
 
 class TeacherCard extends StatelessWidget {
   const TeacherCard({

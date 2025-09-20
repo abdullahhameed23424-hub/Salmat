@@ -1,26 +1,32 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+
+
+import 'app_colors.dart';
+import 'dimensions.dart';
 
 const String FONTF_FAMILY = "NotoKufiArabic";
 final TextStyle titilliumRegular = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_SMALL,
-);
+    fontFamily: FONTF_FAMILY,
+    fontSize: Dimensions.FONT_SIZE_SMALL,
+    color: AppColors.LOGO_PRIMARY);
 final TextStyle regularSemiBold = TextStyle(
   fontFamily: FONTF_FAMILY,
+  color: AppColors.LOGO_PRIMARY,
   fontSize: Dimensions.FONT_SIZE_SMALL,
 );
 
 final TextStyle titleRegular = TextStyle(
   fontFamily: FONTF_FAMILY,
   fontWeight: FontWeight.w500,
+  color: AppColors.LOGO_PRIMARY,
   fontSize: Dimensions.FONT_SIZE_DEFAULT,
 );
 final TextStyle titleHeader = TextStyle(
   fontFamily: FONTF_FAMILY,
   fontWeight: FontWeight.w600,
+  color: AppColors.LOGO_PRIMARY,
   fontSize: Dimensions.FONT_SIZE_LARGE,
 );
 final TextStyle titilliumSemiBold = TextStyle(
@@ -31,34 +37,8 @@ final TextStyle titilliumSemiBold = TextStyle(
 
 final TextStyle titilliumBold = TextStyle(
   fontFamily: FONTF_FAMILY,
-  color: Colors.black,
+  color: AppColors.LOGO_PRIMARY,
   fontSize: Dimensions.FONT_SIZE_DEFAULT,
   fontWeight: FontWeight.w700,
 );
-final TextStyle titilliumItalic = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_DEFAULT,
-  fontStyle: FontStyle.italic,
-);
-
-final TextStyle robotoRegular = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_DEFAULT,
-);
-
-final TextStyle robotoBold = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_DEFAULT,
-  fontWeight: FontWeight.w700,
-);
-
-final TextStyle largeBold = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_LARGE,
-  fontWeight: FontWeight.w700,
-);
-final TextStyle extraLargeBold = TextStyle(
-  fontFamily: FONTF_FAMILY,
-  fontSize: Dimensions.FONT_SIZE_OVER_LARGE,
-  fontWeight: FontWeight.w700,
-);
+ 

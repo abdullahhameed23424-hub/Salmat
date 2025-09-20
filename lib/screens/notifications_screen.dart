@@ -1,12 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/modules/notifications/cubit/notifications_cubit.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/no_data.dart';
-import 'package:my_project_new/widgets/notification_card.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/modules/notifications/cubit/notifications_cubit.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/notification_card.dart';
+import 'package:salamat/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationsScreen extends StatefulWidget {

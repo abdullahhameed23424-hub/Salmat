@@ -1,8 +1,8 @@
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
 
 class ContactRow extends StatelessWidget {
   final Widget icon;
@@ -23,30 +23,30 @@ class ContactRow extends StatelessWidget {
         children: [
           icon,
           SizedBox(width: 5.w),
-          Expanded(
-            child: InkWell(
-              onTap: () {
-                if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                    .hasMatch(text)) {
-                  EasyLauncher.email(email: text);
-                } else if (RegExp(r'^[0-9]{10,15}$').hasMatch(text)) {
-                  EasyLauncher.call(number: text);
-                } else {
-                  EasyLauncher.url(url: text);
-                }
-              },
-              child: Text(
-                text,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: titilliumRegular.copyWith(
-                  color: AppColors.PRIMARY,
-                  decoration: TextDecoration.underline,
-                  decorationColor: AppColors.PRIMARY,
-                ),
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: InkWell(
+          //     onTap: () {
+          //       if (RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+          //           .hasMatch(text)) {
+          //         EasyLauncher.email(email: text);
+          //       } else if (RegExp(r'^[0-9]{10,15}$').hasMatch(text)) {
+          //         EasyLauncher.call(number: text);
+          //       } else {
+          //         EasyLauncher.url(url: text);
+          //       }
+          //     },
+          //     child: Text(
+          //       text,
+          //       maxLines: 1,
+          //       overflow: TextOverflow.ellipsis,
+          //       style: titilliumRegular.copyWith(
+          //         color: AppColors.PRIMARY,
+          //         decoration: TextDecoration.underline,
+          //         decorationColor: AppColors.PRIMARY,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

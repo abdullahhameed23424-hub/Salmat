@@ -1,6 +1,6 @@
-import 'package:my_project_new/modules/test/models/option.dart';
-import 'package:my_project_new/modules/test/models/test.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/test/models/option.dart';
+import 'package:salamat/modules/test/models/test.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class TestResponse {
   final Test data;

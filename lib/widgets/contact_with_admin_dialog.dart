@@ -1,13 +1,13 @@
-import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/info/cubit/info_cubit.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/try_again.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ContactWithAdminDialog extends StatelessWidget {
   const ContactWithAdminDialog({
@@ -40,14 +40,16 @@ class ContactWithAdminDialog extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                   child: Text(
-                    translate('contact_admin_to_buy', context),
+                    translate('purchase_contact_department', context),
                     style: titilliumRegular,
                   ),
                 ),
                 TextButton(
                     onPressed: () {
-                      EasyLauncher.call(
-                          number: cubit.infoResponse.adminContact.phone);
+                      launchUrl(
+                          Uri.parse(
+                              "https://wa.me/${cubit.infoResponse.contact.phone}"),
+                          mode: LaunchMode.externalApplication);
                     },
                     child: Text(
                       translate("tap_to_contact", context),
@@ -56,7 +58,7 @@ class ContactWithAdminDialog extends StatelessWidget {
                     )),
                 const Spacer(),
                 Image.asset(
-                  Images.contactWhatsapp,
+                  Images.contact,
                   width: 1.sw,
                 )
               ],

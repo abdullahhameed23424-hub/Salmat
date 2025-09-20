@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/test/cubit/test_cubit.dart';
+import 'package:salamat/widgets/custom_button.dart';
 
 class FailureWidget extends StatelessWidget {
   const FailureWidget({

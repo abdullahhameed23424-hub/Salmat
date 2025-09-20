@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
-import 'package:my_project_new/modules/info/view/widgets/contact_row.dart';
-import 'package:my_project_new/modules/info/view/widgets/platform_feature_card.dart';
-import 'package:my_project_new/modules/info/view/widgets/platform_owner_card.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/swaping_point.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/info/cubit/info_cubit.dart';
+import 'package:salamat/modules/info/view/widgets/contact_row.dart';
+import 'package:salamat/modules/info/view/widgets/platform_feature_card.dart';
+import 'package:salamat/modules/info/view/widgets/platform_owner_card.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/swaping_point.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key, required this.infoCubit});
@@ -176,9 +176,13 @@ class _Info extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          Text(translate('platform_manager', context),
+          if(infoCubit.infoResponse.platformManager.show)
+            Text(translate('platform_manager', context),
               style: titilliumBold.copyWith(color: AppColors.PRIMARY)),
-          SizedBox(height: 20.h),
+          if(infoCubit.infoResponse.platformManager.show)
+
+            SizedBox(height: 20.h),
+          if(infoCubit.infoResponse.platformManager.show)
           PlatformManagerCard(
               platformManager: infoCubit.infoResponse.platformManager),
           SizedBox(height: 40.h),
@@ -197,8 +201,9 @@ class ContactUsLinks1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+
         children: [
           Text(
             'تواصل معنا الآن',
@@ -207,16 +212,18 @@ class ContactUsLinks1 extends StatelessWidget {
                 decoration: TextDecoration.underline,
                 decorationColor: Colors.teal),
           ),
-          SizedBox(height: 5.h),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(Images.whatsapp, width: 24.sp),
-              text: infoCubit.infoResponse.contact.whatsapp),
-          ContactRow(
-              icon: const Icon(Icons.facebook, color: Colors.blue),
-              text: infoCubit.infoResponse.contact.facebook),
-          ContactRow(
-              icon: const Icon(Icons.telegram, color: AppColors.PRIMARY),
-              text: infoCubit.infoResponse.contact.telegram),
+              text: ""),
+          SizedBox(width: 8,),
+          const ContactRow(
+              icon:  Icon(Icons.facebook, color: Colors.blue),
+              text: ""),
+          SizedBox(width: 8,),
+          const ContactRow(
+              icon:  Icon(Icons.telegram, color: AppColors.PRIMARY),
+              text: ""),
         ],
       ),
     );
@@ -232,8 +239,8 @@ class ContactUsLinks2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(8.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             'تواصل معنا الآن',
@@ -246,19 +253,21 @@ class ContactUsLinks2 extends StatelessWidget {
           SizedBox(height: 5.h),
           ContactRow(
               icon: SvgPicture.asset(Images.insta, width: 24.sp),
-              text: infoCubit.infoResponse.contact.instagram),
+              text: ""),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.linkedin,
                 width: 24.sp,
               ),
-              text: infoCubit.infoResponse.contact.linkedin),
+              text: ""),
+          SizedBox(width: 8,),
           ContactRow(
               icon: SvgPicture.asset(
                 Images.youtube,
                 width: 24.sp,
               ),
-              text: infoCubit.infoResponse.contact.youtube),
+              text: ""),
         ],
       ),
     );

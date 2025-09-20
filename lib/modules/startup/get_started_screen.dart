@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/auth/view/screens/login_screen.dart';
+import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/utils/global_functions.dart';
 import 'dart:async'; // Add this import
 
 class GetStartedScreen extends StatefulWidget {
@@ -68,7 +70,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             CustomButton(
               label: translate('login_as_guest', context),
               onPressed: () {
-                pushTo(context: context, toPage: const LoginScreen());
+                AppSharedPreferences.saveGuest("true");
+                pushTo(context: context, toPage: const BottomNavScreen());
               },
               buttonStyle: titilliumBold,
               backgroundColor: AppColors.LIGHTGRAY,

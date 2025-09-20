@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/widgets/app_shimmer.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/widgets/app_shimmer.dart';
 
 class CustomShimmerCard extends StatelessWidget {
   const CustomShimmerCard({

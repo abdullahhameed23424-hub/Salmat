@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/modules/sections/models/section.dart';
-import 'package:my_project_new/modules/subjects/view/screens/subjects_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/modules/sections/models/section.dart';
+import 'package:salamat/modules/subjects/view/screens/subjects_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/cached_image.dart';
 
 class HomeSectionCard extends StatelessWidget {
   const HomeSectionCard({
@@ -44,7 +44,7 @@ class HomeSectionCard extends StatelessWidget {
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: CachedImage(
-                        image: section.image,
+                        image: section.smallImage ?? section.image ,
                         height: 100.h,
                       ),
                     ),

@@ -1,14 +1,19 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'dart:async';
-
-import 'package:my_project_new/modules/auth/models/profile_response.dart';
-import 'package:my_project_new/modules/auth/models/user.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:salamat/modules/auth/models/profile_response.dart';
+import 'package:salamat/modules/auth/models/user.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -40,6 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
             response.data['data']['user']['token']);
         await AppSharedPreferences.saveUserID(
             response.data['data']['user']['id'].toString());
+        AppSharedPreferences.removeGust;
         await Network.init();
 
         emit(LoginSuccessState());
@@ -54,9 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(LogoutLoadingState());
     try {
-      await Network.postData(
-        url: Urls.logout,
-      );
+      await Network.postData(url: Urls.logout);
 
       emit(LogoutSuccessState());
 
@@ -86,6 +90,10 @@ class AuthCubit extends Cubit<AuthState> {
       notificationCount = response.data['notifications_count'];
       emit(GetProfileSuccessState());
     } on DioException catch (e) {
+      if (e.response!.statusCode == 401) {
+        emit(UnAuthenticatedState());
+        return;
+      }
       emit(GetProfileErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
       emit(GetProfileErrorState(message: unknownError()));
@@ -116,5 +124,85 @@ class AuthCubit extends Cubit<AuthState> {
         emit(ChangePasswordErrorState(message: unknownError()));
       }
     }
+  }
+
+  Future<void> editImage() async {
+    emit(EditProfileLoadingState());
+
+    try {
+      final FormData formData = FormData.fromMap({
+        "_method": "PUT",
+        "image": await MultipartFile.fromFile(userImageFile!.path)
+      });
+
+      await Network.postData(url: "${Urls.profile}/update", data: formData);
+      userImageFile = null;
+      emit(EditProfileSuccessState());
+    } on DioException catch (error) {
+      emit(EditProfileErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(EditProfileErrorState(message: unknownError()));
+    }
+  }
+
+  Future<void> deleteImage() async {
+    emit(DeleteImageLoadingState());
+    try {
+      final FormData formData =
+          FormData.fromMap({"_method": "PUT", "image": null});
+
+      await Network.postData(url: "${Urls.profile}/update", data: formData);
+      emit(DeleteImageSuccessState());
+    } on DioException catch (error) {
+      emit(DeleteImageErrorState(message: exceptionsHandle(error: error)));
+    } catch (error) {
+      emit(DeleteImageErrorState(message: unknownError()));
+    }
+  }
+
+  File? userImageFile;
+  Future<void> pickImage({required ImageSource imageSource}) async {
+    final ImagePicker picker = ImagePicker();
+
+    final pickedFile = await picker.pickImage(source: imageSource);
+
+    if (pickedFile != null) {
+      userImageFile = await compressImage(File(pickedFile.path));
+
+      editImage();
+    }
+  }
+
+  Future<File?> compressImage(File file) async {
+    int originalSize = file.lengthSync();
+    print(
+        "Original image size: ${(originalSize / 1024 / 1024).toStringAsFixed(2)} MB");
+
+    final dir = await getTemporaryDirectory();
+    final targetPath =
+        path.join(dir.path, 'compressed_${path.basename(file.path)}');
+    try {
+      XFile? result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        targetPath,
+        quality: 80,
+        minWidth: 1024,
+        minHeight: 1024,
+      );
+
+      if (result != null) {
+        File compressedFile = File(result.path);
+
+        int compressedSize = compressedFile.lengthSync();
+        print(
+            "Compressed image size: ${(compressedSize / 1024 / 1024).toStringAsFixed(2)} MB");
+
+        return compressedFile;
+      }
+    } catch (e) {
+      return file;
+    }
+
+    return file;
   }
 }

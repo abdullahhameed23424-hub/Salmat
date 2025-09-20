@@ -1,7 +1,8 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/modules/video/custom_controls.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart'; 
+import 'package:salamat/modules/video/custom_controls.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:video_player/video_player.dart';
 
 // class VideoWidget extends StatelessWidget {
 //   final PodPlayerController controller;
@@ -21,6 +22,7 @@ import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
 //     );
 //   }
 // }
+
 final UniqueKey key = UniqueKey();
 
 class VideoWidget2 extends StatefulWidget {
@@ -34,34 +36,30 @@ class VideoWidget2 extends StatefulWidget {
 
 class _VideoWidget2State extends State<VideoWidget2> {
   late ChewieController chewieController;
+
   @override
   void initState() {
     chewieController = ChewieController(
-      videoPlayerController: widget.videoCubit.controller!,
-      aspectRatio: 16 / 9,
-      customControls: CustomControls(
-        videoCubit: widget.videoCubit,
-      ),
-      autoPlay: false,
-    );
+        videoPlayerController: widget.videoCubit.controller!,
+        aspectRatio: widget.videoCubit.controller!.value.aspectRatio,
+        customControls: CustomControls(
+          videoCubit: widget.videoCubit,
+        ),
+        autoPlay: false);
 
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      child: Chewie(
-        key: key,
-        controller: chewieController,
-      ),
+    return Chewie(
+      key: key,
+      controller: chewieController,
     );
   }
 }
 
-// class YoutubeVideoWidget extends StatelessWidget {
+// class YoutubeVideoWidget  StatelessWidget {
 //   const YoutubeVideoWidget({Key? key, required this.controller}) : super(key: key);
 //   final YoutubePlayerController controller;
 //   @override

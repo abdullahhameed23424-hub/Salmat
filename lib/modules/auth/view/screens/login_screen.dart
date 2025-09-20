@@ -3,23 +3,23 @@ import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/core/validators/password_validator.dart';
-import 'package:my_project_new/core/validators/username_validator.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
-import 'package:my_project_new/modules/auth/view/widgets/create_account_sheet.dart';
-import 'package:my_project_new/modules/info/cubit/info_cubit.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/modules/auth/view/widgets/recover_account_sheet.dart';
-import 'package:my_project_new/modules/auth/view/widgets/row_text_button.dart';
-import 'package:my_project_new/modules/home/view/screens/bottom_nav_screen.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/custom_textfield.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/core/validators/password_validator.dart';
+import 'package:salamat/core/validators/username_validator.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/modules/auth/view/widgets/create_account_sheet.dart';
+import 'package:salamat/modules/info/cubit/info_cubit.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/modules/auth/view/widgets/recover_account_sheet.dart';
+import 'package:salamat/modules/auth/view/widgets/row_text_button.dart';
+import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/custom_textfield.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -59,7 +59,7 @@ class LoginScreen extends StatelessWidget {
                         customSnackBar(context,
                             success: 0, message: state.message);
                       } else if (state is LoginSuccessState) {
-                        pushAndRemoveUntiTo(context,
+                        pushAndRemoveUntilTo(context,
                             toPage: const BottomNavScreen());
                       }
                     },
@@ -121,10 +121,8 @@ class LoginScreen extends StatelessWidget {
                                   style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero),
                                   onPressed: () {
-                                    ContactAdminDialog.show(
-                                        context,
-                                        infoCubit
-                                            .infoResponse.adminContact.phone);
+                                    ContactAdminDialog.show(context,
+                                        infoCubit.infoResponse.contact.phone);
                                   },
                                   child: Text(
                                     translate("forgot_password", context),
@@ -145,13 +143,11 @@ class LoginScreen extends StatelessWidget {
                                     CreateAccountSheet.show(
                                       context,
                                       onCall: () {
-                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit.infoResponse.adminContact
-                                                .phone)) {
-                                          EasyLauncher.call(
-                                              number: infoCubit.infoResponse
-                                                  .adminContact.phone);
-                                        }
+                                        EasyLauncher.url(
+                                            url:
+                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                                            mode: Mode.externalApp);
+
                                         Navigator.pop(context);
                                       },
                                     );
@@ -167,13 +163,11 @@ class LoginScreen extends StatelessWidget {
                                     RecoverAccountSheet.show(
                                       context,
                                       onCall: () {
-                                        if (RegExp(r'^[0-9]{10,15}$').hasMatch(
-                                            infoCubit.infoResponse.adminContact
-                                                .phone)) {
-                                          EasyLauncher.call(
-                                              number: infoCubit.infoResponse
-                                                  .adminContact.phone);
-                                        }
+                                        EasyLauncher.url(
+                                            url:
+                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                                            mode: Mode.externalApp);
+
                                         Navigator.pop(context);
                                       },
                                     );
@@ -243,13 +237,6 @@ class ContactAdminDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _makePhoneCall(BuildContext context) async {
-    if (RegExp(r'^[0-9]{10,15}$').hasMatch(phoneNumber)) {
-      EasyLauncher.call(number: phoneNumber);
-    }
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -293,7 +280,7 @@ class ContactAdminDialog extends StatelessWidget {
         ElevatedButton.icon(
           icon: const Icon(Icons.phone, color: Colors.white),
           label: Text(
-            translate('call_button', context),
+            'انقر للتواصل', // translate('call_button', context),
             style: titilliumSemiBold.copyWith(color: Colors.white),
           ),
           style: ElevatedButton.styleFrom(
@@ -305,7 +292,10 @@ class ContactAdminDialog extends StatelessWidget {
             elevation: 4,
             shadowColor: AppColors.PRIMARY.withOpacity(0.4),
           ),
-          onPressed: () => _makePhoneCall(context),
+          onPressed: () {
+            EasyLauncher.url(
+                url: "https://wa.me/$phoneNumber", mode: Mode.externalApp);
+          },
         ),
       ],
     );

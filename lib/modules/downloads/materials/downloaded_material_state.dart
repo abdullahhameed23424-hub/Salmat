@@ -1,0 +1,5 @@
+
+abstract class DownloadedMaterialState{}
+class DownloadedMaterialInit extends DownloadedMaterialState{}
+class DownloadedMaterialLoading extends DownloadedMaterialState{}
+class DownloadedMaterialSuccess extends DownloadedMaterialState{}

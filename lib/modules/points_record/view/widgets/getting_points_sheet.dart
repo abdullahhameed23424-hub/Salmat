@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/dimensions.dart';
 
 class GettingPointsSheet extends StatelessWidget {
+  final String content;
+
   const GettingPointsSheet({
     super.key,
+    required this.content,
   });
 
-  static void show(context) {
+  static void show(BuildContext context, String content) {
     showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
-      builder: (context) => const GettingPointsSheet(),
+      builder: (context) => GettingPointsSheet(content: content),
     );
   }
 
@@ -25,16 +29,24 @@ class GettingPointsSheet extends StatelessWidget {
           height: 0.6.sh,
           child: Column(
             children: <Widget>[
+              SizedBox(width: 1.sw),
               Container(
-                margin: EdgeInsets.all(16.w),
-                color: AppColors.GRAY600,
-                width: 50.w,
-                height: 2,
-              ),
-              const Expanded(
+                  margin: EdgeInsets.all(16.w),
+                  color: AppColors.GRAY600,
+                  width: 50.w,
+                  height: 2),
+              Expanded(
                 child: SingleChildScrollView(
-                  child: Text(
-                      'نظام النقاط من أحد الميزات التي تقدمها منصة سلامات التعليمية لطلابها وتشجيعاً لهم على المثابرة وخلق جو من التحدي والإصرار \n يمكن تحصيل النقاط من خلال حل الاختبارات ضمن وقتها المحدد وعلى كل سؤال يتم حله بشكل صحيح من أسئلة الاختبارات المؤتمتة يحصل الطالب على نقطة إضافية ..\nأيضا على كل اختبار تقليدي يتم حله يحصل الطالب على 100 نقطة على حسب حله وتقدير الأستاذ المصحح للنقاط المستحقة\nفي نهاية الدورة تجمع كل نقاط الطالب التي جمعها حيث يمكن للطالب استخدام تلك النقاط التي قام بتجميعها بشراء كورسات في المنصة والحصول على حسومات إضافية.'),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Text(
+                      content,
+                      style: titilliumRegular.copyWith(
+                        fontSize: 16.sp,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
                 ),
               )
             ],

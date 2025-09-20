@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart'; 
-import 'package:my_project_new/widgets/app_shimmer.dart';  
+import 'package:salamat/widgets/app_shimmer.dart';
 
 class ShimmerCard extends StatelessWidget {
   const ShimmerCard(

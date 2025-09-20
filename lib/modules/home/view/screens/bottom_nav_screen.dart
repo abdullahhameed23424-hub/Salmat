@@ -2,27 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/modules/auth/view/screens/login_screen.dart';
+import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
 
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/modules/home/view/screens/home_screen.dart';
-import 'package:my_project_new/modules/home/view/screens/more_info_screen.dart';
-import 'package:my_project_new/modules/home/view/widgets/bottom_nav_bar.dart';
-import 'package:my_project_new/modules/sections/view/screens/sections_screen.dart';
-import 'package:my_project_new/modules/auth/view/screens/profile_screen.dart';
-import 'package:my_project_new/screens/notifications_screen.dart';
-import 'package:my_project_new/widgets/app_shimmer.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/description_shimmer.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/modules/home/view/screens/home_screen.dart';
+import 'package:salamat/modules/home/view/screens/more_info_screen.dart';
+import 'package:salamat/modules/home/view/widgets/bottom_nav_bar.dart';
+import 'package:salamat/modules/sections/view/screens/sections_screen.dart';
+import 'package:salamat/modules/auth/view/screens/profile_screen.dart';
+import 'package:salamat/screens/notifications_screen.dart';
+import 'package:salamat/widgets/app_shimmer.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/description_shimmer.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 final ValueNotifier selectedPage = ValueNotifier<int>(1);
 
 class BottomNavScreen extends StatefulWidget {
   const BottomNavScreen({super.key});
+  static final AuthCubit authCubit = AuthCubit();
 
   @override
   State<BottomNavScreen> createState() => BottomNavScreenState();
@@ -44,13 +49,28 @@ class BottomNavScreenState extends State<BottomNavScreen> {
     {"title": "more", "image": Images.more, "screen": MoreInfoScreen()},
   ];
 
-  final GlobalKey<ScaffoldState> scaffoldkey = GlobalKey();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  final AuthCubit authCubit = AuthCubit();
   @override
   void initState() {
-    print("init getProfile ");
-    authCubit.getProfile();
+    if (AppSharedPreferences.hasToken) {
+      BottomNavScreen.authCubit.getProfile();
+    }
+    Future.delayed(
+        const Duration(
+          milliseconds:
+              200, // to ensure that screen is been built then call after build it
+        ), () {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+          statusBarColor: AppColors.SECONDRY,
+          statusBarIconBrightness: Brightness.light, // Android
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: AppColors.SECONDRY,
+          systemNavigationBarIconBrightness: Brightness.light
+
+          // iOS
+          ));
+    });
     super.initState();
   }
 
@@ -60,32 +80,41 @@ class BottomNavScreenState extends State<BottomNavScreen> {
         valueListenable: selectedPage,
         builder: (context, value, child) => Scaffold(
             backgroundColor: Colors.white,
-            key: scaffoldkey,
+            key: scaffoldKey,
             appBar: PreferredSize(
               preferredSize: Size(1.sw, 90.h),
-              child: _AppBar(scaffoldkey, authCubit),
+              child: _AppBar(scaffoldKey),
             ),
             extendBody: true,
-            body: taps[selectedPage.value]["screen"],
-            bottomNavigationBar: BottomNavBar(
-              onChange: (index) {
-                selectedPage.value = index;
-                setState(() {});
-              },
+            body: SafeArea(child: taps[selectedPage.value]["screen"]) ,
+            bottomNavigationBar: SafeArea(
+              child: BottomNavBar(
+                onChange: (index) {
+                  selectedPage.value = index;
+                  setState(() {});
+                },
+              ),
             )));
   }
 }
 
 class _AppBar extends StatelessWidget {
-  const _AppBar(this.scaffoldkey, this.authCubit);
-  final GlobalKey<ScaffoldState> scaffoldkey;
-  final AuthCubit authCubit;
+  const _AppBar(this.scaffoldKey);
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: authCubit,
-      child: BlocBuilder<AuthCubit, AuthState>(
-        bloc: authCubit,
+      value: BottomNavScreen.authCubit,
+      child: BlocConsumer<AuthCubit, AuthState>(
+        bloc: BottomNavScreen.authCubit,
+        listener: (context, state) {
+          if (state is UnAuthenticatedState) {
+            AppSharedPreferences.removeToken;
+            Network.init();
+            pushAndRemoveUntilTo(context, toPage: GetStartedScreen());
+          }
+        },
         builder: (context, state) {
           final AuthCubit authCubit = BlocProvider.of<AuthCubit>(context);
           if (state is GetProfileErrorState) {
@@ -104,38 +133,40 @@ class _AppBar extends StatelessWidget {
               backgroundColor: AppColors.SECONDRY,
               titleSpacing: 10,
               automaticallyImplyLeading: false,
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                  statusBarColor: AppColors.SECONDRY),
               toolbarHeight: 90.h,
-              title: Row(
-                spacing: 10.w,
-                children: <Widget>[
-                  if (state is GetProfileSuccessState)
-                    _UserHeader(authCubit: authCubit),
-                  if (state is GetProfileLoadingState) _UserHeaderShimmer(),
-                  const Spacer(),
-                  IconButton(
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.black12,
-                        iconSize: 30.sp,
-                      ),
-                      onPressed: () {
-                        pushTo(
-                            context: context,
-                            toPage: const NotificationsScreen());
-                      },
-                      icon: Badge.count(
-                        backgroundColor: AppColors.RED.withAlpha(210),
-                        isLabelVisible:
-                            authCubit.notificationCount > 0, //to do test
-                        count: authCubit.notificationCount,
-                        child: const Icon(
-                          Icons.notifications,
-                          color: AppColors.WHITE,
-                        ),
-                      )),
-                ],
-              ));
+              title: AppSharedPreferences.hasToken
+                  ? Row(
+                      spacing: 10.w,
+                      children: <Widget>[
+                        if (state is GetProfileSuccessState)
+                          _UserHeader(authCubit: authCubit),
+                        if (state is GetProfileLoadingState)
+                          _UserHeaderShimmer(),
+                        const Spacer(),
+                        IconButton(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.black12,
+                              iconSize: 30.sp,
+                            ),
+                            onPressed: () {
+                              pushTo(
+                                  context: context,
+                                  toPage: const NotificationsScreen());
+                            },
+                            icon: Badge.count(
+                              backgroundColor: AppColors.RED.withAlpha(210),
+                              isLabelVisible:
+                                  authCubit.notificationCount > 0, //to do test
+                              count: authCubit.notificationCount,
+                              child: const Icon(
+                                Icons.notifications,
+                                color: AppColors.WHITE,
+                              ),
+                            )),
+                      ],
+                    )
+                  : Text('أهلاً وسهلاً في تطبيق سلامات  👋🏻',
+                      style: titleHeader.copyWith(color: Colors.white)));
         },
       ),
     );
@@ -153,11 +184,7 @@ class _UserHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        pushTo(
-            context: context,
-            toPage: ProfileScreen(
-              authCubit: authCubit,
-            ));
+        pushTo(context: context, toPage: ProfileScreen());
       },
       child: Row(
         spacing: 10.w,

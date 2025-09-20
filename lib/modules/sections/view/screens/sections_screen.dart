@@ -2,12 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/sections/cubit/sections_cubit.dart';
-import 'package:my_project_new/modules/sections/view/widgets/section_card.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/sections/cubit/sections_cubit.dart';
+import 'package:salamat/modules/sections/view/widgets/section_card.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SectionsScreen extends StatelessWidget {
@@ -36,8 +36,9 @@ class SectionsScreen extends StatelessWidget {
 
             return SmartRefresher(
               enablePullUp: state is! GetSectionsLoadingState,
-              enablePullDown: state is! GetSectionsLoadingState,
+              enablePullDown: false,
               controller: sectionsCubit.refreshController,
+
               footer: CustomFooter(builder: (context, mode) {
                 return const SizedBox.shrink();
               }),
@@ -45,18 +46,15 @@ class SectionsScreen extends StatelessWidget {
                 sectionsCubit.getSections();
               },
               onRefresh: () {
-                sectionsCubit.refreshController.loadComplete();
-                sectionsCubit.page = 1;
-                sectionsCubit.getSections();
+                // sectionsCubit.refreshController.loadComplete();
+                // sectionsCubit.page = 1;
+                // sectionsCubit.getSections();
               },
               child: CustomScrollView(
                 slivers: [
-                  SliverPadding(
-                      padding: EdgeInsets.symmetric(vertical: 18.h),
-                      sliver: SliverToBoxAdapter(
-                        child: Text(sectionsCubit.headerText,
-                            style: titilliumSemiBold),
-                      )),
+                  SliverToBoxAdapter(
+                    child: SizedBox(height: 20.h),
+                  ),
                   SliverList.separated(
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 12.h),

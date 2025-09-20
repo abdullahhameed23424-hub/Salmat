@@ -2,17 +2,17 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/points_record/cubit/points_record_cubit.dart';
-import 'package:my_project_new/modules/points_record/view/widgets/getting_points_sheet.dart';
-import 'package:my_project_new/modules/points_record/view/widgets/points_card.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/points_record/cubit/points_record_cubit.dart';
+import 'package:salamat/modules/points_record/view/widgets/getting_points_sheet.dart';
+import 'package:salamat/modules/points_record/view/widgets/points_card.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class PointsRecordScreen extends StatelessWidget {
   const PointsRecordScreen({super.key});
@@ -75,8 +75,9 @@ class PointsRecordScreen extends StatelessWidget {
                                       translate(
                                           'greeting_message',
                                           args: [
-                                            pointsRecordCubit
-                                                .pointsResponse.data.totlaPoints
+                                            pointsRecordCubit.pointsResponse
+                                                .data.original.data.points
+                                                .toString()
                                           ],
                                           context),
                                       style: titilliumBold.copyWith(
@@ -104,20 +105,24 @@ class PointsRecordScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15),
                       label: translate("how_get_pints", context),
                       onPressed: () {
-                        GettingPointsSheet.show(context);
+                        GettingPointsSheet.show(context,
+                            pointsRecordCubit.pointsResponse.infoPoints!.text.toString());
                       },
                       backgroundColor: AppColors.PURPLE_LIGHT,
                     ),
                   ),
                 ),
-                SliverList.separated(
-                  itemCount:
-                      pointsRecordCubit.pointsResponse.data.totlaPoints.length,
-                  itemBuilder: (context, index) => PointsCard(
-                      points: pointsRecordCubit
-                          .pointsResponse.data.pointsList[index]),
-                  separatorBuilder: (context, index) => SizedBox(height: 10.h),
-                )
+                if (pointsRecordCubit
+                    .pointsResponse.data.original.data.history.isNotEmpty)
+                  SliverList.separated(
+                    itemCount: pointsRecordCubit
+                        .pointsResponse.data.original.data.history.length,
+                    itemBuilder: (context, index) => PointsCard(
+                        points: pointsRecordCubit
+                            .pointsResponse.data.original.data.history[index]),
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 10.h),
+                  )
               ],
             );
           },

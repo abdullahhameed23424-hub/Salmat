@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:chewie/chewie.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/modules/video/custom_controls.dart';
-import 'package:my_project_new/modules/video/cubit/video_state.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';
-import 'package:my_project_new/utils/debouncer.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/modules/video/custom_controls.dart';
+import 'package:salamat/modules/video/cubit/video_state.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/utils/debouncer.dart';
 import 'package:video_player/video_player.dart';
 
 class Restriction {
@@ -45,27 +45,39 @@ class VideoCubit extends Cubit<VideoState> {
     this.audioStreams = audioStreams;
   }
 
-  Future<void> initFromNetwork2(int selected, Duration duration) async {
+  Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
+
+    emit(VideoLoadingState());
+
+    selectedQuality = 0;
+    if (selected != -1 && selected < streamsList.length) {
+      selectedQuality = selected;
+    }
     controller = VideoPlayerController.networkUrl(
-      Uri.parse(streamsList[selected].link),
-      videoPlayerOptions: VideoPlayerOptions(
-        mixWithOthers: true,
-        allowBackgroundPlayback: true,
-      ),
+      Uri.parse(streamsList[selectedQuality].link),
+      viewType: VideoViewType.platformView,
     );
 
     initStream = controller!.initialize();
-    await initStream;
+    try {
+      await initStream;
+    }catch(error){
+      emit(VideoErrorState(error.toString()));
+      return;
+    }
     await controller!.seekTo(duration);
 
     chewieController = ChewieController(
       videoPlayerController: controller!,
-      aspectRatio: 16 / 9,
+      aspectRatio: controller!.value.aspectRatio,
       customControls: CustomControls(
         videoCubit: this,
       ),
       autoPlay: false,
     );
+    emit(VideoSuccessfulState());
+
+
     return await initStream;
   }
 
@@ -103,21 +115,21 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   Future<void> initFromFile(String path) async {
+    emit(VideoLoadingState());
     controller = VideoPlayerController.file(File(path),
-        videoPlayerOptions: VideoPlayerOptions(
-          mixWithOthers: true,
-          allowBackgroundPlayback: true,
-        ));
+      viewType: VideoViewType.platformView,
+        );
     initStream = controller!.initialize();
     await initStream;
     chewieController = ChewieController(
       videoPlayerController: controller!,
-      aspectRatio: 16 / 9,
+      aspectRatio: controller!.value.aspectRatio,
       customControls: CustomControls(
         videoCubit: this,
       ),
       autoPlay: false,
     );
+    emit(VideoSuccessfulState());
     return await initStream;
   }
 
@@ -129,45 +141,47 @@ class VideoCubit extends Cubit<VideoState> {
     // print(
     //     'show the two ${controller!.value.position.inMilliseconds - audioPlayer.position.inMilliseconds}');
 
-    if ((controller!.value.position.inMilliseconds -
-                audioPlayer.position.inMilliseconds)
-            .abs() >
-        200) {
-      double speed = controller!.value.position.inMilliseconds -
-                  audioPlayer.position.inMilliseconds <
-              0
-          ? 2 * (playbackSpeed)
-          : 0.5 * (playbackSpeed);
-      controller!.setPlaybackSpeed(speed);
-    } else {
-      controller!.setPlaybackSpeed(playbackSpeed);
-    }
+    // if ((controller!.value.position.inMilliseconds -
+    //             audioPlayer.position.inMilliseconds)
+    //         .abs() >
+    //     200) {
+    //   double speed = controller!.value.position.inMilliseconds -
+    //               audioPlayer.position.inMilliseconds <
+    //           0
+    //       ? 2 * (playbackSpeed)
+    //       : 0.5 * (playbackSpeed);
+    //   controller!.setPlaybackSpeed(speed);
+    // } else {
+    //   controller!.setPlaybackSpeed(playbackSpeed);
+    // }
+    //
+    // wasPlaying = controller!.value.isPlaying == true &&
+    //     controller!.value.isBuffering == true;
+    // if (controller!.value.isPlaying == false ||
+    //     controller!.value.isBuffering == true) {
+    //   if (audioPlayer.playing) {
+    //     audioPlayer.pause();
+    //   }
+    // } else if (controller!.value.isPlaying == true &&
+    //     controller!.value.isBuffering == false) {
+    //   if (audioPlayer.playing == false) {
+    //     audioPlayer.play();
+    //   }
+    // }
 
-    wasPlaying = controller!.value.isPlaying == true &&
-        controller!.value.isBuffering == true;
-    if (controller!.value.isPlaying == false ||
-        controller!.value.isBuffering == true) {
-      if (audioPlayer.playing) {
-        audioPlayer.pause();
-      }
-    } else if (controller!.value.isPlaying == true &&
-        controller!.value.isBuffering == false) {
-      if (audioPlayer.playing == false) {
-        audioPlayer.play();
-      }
-    }
+    print("show the full screen ${chewieController?.isFullScreen}");
 
-    debouncer.run(() {
-      for (int i = 0; i < _seekRestrictions.length; i++) {
-        if (controller!.value.position.inMilliseconds >
-                _seekRestrictions[i].duration.inMilliseconds &&
-            isSeeking == false &&
-            _seekRestrictions[i].show) {
-          isSeeking = true;
-          seekTo(_seekRestrictions[i].duration, i);
-        }
-      }
-    });
+    // debouncer.run(() {
+    //   for (int i = 0; i < _seekRestrictions.length; i++) {
+    //     if (controller!.value.position.inMilliseconds >
+    //             _seekRestrictions[i].duration.inMilliseconds &&
+    //         isSeeking == false &&
+    //         _seekRestrictions[i].show) {
+    //       isSeeking = true;
+    //       seekTo(_seekRestrictions[i].duration, i);
+    //     }
+    //   }
+    // });
   }
 
   int time = 0;

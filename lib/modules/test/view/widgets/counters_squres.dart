@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/test/cubit/test_cubit.dart';
-import 'package:my_project_new/modules/test/view/widgets/test_info.dart';
-import 'package:my_project_new/utils/sliver_delegate.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/test/cubit/test_cubit.dart';
+import 'package:salamat/modules/test/view/widgets/test_info.dart';
+import 'package:salamat/utils/sliver_delegate.dart';
 
-class CountersSqures extends StatelessWidget {
-  const CountersSqures({
+class CountersSquares extends StatelessWidget {
+  const CountersSquares({
     super.key,
     required this.testCubit,
   });

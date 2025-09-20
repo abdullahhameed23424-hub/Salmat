@@ -1,6 +1,6 @@
-import 'package:my_project_new/modules/test/models/result.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/test/models/result.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class Test {
   final int id;
@@ -16,7 +16,7 @@ class Test {
   final bool isSubscribed;
   final dynamic remainingTime;
   final LatestStudentExam? latestStudentExam;
-  final StudentExam studentExam;
+  final StudentExam? studentExam;
   Test(
       {required this.id,
       required this.description,
@@ -34,7 +34,9 @@ class Test {
       required this.remainingTime});
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
-        studentExam: StudentExam.fromJson(json['studentExam']),
+        studentExam: json['studentExam'] != null
+            ? StudentExam.fromJson(json['studentExam'])
+            : null,
         latestStudentExam: json['latest_student_exam'] != null
             ? LatestStudentExam.fromJson(json['latest_student_exam'])
             : null,

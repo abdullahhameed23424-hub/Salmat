@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/modules/offers/models/offer.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/modules/offers/models/offer.dart';
 
 class OfferCard extends StatelessWidget {
   const OfferCard({
@@ -50,15 +50,12 @@ class OfferCard extends StatelessWidget {
                       fit: BoxFit.cover),
                   color: AppColors.SECONDRY,
                   borderRadius: BorderRadius.circular(10)),
-              foregroundDecoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10)),
             ),
           ),
           AspectRatio(
             aspectRatio: 16 / 9,
             child: Container(
-              alignment: AlignmentDirectional.centerStart,
+              alignment: AlignmentDirectional.bottomStart,
               width: 1.sw,
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(

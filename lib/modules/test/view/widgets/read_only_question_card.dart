@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/modules/test/models/test.dart';
-import 'package:my_project_new/modules/test/models/test_response.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/modules/test/models/test.dart';
+import 'package:salamat/modules/test/models/test_response.dart';
 
 class ReadOnlyQuestionCard extends StatefulWidget {
   const ReadOnlyQuestionCard(

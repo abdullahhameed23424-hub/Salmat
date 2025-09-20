@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/offers/models/offer.dart'; 
+import 'package:salamat/modules/offers/models/offer.dart'; 
 
 class OffersResponse {
   final int currentPage;

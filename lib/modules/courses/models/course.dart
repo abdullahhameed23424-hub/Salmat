@@ -1,15 +1,13 @@
-import 'package:my_project_new/modules/comments/models/comment.dart';
-import 'package:my_project_new/modules/teachers/models/teacher.dart';
-import 'package:my_project_new/utils/bool_converter.dart';
+import 'package:salamat/modules/comments/models/comment.dart';
+import 'package:salamat/modules/teachers/models/teacher.dart';
+import 'package:salamat/utils/bool_converter.dart';
 
 class Course {
   final int id;
   final String name;
   final String image;
   final bool isFree;
-  final bool subscribed;
-  final String price; //before discount
-  final String totalPrice; //  after discount
+  final bool subscribed; 
   final String discount;
   final String introVideo;
   final int? parentId;
@@ -25,9 +23,7 @@ class Course {
     required this.name,
     required this.image,
     required this.isFree,
-    required this.subscribed,
-    required this.price,
-    required this.totalPrice,
+    required this.subscribed, 
     required this.discount,
     required this.introVideo,
     required this.description,
@@ -40,6 +36,40 @@ class Course {
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
+
+
+
+// Teachers
+    if (json["teachers"] != null) {
+      List<Teacher> teachers = List<Teacher>.from(json["teachers"].map((x) => Teacher.fromJson(x)));
+      print("Teachers:");
+      for (var teacher in teachers) {
+        print(" - ${teacher.toString()}"); // أو طباعة بيانات محددة من كل معلم
+      }
+    } else {
+      print("Teachers: []");
+    }
+
+
+// Total Lessons Time
+    String totalTime = (json["total_lessons_time"] != null && json["total_lessons_time"] is String)
+        ? getHoursFromTimeString(json["total_lessons_time"])
+        : "0";
+    print("Total Lessons Time: $totalTime");
+
+// Comments
+    if (json["comments"] != null) {
+      List<Comment> comments = List<Comment>.from(json["comments"].map((x) => Comment.fromJson(x)));
+      print("Comments:");
+      for (var comment in comments) {
+        print(" - ${comment.toString()}"); // أو طباعة تفاصيل التعليق
+      }
+    } else {
+      print("Comments: []");
+    }
+
+
+
     return Course(
       subscribed: boolConverter(json['subscribed']),
       id: json['id'],
@@ -48,9 +78,7 @@ class Course {
       requirements: json['requirements'] ?? "",
       image: json['image'] ?? "",
       introVideo: json['introVideo'] ?? "",
-      isFree: boolConverter(json['is_free']),
-      price: stringOrZero(json['price']),
-      totalPrice: stringOrZero(json['totalPrice']),
+      isFree: boolConverter(json['is_free']), 
       discount: stringOrZero(json['discount']),
       description: json['description'] ?? "",
       lessonsCount: json["lessons_count"] ?? 0,

@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:my_project_new/modules/sections/models/section.dart';
-import 'package:my_project_new/modules/subjects/models/subject.dart';
+import 'package:salamat/modules/sections/models/section.dart';
+import 'package:salamat/modules/subjects/models/subject.dart';
 
 class SubjectsResponse {
   final Original original;

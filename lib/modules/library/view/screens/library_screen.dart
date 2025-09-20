@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/library/cubit/library_cubit.dart';
-import 'package:my_project_new/modules/library/view/widgets/library_section_card.dart';
-import 'package:my_project_new/widgets/app_footer.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/cached_image.dart';
-import 'package:my_project_new/widgets/no_data.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/refresher_header.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/library/cubit/library_cubit.dart';
+import 'package:salamat/modules/library/view/widgets/library_section_card.dart';
+import 'package:salamat/widgets/app_footer.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/cached_image.dart';
+import 'package:salamat/widgets/no_data.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/refresher_header.dart';
+import 'package:salamat/widgets/try_again.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class LibraryScreen extends StatelessWidget {

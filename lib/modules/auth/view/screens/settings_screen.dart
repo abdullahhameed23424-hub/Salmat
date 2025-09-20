@@ -2,19 +2,19 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/auth/cubit/auth_cubit.dart';
-import 'package:my_project_new/modules/auth/view/screens/change_password_screen.dart';
-import 'package:my_project_new/modules/auth/view/screens/login_screen.dart';
-import 'package:my_project_new/modules/auth/view/widgets/delete_account_dialog.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/modern_loading_dialog.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
+import 'package:salamat/modules/auth/view/screens/change_password_screen.dart';
+import 'package:salamat/modules/auth/view/widgets/delete_account_dialog.dart';
+import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/modern_loading_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsScreen({super.key});
@@ -38,7 +38,8 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.pop(context);
                   }
                   AppSharedPreferences.removeToken;
-                  pushAndRemoveUntiTo(context, toPage: const LoginScreen());
+                  pushAndRemoveUntilTo(context,
+                      toPage: const GetStartedScreen());
                 }
                 if (state is LogoutErrorState) {
                   customSnackBar(context, success: 0, message: state.message);

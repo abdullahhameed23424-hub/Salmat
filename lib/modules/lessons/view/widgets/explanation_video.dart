@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
-import 'package:my_project_new/modules/video/cubit/video_state.dart';
-import 'package:my_project_new/modules/video/models/my_viedeo.dart';
-import 'package:my_project_new/modules/video/video_widget.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/modules/video/cubit/video_state.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/modules/video/video_widget.dart';
+import 'package:salamat/widgets/try_again.dart';
 
 class ExplanationVideo extends StatefulWidget {
   const ExplanationVideo({

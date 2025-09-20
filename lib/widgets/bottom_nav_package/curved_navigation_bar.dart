@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:my_project_new/widgets/bottom_nav_package/src/nav_custom_clipper.dart';
+import 'package:salamat/widgets/bottom_nav_package/src/nav_custom_clipper.dart';
 import 'src/nav_button.dart';
 import 'src/nav_custom_painter.dart';
 

@@ -2,14 +2,12 @@ import 'dart:math';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/points_record/models/points.dart';
-import 'package:my_project_new/modules/points_record/view/widgets/text_row.dart';
+import 'package:intl/intl.dart'; 
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/points_record/models/points.dart';
+import 'package:salamat/modules/points_record/view/widgets/text_row.dart';
 
 class PointsCard extends StatelessWidget {
   const PointsCard({
@@ -45,14 +43,15 @@ class PointsCard extends StatelessWidget {
                     TextRow(
                         title: "${translate('points', context)}:",
                         value: points.points.toString()),
-                    TextRow(
-                      title: "${translate('time', context)}:",
-                      value:
-                          " ${DateFormat('hh:MM a').format(points.createdAt)} ",
+                    Text(
+                        DateFormat("yyyy-MM-dd HH:mm").format(points.createdAt)
                     ),
-                    TextRow(
-                        title: "${translate('reason', context)}:",
-                        value: points.reason),
+
+                    Text(points.reason),
+
+                    // TextRow(
+                    //     title: "${translate('reason', context)}:",
+                    //     value: points.reason),
                   ],
                 ),
               ),

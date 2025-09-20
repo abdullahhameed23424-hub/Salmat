@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/auth/models/user.dart';
+import 'package:salamat/modules/auth/models/user.dart';
 
 class ProfileResponse {
   final User user;

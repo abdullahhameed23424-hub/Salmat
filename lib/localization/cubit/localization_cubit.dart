@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/helper/app_sharedPreferance.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
 
 part 'localization_state.dart';
 

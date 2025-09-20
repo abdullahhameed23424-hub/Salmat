@@ -2,35 +2,43 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/lessons/cubit/lessons_cubit.dart';
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
-import 'package:my_project_new/modules/lessons/models/next_lesson_button_status.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/attachment_card.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/custom_exam_button.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_buttons_tabbar.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/lesson_image_card.dart';
-import 'package:my_project_new/modules/lessons/view/widgets/resolution_card.dart';
-import 'package:my_project_new/modules/test/view/screens/test_screen.dart';
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart';
-import 'package:my_project_new/utils/global_functions.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
-import 'package:my_project_new/widgets/app_scaffold.dart';
-import 'package:my_project_new/widgets/confirmation_dialog.dart';
-import 'package:my_project_new/widgets/custom_button.dart';
-import 'package:my_project_new/widgets/modern_loading_dialog.dart';
-import 'package:my_project_new/widgets/read_more_text.dart';
-import 'package:my_project_new/widgets/try_again.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/downloads/download/download_cubit.dart';
+import 'package:salamat/modules/downloads/download/download_state.dart';
+import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
+import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/models/next_lesson_button_status.dart';
+import 'package:salamat/modules/lessons/view/screens/lessonss_screen.dart';
+import 'package:salamat/modules/lessons/view/widgets/attachment_card.dart';
+import 'package:salamat/modules/lessons/view/widgets/custom_exam_button.dart';
+import 'package:salamat/modules/lessons/view/widgets/resolution_card.dart';
+import 'package:salamat/modules/test/view/screens/test_screen.dart';
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
+import 'package:salamat/modules/video/models/my_viedeo.dart';
+import 'package:salamat/utils/global_functions.dart';
+import 'package:salamat/widgets/app_loading.dart';
+import 'package:salamat/widgets/app_scaffold.dart';
+import 'package:salamat/widgets/confirmation_dialog.dart';
+import 'package:salamat/widgets/custom_button.dart';
+import 'package:salamat/widgets/modern_loading_dialog.dart';
+import 'package:salamat/widgets/read_more_text.dart';
+import 'package:salamat/widgets/try_again.dart';
 
-import '../widgets/lesson_video.dart';
+import '../../../../helper/app_sharedPreferance.dart';
+import '../../../../widgets/my_alert_dialog.dart';
+import '../../../video/cubit/video_state.dart';
+import '../../../video/video_widget.dart';
 
 class LessonDetailsScreen extends StatefulWidget {
-  const LessonDetailsScreen({super.key, required this.lesson});
-  final Lesson lesson;
+  const LessonDetailsScreen(
+      {super.key, required this.id, required this.name, required this.unitId});
+  final int id;
+  final String name;
+  final int unitId;
   static bool refrshLessonScreen = false;
   @override
   State<LessonDetailsScreen> createState() => _LessonDetailsScreenState();
@@ -45,6 +53,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   VideoCubit? onlineVideoCubit = VideoCubit();
   VideoCubit? offlineVideoCubit = VideoCubit();
 
+  late DownloadCubit downloadCubit;
+
   @override
   void initState() {
     controller = TabController(
@@ -55,7 +65,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    offlineVideoCubit?.dispose();
+
+    onlineVideoCubit?.dispose();
+
+    downloadCubit.dispose();
+
     super.dispose();
   }
 
@@ -64,146 +79,302 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      backgroundColor: Colors.white,
-      appBarBorderRadius: BorderRadius.zero,
-      title: widget.lesson.name,
-      body: BlocProvider(
-        create: (context) => LessonsCubit()
-          ..getLessonDetails(
-              lessonId: widget.lesson.id, unitId: widget.lesson.unitId),
-        child: BlocConsumer<LessonsCubit, LessonsState>(
-          listener: (context, state) {
-            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is OpenNextLessonErrorState) {
-              customSnackBar(context, success: 0, message: state.message);
-            } else if (state is OpenNextLessonSuccessState) {
-              LessonsScreen.refrshLessonsScreen = true;
-              if (lessonsCubit.buttonStatus ==
-                  NextLessonButtonStatus.OPEN_NEXT_UNIT) {
-                Navigator.pop(context,
-                    {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
-                customSnackBar(context, success: 1, message: "تم إنهاء الوحدة");
-              } else if (lessonsCubit.buttonStatus ==
-                  NextLessonButtonStatus.OPEN_AND_MOVE) {
+        backgroundColor: Colors.white,
+        appBarBorderRadius: BorderRadius.zero,
+        title: widget.name,
+        body: BlocProvider(
+            create: (context) => LessonsCubit()
+              ..getLessonDetails(lessonId: widget.id, unitId: widget.unitId),
+            child: BlocConsumer<LessonsCubit, LessonsState>(
+                listener: (context, state) {
+              final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+              if (state is OpenNextLessonErrorState) {
+                customSnackBar(context, success: 0, message: state.message);
+              } else if (state is OpenNextLessonSuccessState) {
+                LessonsScreen.refrshLessonsScreen = true;
+                if (lessonsCubit.buttonStatus ==
+                    NextLessonButtonStatus.OPEN_NEXT_UNIT) {
+                  Navigator.pop(context,
+                      {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+                  customSnackBar(context,
+                      success: 1, message: "تم إنهاء الوحدة");
+                } else if (lessonsCubit.buttonStatus ==
+                    NextLessonButtonStatus.OPEN_AND_MOVE) {
+                  lessonsCubit.getLessonDetails(
+                      lessonId: state.nextLessonId,
+                      unitId: lessonsCubit.lessonDetails.unitId!);
+                }
+              } else if (state is SkipTestLoadingState) {
+                ModernLoadingDialog.show(context, _loadingDialogKey);
+              } else if (state is SkipTestSuccessState) {
+                LessonsScreen.refrshLessonsScreen = true;
+                if (_loadingDialogKey.currentState != null) {
+                  Navigator.pop(context);
+                }
                 lessonsCubit.getLessonDetails(
-                    lessonId: state.nextLessonId,
-                    unitId: lessonsCubit.lessonDetails.unitId);
-              }
-            } else if (state is SkipTestLoadingState) {
-              ModernLoadingDialog.show(context, _loadingDialogKey);
-            } else if (state is SkipTestSuccessState) {
-              LessonsScreen.refrshLessonsScreen = true;
-              if (_loadingDialogKey.currentState != null) {
-                Navigator.pop(context);
-              }
-              lessonsCubit.getLessonDetails(
-                  lessonId: lessonsCubit.lessonDetails.id,
-                  unitId: lessonsCubit.lessonDetails.unitId);
+                    lessonId: lessonsCubit.lessonDetails.id,
+                    unitId: lessonsCubit.lessonDetails.unitId!);
 
-              pushTo(
-                  context: context,
-                  toPage:
-                      TestScreen(examId: lessonsCubit.lessonDetails.exam!.id));
-            } else if (state is SkipTestErrorState) {
-              if (_loadingDialogKey.currentState != null) {
-                Navigator.pop(context);
+                pushTo(
+                    context: context,
+                    toPage: TestScreen(
+                      examId: lessonsCubit.lessonDetails.exam!.id,
+                      lesson: lessonsCubit.lessonDetails,
+                    ));
+              } else if (state is SkipTestErrorState) {
+                if (_loadingDialogKey.currentState != null) {
+                  Navigator.pop(context);
+                }
+                customSnackBar(context, success: 0, message: state.message);
               }
-              customSnackBar(context, success: 0, message: state.message);
-            }
-          },
-          builder: (context, state) {
-            final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
-            if (state is GetLessonDetailsLoadingState) {
-              return const AppLoading();
-            }
-            if (state is GetLessonDetailsErrorState) {
-              return TryAgain(
-                  onTap: () {
-                    lessonsCubit.getLessonDetails(
-                        lessonId: widget.lesson.id,
-                        unitId: widget.lesson.unitId);
+            }, builder: (context, state) {
+              final LessonsCubit lessonsCubit = context.read<LessonsCubit>();
+              if (state is GetLessonDetailsLoadingState) {
+                return const AppLoading();
+              }
+              if (state is GetLessonDetailsErrorState) {
+                return TryAgain(
+                    onTap: () {
+                      lessonsCubit.getLessonDetails(
+                          lessonId: widget.id, unitId: widget.unitId);
+                    },
+                    message: state.message);
+              }
+              final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
+              final bool isPassed =
+                  ((lessonsCubit.lessonDetails.exam?.result.pass == true) ||
+                          (lessonsCubit.lessonDetails.exam?.studentExam
+                                      ?.skipped !=
+                                  null &&
+                              (lessonsCubit.lessonDetails.exam!.studentExam
+                                      ?.skipped ??
+                                  false))
+                      ? true
+                      : false);
+
+              return BlocProvider(
+                create: (context) {
+                  downloadCubit = DownloadCubit(
+                      link: "",
+                      fileName:
+                          "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
+                      localPath: FileManagerCubit.privatePath,
+                      showContentLength: true,
+                      metaId: lessonsCubit.lessonDetails.id)
+                    ..init();
+                  return downloadCubit;
+                },
+                child: BlocBuilder<DownloadCubit, DownloadState>(
+                  builder: (context, state) {
+                    if (state is CompleteState) {
+                      if (onlineVideoCubit != null) {
+                        onlineVideoCubit!.dispose();
+                        onlineVideoCubit = null;
+
+                        offlineVideoCubit ??= VideoCubit();
+                      }
+                    } else {
+                      if (offlineVideoCubit != null) {
+                        offlineVideoCubit!.dispose();
+                        offlineVideoCubit = null;
+
+                        onlineVideoCubit ??= VideoCubit();
+                      }
+                    }
+                    return ListView(
+                      clipBehavior: Clip.none,
+                      children: <Widget>[
+                        state is CompleteState
+                            ? BlocProvider(
+                                key: offline,
+                                lazy: false,
+                                create: (context) => offlineVideoCubit!
+                                  ..initFromFile(
+                                      '${FileManagerCubit.privatePath}${context.read<DownloadCubit>().fileName}'),
+                                child: BlocBuilder<VideoCubit, VideoState>(
+                                  builder: (context, state) {
+                                    if (state is VideoLoadingState) {
+                                      return const AspectRatio(
+                                        aspectRatio: 16/9,
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.PRIMARY,
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    if (state is VideoErrorState) {
+                                      return TryAgain(
+                                        withImage: false,
+                                        small: true,
+                                        message: state.error,
+                                        onTap: () {
+                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                        },
+                                      );
+                                    }
+                                    return AspectRatio(
+                                      aspectRatio:context.read<VideoCubit>().controller!.value.aspectRatio ,
+                                      child: VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              )
+                            : BlocProvider(
+                                lazy: false,
+                                create: (context) => onlineVideoCubit!
+                                  ..setStreams(
+                                      lessonsCubit.lessonDetails.myVideos)
+                                  ..initFromNetwork2(
+                                      AppSharedPreferences.getQuality,
+                                      Duration.zero),
+                                child: BlocBuilder<VideoCubit, VideoState>(
+                                  builder: (context, state) {
+                                    if (state is VideoLoadingState) {
+                                      return AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child:  Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const CircularProgressIndicator(
+                                              color: AppColors.LOGO_PRIMARY,
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: const BoxDecoration(
+                                                  gradient: LinearGradient(colors: [
+                                                    Colors.white,
+                                                    Colors.white70,
+                                                  ]),
+                                                ),
+                                                child:  const Text(
+                                                  "يتم تحضير الفيديو الرجاء الانتظار..",
+                                                  style: TextStyle(color: AppColors.LOGO_PRIMARY),
+                                                ))
+                                          ],
+
+                                        ),
+                                      );
+                                    }
+
+                                    if (state is VideoErrorState) {
+                                      return TryAgain(
+                                        withImage: false,
+                                        small: true,
+                                        message: state.error,
+                                        onTap: () {
+                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                        },
+                                      );
+                                    }
+                                
+                                    return AspectRatio(
+                                      aspectRatio: context.read<VideoCubit>().controller!.value.aspectRatio,
+                                      child: VideoWidget2(
+                                        videoCubit: context.read<VideoCubit>(),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                        // const ServerOptions(),
+                        const SizedBox(height: 10),
+                        Builder(builder: (context) {
+                          return _LessonHeader(lessonsCubit.lessonDetails,
+                              context.read<DownloadCubit>());
+                        }),
+                        Column(
+                          children: [
+                            SizedBox(height: 22.h),
+                            _LessonDscription(
+                                lessonsCubit.lessonDetails.description),
+                            _LessonTaps(
+                                controller: controller,
+                                lessonsCubit: lessonsCubit),
+                            if (thereIsTest) ...[
+                              DoExamButton(
+                                  color:
+                                      isPassed ? AppColors.LIGHT_GREEN : null,
+                                  label: isPassed
+                                      ? translate('view_exam', context)
+                                      : lessonsCubit.lessonDetails.exam
+                                                  ?.isSolving ==
+                                              true
+                                          ? "إتمام الاختبار"
+                                          : translate('do_exam', context),
+                                  onTap: () async {
+                                    LessonDetailsScreen.refrshLessonScreen =
+                                        false;
+                                    await pushTo(
+                                        context: context,
+                                        toPage: TestScreen(
+                                            lesson: lessonsCubit.lessonDetails,
+                                            examId: lessonsCubit
+                                                .lessonDetails.examId!));
+
+                                    if (LessonDetailsScreen
+                                        .refrshLessonScreen) {
+                                      lessonsCubit.getLessonDetails(
+                                          lessonId:
+                                              lessonsCubit.lessonDetails.id,
+                                          unitId: lessonsCubit
+                                              .lessonDetails.unitId!);
+                                    }
+                                  }),
+                              SizedBox(height: 15.h),
+                              if (thereIsTest &&
+                                  !lessonsCubit.lessonDetails.exam!.isSolving &&
+                                  lessonsCubit
+                                          .lessonDetails.exam!.result.pass !=
+                                      true &&
+                                  (lessonsCubit.lessonDetails.exam!.studentExam
+                                              ?.attemptCount ??
+                                          0) >
+                                      0 &&
+                                  !(lessonsCubit.lessonDetails.exam!.studentExam
+                                          ?.skipped ??
+                                      false)) // يجب الاشتراك بالكورس و يوجد اختبار  وليس قيد الحل  ولم يتم النجاح بالاختبار وعدد المحاولات أكثر من مرة ولم يتم تخطيه من قبل
+                                CustomButton(
+                                    backgroundColor: AppColors.PURPLE_LIGHT,
+                                    label: translate(
+                                        'skip_test_and_show_answers', context),
+                                    onPressed: () async {
+                                      final bool? shouldSkip =
+                                          await ConfirmationDialog.show(
+                                              context: context,
+                                              title: translate(
+                                                  'skip_exam', context),
+                                              message: translate(
+                                                  'skip_exam_message',
+                                                  context));
+
+                                      if (shouldSkip == true) {
+                                        lessonsCubit.skipTest(
+                                            lessonId:
+                                                lessonsCubit.lessonDetails.id,
+                                            unitId: lessonsCubit
+                                                .lessonDetails.unitId!);
+                                      }
+                                    }),
+                            ],
+                            if (lessonsCubit.lessonDetails.subscribed)
+                              NextAndLastLessonButtons(
+                                  lessonsCubit: lessonsCubit),
+                          ],
+                        ),
+                        SizedBox(height: 40.h)
+                      ],
+                    );
                   },
-                  message: state.message);
-            }
-            final bool thereIsTest = lessonsCubit.lessonDetails.exam != null;
-            final bool isPassed =
-                ((lessonsCubit.lessonDetails.exam!.result.pass == true) ||
-                        (lessonsCubit.lessonDetails.exam!.studentExam.skipped)
-                    ? true
-                    : false);
-            return ListView(
-              clipBehavior: Clip.none,
-              children: <Widget>[
-                LessonVideo(lesson: lessonsCubit.lessonDetails),
-                const ServerOptions(),
-                _LessonHeader(lessonsCubit.lessonDetails),
-                Column(
-                  children: [
-                    SizedBox(height: 22.h),
-                    _LessonDscription(lessonsCubit.lessonDetails.description),
-                    _LessonTaps(
-                        controller: controller, lessonsCubit: lessonsCubit),
-                    if (thereIsTest) ...[
-                      DoExamButton(
-                          color: isPassed ? AppColors.LIGHT_GREEN : null,
-                          label: isPassed
-                              ? translate('view_exam', context)
-                              : lessonsCubit.lessonDetails.exam?.isSolving ==
-                                      true
-                                  ? "إتمام الاختبار"
-                                  : translate('do_exam', context),
-                          onTap: () async {
-                            LessonDetailsScreen.refrshLessonScreen = false;
-                            await pushTo(
-                                context: context,
-                                toPage: TestScreen(
-                                    examId:
-                                        lessonsCubit.lessonDetails.examId!));
-
-                            if (LessonDetailsScreen.refrshLessonScreen) {
-                              lessonsCubit.getLessonDetails(
-                                  lessonId: lessonsCubit.lessonDetails.id,
-                                  unitId: lessonsCubit.lessonDetails.unitId);
-                            }
-                          }),
-                      SizedBox(height: 15.h),
-                      if (thereIsTest &&
-                          !lessonsCubit.lessonDetails.exam!.isSolving &&
-                          lessonsCubit.lessonDetails.exam!.result.pass ==
-                              null &&
-                          lessonsCubit.lessonDetails.exam!.studentExam
-                                  .attemptCount >
-                              0 &&
-                          !lessonsCubit.lessonDetails.exam!.studentExam.skipped)
-                        CustomButton(
-                            backgroundColor: AppColors.PURPLE_LIGHT,
-                            label: translate(
-                                'skip_test_and_show_answers', context),
-                            onPressed: () async {
-                              final bool? shouldSkip =
-                                  await ConfirmationDialog.show(
-                                      context: context,
-                                      title: translate('skip_exam', context),
-                                      message: translate(
-                                          'skip_exam_message', context));
-
-                              if (shouldSkip == true) {
-                                lessonsCubit.skipTest(
-                                    lessonId: lessonsCubit.lessonDetails.id,
-                                    unitId: lessonsCubit.lessonDetails.unitId);
-                              }
-                            }),
-                    ],
-                    NextAndLastLessonButtons(lessonsCubit: lessonsCubit),
-                  ],
                 ),
-                SizedBox(height: 40.h)
-              ],
-            );
-          },
-        ),
-      ),
-    );
+              );
+            })));
   }
 }
 
@@ -290,7 +461,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
                           lessonsCubit.getLessonDetails(
                               lessonId:
                                   lessonsCubit.lessonDetails.previousLessonId!,
-                              unitId: lessonsCubit.lessonDetails.unitId);
+                              unitId: lessonsCubit.lessonDetails.unitId!);
                         }
                       : null)),
         ],
@@ -421,90 +592,274 @@ class _LessonDscription extends StatelessWidget {
   }
 }
 
-class _LessonHeader extends StatelessWidget {
-  const _LessonHeader(this.lesson);
+class _LessonHeader extends StatefulWidget {
+  const _LessonHeader(this.lesson, this.download);
   final Lesson lesson;
+  final DownloadCubit download;
+
+  @override
+  State<_LessonHeader> createState() => _LessonHeaderState();
+}
+
+class _LessonHeaderState extends State<_LessonHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
       clipBehavior: Clip.none,
       color: Colors.white,
       child: Container(
-          width: 1.sw,
-          height: 105.h,
-          margin: EdgeInsets.only(left: 16.w, right: 16.w),
-          padding: EdgeInsets.symmetric(horizontal: 14.w),
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(color: Colors.black12, blurRadius: 2, spreadRadius: 2)
-              ],
-              color: AppColors.SECONDRY,
-              borderRadius: BorderRadius.circular(20)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 5.h),
-              Text(
-                lesson.name,
+        width: 1.sw,
+        height: 120.h,
+        margin: EdgeInsets.only(left: 16.w, right: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(color: Colors.black12, blurRadius: 2, spreadRadius: 2)
+          ],
+          color: AppColors.SECONDRY,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Lesson name
+            Expanded(
+              child: Text(
+                widget.lesson.name,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: titilliumBold.copyWith(
-                    color: AppColors.WHITE, fontSize: 14.sp),
+                  color: AppColors.WHITE,
+                  fontSize: 14.sp,
+                ),
               ),
-             Spacer(),
-              Row(
-                children: [
-                  Text(
-                    translate("duration_label", context, args: [lesson.time]),
+            ),
+
+            // Bottom row with duration and download controls
+            Row(
+              children: [
+                // Duration text
+                Expanded(
+                  child: Text(
+                    translate("duration_label", context,
+                        args: [widget.lesson.time]),
                     style: titilliumBold.copyWith(
-                        color: AppColors.WHITE, fontSize: 14.sp),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.white,
-                        context: context,
-                        builder: (context) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: Colors.black,
-                                  size: 30.sp,
-                                )),
-                            _VideoResolutions(),
-                          ],
-                        ),
-                      );
-                    },
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(Images.whiteShape, width: 100.w),
-                        Text(translate('download', context),
-                            style: titilliumBold.copyWith(
-                                color: AppColors.PRIMARY))
-                      ],
+                      color: AppColors.WHITE,
+                      fontSize: 14.sp,
                     ),
                   ),
-                  SizedBox(width: 8.w)
-                ],
+                ),
+
+                // Download controls
+                _buildDownloadControls(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDownloadControls() {
+    final downloadState = widget.download.state;
+
+    // Loading states
+    if (downloadState is UndefinedState ||
+        downloadState is RequestingState ||
+        downloadState is CancellingSate ||
+        downloadState is RetryingState) {
+      return const SizedBox(
+        width: 20,
+        height: 20,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          valueColor: AlwaysStoppedAnimation<Color>(AppColors.WHITE),
+        ),
+      );
+    }
+
+    // Downloading states
+    if (downloadState is RunningState ||
+        downloadState is QueuedState ||
+        downloadState is RetriedState) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            widget.download.mbProgress ?? "",
+            textDirection: TextDirection.ltr,
+            style: titilliumBold.copyWith(
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.LOGO_PRIMARY,
+              fontSize: 12.sp,
+            ),
+          ),
+          TextButton(
+            onPressed: () => widget.download.cancelLesson(widget.lesson.id),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              "إلغاء التحميل",
+              style: titilliumBold.copyWith(
+                decoration: TextDecoration.underline,
+                decorationColor: AppColors.LOGO_PRIMARY,
+                fontSize: 12.sp,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
+    // Completed or failed states
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Main download button
+        InkWell(
+          onTap: () => _handleDownloadTap(),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(
+                Images.whiteShape,
+                width: 120.w,
+                height: 40.h,
+              ),
+              Text(
+                _getDownloadButtonText(),
+                style: titilliumBold.copyWith(
+                  color: AppColors.PRIMARY,
+                  fontSize: 12.sp,
+                ),
               ),
             ],
-          )),
+          ),
+        ),
+
+        // Remove from downloads button (only for failed state)
+        if (downloadState is FailedState)
+          Padding(
+            padding: EdgeInsets.only(top: 4.h),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              onPressed: () => _showRemoveDialog(),
+              child: Text(
+                "إزالة من عمليات التحميل",
+                style: TextStyle(
+                  color: AppColors.WHITE,
+                  fontSize: 10.sp,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  String _getDownloadButtonText() {
+    if (widget.download.state is CompleteState) {
+      return "حذف الفيديو";
+    } else if (widget.download.state is FailedState) {
+      return "إعادة";
+    } else {
+      return translate('download', context);
+    }
+  }
+
+  void _handleDownloadTap() {
+    if (widget.download.state is FailedState) {
+      widget.download.retry();
+      return;
+    }
+
+    if (widget.download.state is CompleteState) {
+      _showDeleteDialog();
+      return;
+    }
+
+    _showResolutionBottomSheet();
+  }
+
+  void _showResolutionBottomSheet() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Icon(
+              Icons.clear,
+              color: Colors.black,
+              size: 30.sp,
+            ),
+          ),
+          _VideoResolutions(
+            videos: widget.lesson.myVideos,
+            onResolutionSelected: (index) {
+              widget.download.link = widget.lesson.myVideos[index].link;
+              widget.download.requestDownload(
+                showNot: true,
+                lessonModel: widget.lesson,
+              );
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => MyAlertDialog(
+        onPressedOk: () {
+          widget.download.deleteLesson(widget.lesson.id);
+          Navigator.pop(context);
+        },
+        onPressedCancel: () => Navigator.pop(context),
+        title: 'حذف الفيديو',
+        okText: 'حذف',
+        cancelText: 'تراجع',
+      ),
+    );
+  }
+
+  void _showRemoveDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => MyAlertDialog(
+        onPressedOk: () {
+          widget.download.deleteLesson(widget.lesson.id);
+          Navigator.pop(context);
+        },
+        onPressedCancel: () => Navigator.pop(context),
+        title: 'إزالة من عمليات التحميل',
+        okText: 'إزالة',
+        cancelText: 'تراجع',
+      ),
     );
   }
 }
 
 class _VideoResolutions extends StatelessWidget {
+  final List<MyVideo> videos;
+  final Function(int index) onResolutionSelected;
+  const _VideoResolutions(
+      {required this.videos, required this.onResolutionSelected});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -516,9 +871,16 @@ class _VideoResolutions extends StatelessWidget {
           childAspectRatio: 1.77,
           crossAxisSpacing: 20.w,
           mainAxisSpacing: 20.h),
-      itemCount: 6,
+      itemCount: videos.length,
       itemBuilder: (BuildContext context, int index) {
-        return const ResolutionCard();
+        return InkWell(
+          onTap: () {
+            onResolutionSelected(index);
+          },
+          child: ResolutionCard(
+            video: videos[index],
+          ),
+        );
       },
     );
   }

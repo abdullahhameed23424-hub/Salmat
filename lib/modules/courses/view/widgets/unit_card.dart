@@ -2,31 +2,37 @@ import 'dart:math';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/images.dart';
-import 'package:my_project_new/constant/public_constant.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/modules/courses/models/unit.dart';
-import 'package:my_project_new/modules/lessons/view/screens/lessonss_screen.dart';
-import 'package:my_project_new/utils/global_functions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/images.dart';
+import 'package:salamat/constant/public_constant.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/modules/courses/models/unit.dart';
+import 'package:salamat/modules/lessons/view/screens/lessonss_screen.dart';
+import 'package:salamat/utils/global_functions.dart';
 
 class UnitCard extends StatelessWidget {
   const UnitCard({
     super.key,
     required this.unit,
-    required this.isLocked,
+    this.isSubscribed = false,
   });
   final Unit unit;
-  final bool isLocked;
+  final bool isSubscribed;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (isLocked) {
-          return;
-          // showDialog(
-          //     context: context, builder: (context) => const LockedUnit());
+        if (unit.isLocked || unit.isLockedByAdmin) {
+          String message = "مغلق";
+          if(unit.isLockedByAdmin && (isSubscribed || unit.isSubscribed)){
+            message = "مشترك ولكن مغلق من قبل الإدارة";
+          }else if(isSubscribed == false && unit.isSubscribed == false){
+            message = "غير مشترك";
+          }
+
+
+          customSnackBar(context, success: 2, message: message);
         } else {
           pushTo(context: context, toPage: LessonsScreen(unit: unit));
         }
@@ -45,7 +51,8 @@ class UnitCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
           child: Row(
             children: <Widget>[
-              Image.asset(!isLocked ? Images.unlockedUnit : Images.lockedUnit,
+              Image.asset(
+                  !unit.isLocked && !unit.isLockedByAdmin ? Images.unlockedUnit : Images.lockedUnit,
                   width: 24.w),
               SizedBox(width: 10.w),
               Expanded(

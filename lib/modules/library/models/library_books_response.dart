@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/library/models/library_book.dart';
+import 'package:salamat/modules/library/models/library_book.dart';
 
 class LibraryBooksResponse {
   final LibraryBooksData data;

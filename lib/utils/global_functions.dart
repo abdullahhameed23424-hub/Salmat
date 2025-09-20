@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/app_colors.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/constant/dimensions.dart';
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/constant/dimensions.dart';
 
 bool isNotValidEmail(String email) {
   final RegExp emailRegExp = RegExp(
@@ -61,7 +61,14 @@ Future<dynamic> pushTo(
       .push(MaterialPageRoute(builder: (context) => toPage));
 }
 
-void pushAndRemoveUntiTo(BuildContext context, {required Widget toPage}) {
+Future<dynamic> pushNamedTo(
+    {required BuildContext context,
+    required String toPage,
+    Object? arguments}) async {
+  return await Navigator.of(context).pushNamed(toPage, arguments: arguments);
+}
+
+void pushAndRemoveUntilTo(BuildContext context, {required Widget toPage}) {
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute(builder: (context) => toPage),
     (route) => false,

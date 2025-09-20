@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:my_project_new/apis/exception_handler.dart';
-import 'package:my_project_new/apis/network.dart';
-import 'package:my_project_new/apis/urls.dart';
-import 'package:my_project_new/modules/comments/models/comment.dart';
-import 'package:my_project_new/modules/comments/models/comments_response.dart';
+import 'package:salamat/apis/exception_handler.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/apis/urls.dart';
+import 'package:salamat/modules/comments/models/comment.dart';
+import 'package:salamat/modules/comments/models/comments_response.dart';
 
 part 'comments_state.dart';
 

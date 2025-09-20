@@ -1,4 +1,4 @@
-import 'package:my_project_new/modules/lessons/models/lesson.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -36,8 +36,8 @@ class SqliteHelper {
       await database.transaction((txn) async {
         await txn.rawInsert(
             'INSERT INTO Lesson(id, lesson_name, unit_id, unit_name, subject_id, subject_name,file_size) '
-            'VALUES("${lessonModel.id}", "${lessonModel.name}", "${lessonModel.unitId}", "${lessonModel.unit!.name}",'
-            '"${lessonModel.unit!.course!.id}", "${lessonModel.unit!.course!.name}",$fileSize)');
+            'VALUES("${lessonModel.id}", "${lessonModel.name}", "${lessonModel.unitId}", "${lessonModel.unitName}",'
+            '"${lessonModel.courseId}", "${lessonModel.courseName}",$fileSize)');
       });
     } catch (error) {
       print('error inserting $error');

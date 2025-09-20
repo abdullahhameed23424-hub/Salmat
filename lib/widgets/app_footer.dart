@@ -1,9 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_project_new/constant/custom_themes.dart';
-import 'package:my_project_new/localization/language_constrants.dart';
-import 'package:my_project_new/widgets/app_loading.dart';
+import 'package:salamat/constant/custom_themes.dart';
+import 'package:salamat/localization/language_constrants.dart';
+import 'package:salamat/widgets/app_loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AppFooter extends StatelessWidget {

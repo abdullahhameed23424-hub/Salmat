@@ -1,5 +1,5 @@
  
-import 'package:my_project_new/modules/video/cubit/video_cubit.dart'; 
+import 'package:salamat/modules/video/cubit/video_cubit.dart';
 
 class VideoState {}
 
