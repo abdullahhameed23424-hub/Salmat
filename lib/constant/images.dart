@@ -93,9 +93,13 @@ class Images {
   static const String completedTests = "assets/Images/temp/completed_tests.png";
   static const String books = 'assets/Images/temp/books.png';
   static const String arabic = 'assets/Images/temp/arabic.png';
+
 // icons
+
   static const String gb = "assets/icons/gb.svg";
   static const String ar = "assets/icons/ar.svg";
+  static const String happyFace = "assets/icons/happy_face.svg";
+  static const String sadFace = "assets/icons/sad_face.svg";
 
   static const String whatsapp = "assets/icons/whatsapp.svg";
   static const String youtube = "assets/icons/youtube.svg";
