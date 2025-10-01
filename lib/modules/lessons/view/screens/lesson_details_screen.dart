@@ -27,11 +27,13 @@ import 'package:salamat/widgets/custom_button.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/read_more_text.dart';
 import 'package:salamat/widgets/try_again.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../../helper/app_sharedPreferance.dart';
 import '../../../../widgets/my_alert_dialog.dart';
 import '../../../video/cubit/video_state.dart';
 import '../../../video/video_widget.dart';
+
 
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen(
@@ -59,6 +61,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   void initState() {
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
+    WakelockPlus.enable();
 
     super.initState();
   }
@@ -70,6 +73,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     onlineVideoCubit?.dispose();
 
     downloadCubit.dispose();
+    WakelockPlus.disable();
 
     super.dispose();
   }

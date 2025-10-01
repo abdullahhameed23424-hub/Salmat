@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:salamat/apis/exception_handler.dart';
 import 'package:salamat/apis/network.dart';
@@ -34,11 +35,20 @@ class AuthCubit extends Cubit<AuthState> {
       // String? fcmToken = await FirebaseMessaging.instance.getToken();
 
       emit(LoginLoadingState());
+      String? udid;
+      try{
+
+        udid = await FlutterUdid.udid;
+
+      }catch(error){
+        //
+      }
       try {
         Response response = await Network.postData(url: Urls.login, data: {
           "username": userNameController.text.trim(),
           "password": passwordController.text.trim(),
           'fcm_token': "fcmToken",
+          if(udid != null) 'fingerprint': udid
         });
 
         await AppSharedPreferences.saveToken(

@@ -43,11 +43,14 @@ class PointsCard extends StatelessWidget {
                     TextRow(
                         title: "${translate('points', context)}:",
                         value: points.points.toString()),
+
+
+                    Text(points.reason),
+                    const SizedBox(height: 4,),
+
                     Text(
                         DateFormat("yyyy-MM-dd HH:mm").format(points.createdAt)
                     ),
-
-                    Text(points.reason),
 
                     // TextRow(
                     //     title: "${translate('reason', context)}:",
