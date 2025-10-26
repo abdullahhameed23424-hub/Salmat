@@ -21,6 +21,7 @@ import 'package:salamat/utils/device_type.dart';
 import 'package:salamat/localization/cubit/localization_cubit.dart';
 import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/localization/language_model.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
@@ -31,6 +32,8 @@ void main() async {
   await FileManagerCubit.init();
   await SqliteHelper.init();
   await FlutterDownloader.initialize();
+  await ScreenProtector.protectDataLeakageOff();
+
 
 
   // await NotificationsFunctions.init();

@@ -6,8 +6,7 @@ import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/constant/images.dart';
 import 'package:salamat/localization/language_constrants.dart';
-import 'package:salamat/modules/downloads/download/download_cubit.dart';
-import 'package:salamat/modules/downloads/download/download_state.dart';
+
 import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
 import 'package:salamat/modules/lessons/cubit/lessons_cubit.dart';
 import 'package:salamat/modules/lessons/models/lesson.dart';
@@ -27,13 +26,16 @@ import 'package:salamat/widgets/custom_button.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/read_more_text.dart';
 import 'package:salamat/widgets/try_again.dart';
+import 'package:screen_protector/screen_protector.dart';
+import 'package:video_player/video_player.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../../../../helper/app_sharedPreferance.dart';
 import '../../../../widgets/my_alert_dialog.dart';
+import '../../../downloads/download/bloc_v2/download_cubit.dart';
+import '../../../downloads/download/bloc_v2/download_state.dart';
 import '../../../video/cubit/video_state.dart';
 import '../../../video/video_widget.dart';
-
 
 class LessonDetailsScreen extends StatefulWidget {
   const LessonDetailsScreen(
@@ -55,10 +57,25 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
   VideoCubit? onlineVideoCubit = VideoCubit();
   VideoCubit? offlineVideoCubit = VideoCubit();
 
-  late DownloadCubit downloadCubit;
+  late DownloadCubit2 downloadCubit;
 
   @override
   void initState() {
+    ScreenProtector.protectDataLeakageOn();
+
+    // ScreenProtector.isRecording()
+    ScreenProtector.addListener(
+      () {},
+      (bool isRecording) {
+        if (isRecording == true) {
+          ScreenProtector.preventScreenshotOn();
+          onlineVideoCubit?.dispose();
+          offlineVideoCubit?.dispose();
+        } else {
+          ScreenProtector.preventScreenshotOff();
+        }
+      },
+    );
     controller = TabController(
         length: LessonsCubit.lessonButtonsTitles.length, vsync: this);
     WakelockPlus.enable();
@@ -71,8 +88,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
     offlineVideoCubit?.dispose();
 
     onlineVideoCubit?.dispose();
+    ScreenProtector.protectDataLeakageOff();
 
-    downloadCubit.dispose();
+    // downloadCubit.dispose();
     WakelockPlus.disable();
 
     super.dispose();
@@ -119,6 +137,8 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                     lessonId: lessonsCubit.lessonDetails.id,
                     unitId: lessonsCubit.lessonDetails.unitId!);
 
+                ScreenProtector.protectDataLeakageOff();
+
                 pushTo(
                     context: context,
                     toPage: TestScreen(
@@ -158,7 +178,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
               return BlocProvider(
                 create: (context) {
-                  downloadCubit = DownloadCubit(
+                  downloadCubit = DownloadCubit2(
                       link: "",
                       fileName:
                           "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
@@ -168,7 +188,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                     ..init();
                   return downloadCubit;
                 },
-                child: BlocBuilder<DownloadCubit, DownloadState>(
+                child: BlocBuilder<DownloadCubit2, DownloadState2>(
                   builder: (context, state) {
                     if (state is CompleteState) {
                       if (onlineVideoCubit != null) {
@@ -194,18 +214,27 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                 lazy: false,
                                 create: (context) => offlineVideoCubit!
                                   ..initFromFile(
-                                      '${FileManagerCubit.privatePath}${context.read<DownloadCubit>().fileName}'),
+                                      '${FileManagerCubit.privatePath}${context.read<DownloadCubit2>().fileName}'),
                                 child: BlocBuilder<VideoCubit, VideoState>(
                                   builder: (context, state) {
-                                    if (state is VideoLoadingState) {
+                                    if (state is VideoLoadingState ) {
                                       return const AspectRatio(
-                                        aspectRatio: 16/9,
+                                        aspectRatio: 16 / 9,
                                         child: Center(
                                           child: CircularProgressIndicator(
                                             color: AppColors.PRIMARY,
                                           ),
                                         ),
                                       );
+                                    }
+                                    if(state is VideoLoadingState2){
+                                      return const AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child: Center(
+                                          child:SizedBox(),
+                                        ),
+                                      );
+
                                     }
 
                                     if (state is VideoErrorState) {
@@ -214,15 +243,35 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         small: true,
                                         message: state.error,
                                         onTap: () {
-                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
+                                          context
+                                              .read<VideoCubit>()
+                                              .initFromNetwork2(
+                                                  0, Duration.zero);
                                         },
                                       );
                                     }
-                                    return AspectRatio(
-                                      aspectRatio:context.read<VideoCubit>().controller!.value.aspectRatio ,
-                                      child: VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
-                                      ),
+                                    return Column(
+                                      children: [
+                                        AspectRatio(
+                                          aspectRatio: context
+                                              .read<VideoCubit>()
+                                              .controller!
+                                              .value
+                                              .aspectRatio,
+                                          child: VideoWidget2(
+                                            videoCubit:
+                                                context.read<VideoCubit>(),
+                                          ),
+                                        ),
+                                        ServerOptions(
+                                          onViewTypeChanged: (type) {
+                                            context
+                                                .read<VideoCubit>()
+                                                .changePlatformViewOffline(type);
+                                          },
+                                          state: state,
+                                        ),
+                                      ],
                                     );
                                   },
                                 ),
@@ -237,52 +286,84 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                       Duration.zero),
                                 child: BlocBuilder<VideoCubit, VideoState>(
                                   builder: (context, state) {
-                                    if (state is VideoLoadingState) {
-                                      return AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child:  Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            const CircularProgressIndicator(
-                                              color: AppColors.LOGO_PRIMARY,
-                                            ),
-                                            const SizedBox(
-                                              height: 16,
-                                            ),
-                                            Container(
-                                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                                decoration: const BoxDecoration(
-                                                  gradient: LinearGradient(colors: [
-                                                    Colors.white,
-                                                    Colors.white70,
-                                                  ]),
+                                    print("state now is $state");
+                                    return Column(
+                                      children: [
+                                        if (state is VideoLoadingState )
+                                          AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const CircularProgressIndicator(
+                                                  color: AppColors.LOGO_PRIMARY,
                                                 ),
-                                                child:  const Text(
-                                                  "يتم تحضير الفيديو الرجاء الانتظار..",
-                                                  style: TextStyle(color: AppColors.LOGO_PRIMARY),
-                                                ))
-                                          ],
+                                                const SizedBox(
+                                                  height: 16,
+                                                ),
+                                                Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8),
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.white,
+                                                            Colors.white70,
+                                                          ]),
+                                                    ),
+                                                    child: const Text(
+                                                      "يتم تحضير الفيديو الرجاء الانتظار..",
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .LOGO_PRIMARY),
+                                                    ))
+                                              ],
+                                            ),
+                                          )
 
+
+                                        else if (state is VideoErrorState)
+                                          TryAgain(
+                                            withImage: false,
+                                            small: true,
+                                            message: state.error,
+                                            onTap: () {
+                                              context
+                                                  .read<VideoCubit>()
+                                                  .initFromNetwork2(
+                                                      0, Duration.zero);
+                                            },
+                                          )
+                                        else
+                                          Column(
+                                            children: [
+                                              AspectRatio(
+                                                aspectRatio: context
+                                                    .read<VideoCubit>()
+                                                    .controller!
+                                                    .value
+                                                    .aspectRatio,
+                                                child: VideoWidget2(
+                                                  videoCubit: context
+                                                      .read<VideoCubit>(),
+                                                ),
+                                              ),
+
+                                            ],
+                                          ),
+
+                                        ServerOptions(
+                                          onViewTypeChanged: (type) {
+                                            context
+                                                .read<VideoCubit>()
+                                                .changePlatformView(type);
+                                          },
+                                          state: state,
                                         ),
-                                      );
-                                    }
-
-                                    if (state is VideoErrorState) {
-                                      return TryAgain(
-                                        withImage: false,
-                                        small: true,
-                                        message: state.error,
-                                        onTap: () {
-                                          context.read<VideoCubit>().initFromNetwork2(0, Duration.zero);
-                                        },
-                                      );
-                                    }
-                                
-                                    return AspectRatio(
-                                      aspectRatio: context.read<VideoCubit>().controller!.value.aspectRatio,
-                                      child: VideoWidget2(
-                                        videoCubit: context.read<VideoCubit>(),
-                                      ),
+                                      ],
                                     );
                                   },
                                 ),
@@ -291,7 +372,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                         const SizedBox(height: 10),
                         Builder(builder: (context) {
                           return _LessonHeader(lessonsCubit.lessonDetails,
-                              context.read<DownloadCubit>());
+                              context.read<DownloadCubit2>());
                         }),
                         Column(
                           children: [
@@ -315,6 +396,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                   onTap: () async {
                                     LessonDetailsScreen.refrshLessonScreen =
                                         false;
+                                    ScreenProtector.protectDataLeakageOff();
                                     await pushTo(
                                         context: context,
                                         toPage: TestScreen(
@@ -599,7 +681,7 @@ class _LessonDscription extends StatelessWidget {
 class _LessonHeader extends StatefulWidget {
   const _LessonHeader(this.lesson, this.download);
   final Lesson lesson;
-  final DownloadCubit download;
+  final DownloadCubit2 download;
 
   @override
   State<_LessonHeader> createState() => _LessonHeaderState();
@@ -891,14 +973,19 @@ class _VideoResolutions extends StatelessWidget {
 }
 
 class ServerOptions extends StatefulWidget {
-  const ServerOptions({super.key});
+  final VideoState state;
+  const ServerOptions({super.key, required this.onViewTypeChanged,required this.state});
+  final Function(VideoViewType type) onViewTypeChanged;
 
   @override
   State<ServerOptions> createState() => _ServerOptionsState();
 }
 
 class _ServerOptionsState extends State<ServerOptions> {
-  bool isMainSelected = true;
+  bool isMainSelected = AppSharedPreferences.viewType == VideoViewType.textureView.name ? true:false;
+  @override
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -920,13 +1007,21 @@ class _ServerOptionsState extends State<ServerOptions> {
               ],
             ),
           ),
+          if(widget.state is! VideoLoadingState)
           ToggleButtons(
             selectedBorderColor: AppColors.PRIMARY,
             isSelected: [isMainSelected, !isMainSelected],
             onPressed: (index) {
+              if(widget.state is VideoLoadingState){
+
+
+              }
               setState(() {
                 isMainSelected = index == 0;
               });
+              widget.onViewTypeChanged(index == 0
+                  ? VideoViewType.textureView
+                  : VideoViewType.platformView);
             },
             borderRadius: BorderRadius.circular(20),
             borderColor: Colors.grey,
@@ -940,7 +1035,7 @@ class _ServerOptionsState extends State<ServerOptions> {
             ),
             children: const [
               Text(' الرئيسي'),
-              Text(' الاحتياطي'),
+              Text(' الثاني'),
             ],
           ),
         ],

@@ -57,33 +57,33 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.WHITE,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
               width: 1.sw,
-              height: 621.h,
               decoration: const BoxDecoration(color: AppColors.SECONDRY),
               child: Image.asset(Images.getStarted1, fit: BoxFit.cover),
             ),
-            SizedBox(height: 65.h),
-            CustomButton(
-              label: translate('login_as_guest', context),
+          ),
+          SizedBox(height: 65.h),
+          CustomButton(
+            label: translate('login_as_guest', context),
+            onPressed: () {
+              AppSharedPreferences.saveGuest("true");
+              pushTo(context: context, toPage: const BottomNavScreen());
+            },
+            buttonStyle: titilliumBold,
+            backgroundColor: AppColors.LIGHTGRAY,
+          ),
+          SizedBox(height: 25.h),
+          CustomButton(
+              label: translate('login', context),
               onPressed: () {
-                AppSharedPreferences.saveGuest("true");
-                pushTo(context: context, toPage: const BottomNavScreen());
-              },
-              buttonStyle: titilliumBold,
-              backgroundColor: AppColors.LIGHTGRAY,
-            ),
-            SizedBox(height: 25.h),
-            CustomButton(
-                label: translate('login', context),
-                onPressed: () {
-                  pushTo(context: context, toPage: const LoginScreen());
-                }),
-          ],
-        ),
+                pushTo(context: context, toPage: const LoginScreen());
+              }),
+          SizedBox(height: 25.h),
+        ],
       ),
     );
   }

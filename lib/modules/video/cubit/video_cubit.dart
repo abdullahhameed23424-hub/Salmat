@@ -31,6 +31,9 @@ class VideoCubit extends Cubit<VideoState> {
   // late Future<void> ?initStream;
   Future<void>? initStream;
   late List<MyVideo> streamsList = [];
+  VideoViewType viewType = AppSharedPreferences.viewType == VideoViewType.textureView.name
+     ?VideoViewType.textureView:VideoViewType.platformView;
+  late String path;
 
   bool init = false;
 
@@ -47,15 +50,16 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
 
-    emit(VideoLoadingState());
-
+    state is VideoLoadingState ? emit(VideoLoadingState2()) : emit(VideoLoadingState());
+     print("view type ${viewType.name}");
     selectedQuality = 0;
     if (selected != -1 && selected < streamsList.length) {
       selectedQuality = selected;
     }
+
     controller = VideoPlayerController.networkUrl(
       Uri.parse(streamsList[selectedQuality].link),
-      viewType: VideoViewType.platformView,
+      viewType: viewType,
     );
 
     initStream = controller!.initialize();
@@ -79,6 +83,33 @@ class VideoCubit extends Cubit<VideoState> {
 
 
     return await initStream;
+  }
+
+
+  void changePlatformView(VideoViewType type)async{
+    print("hello change the plat");
+    AppSharedPreferences.saveViewType(type.name);
+
+    await controller?.pause();
+    await audioPlayer.pause();
+    Duration cur = controller!.value.position;
+    viewType = type;
+    await dispose(keepAudio: true);
+    await initFromNetwork2(selectedQuality, cur);
+    controller!.addListener(listener);
+    emit(VideoSuccessfulState());
+  }
+
+  void changePlatformViewOffline(VideoViewType type)async{
+    AppSharedPreferences.saveViewType(type.name);
+
+    await controller?.pause();
+    await audioPlayer.pause();
+    viewType = type;
+    await dispose(keepAudio: true);
+    await initFromFile(path);
+    controller!.addListener(listener);
+    emit(VideoSuccessfulState());
   }
 
   void changeQuality(int quality) async {
@@ -115,6 +146,7 @@ class VideoCubit extends Cubit<VideoState> {
   }
 
   Future<void> initFromFile(String path) async {
+    this.path = path;
     emit(VideoLoadingState());
     controller = VideoPlayerController.file(File(path),
       viewType: VideoViewType.platformView,

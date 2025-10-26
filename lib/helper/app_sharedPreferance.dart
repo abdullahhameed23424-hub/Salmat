@@ -1,4 +1,5 @@
 import 'package:salamat/helper/cach_helper.dart';
+import 'package:video_player/video_player.dart';
 
 class AppSharedPreferences {
   //token
@@ -47,4 +48,12 @@ class AppSharedPreferences {
       );
 
   static void removeQuality() => CacheHelper.removeData(key: "quality");
+
+
+  static String get viewType => CacheHelper.getData(key: 'view_type') ?? 'textureView';
+  static saveViewType(String value) =>
+      CacheHelper.saveData(key: 'view_type', value: value);
+
+
+
 }

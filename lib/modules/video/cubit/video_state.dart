@@ -16,6 +16,8 @@ class ChangeVideoQualitySuccessfulState extends VideoState{}
 class VideoUnplayableState extends VideoState{}
 class VideoSuccessfulState extends VideoState{}
 class VideoLoadingState extends VideoState{}
+class VideoLoadingState2 extends VideoState{}
+
 class VideoErrorState extends VideoState{
   String error;
   VideoErrorState(this.error);

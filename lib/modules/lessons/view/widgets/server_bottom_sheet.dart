@@ -55,13 +55,13 @@ class _ServerMessageSheetState extends State<ServerMessageSheet> {
             color: Colors.black,
             constraints: const BoxConstraints(minHeight: 40, minWidth: 140),
             children: const [
-              Text('السيرفر الرئيسي'),
-              Text('السيرفر الاحتياطي'),
+              Text('المشغل الأول'),
+              Text('المشغل الثاني'),
             ],
           ),
           const SizedBox(height: 12),
           Text(
-            'إذا لم يعمل السيرفر الأساسي، قم بتشغيل السيرفر الاحتياطي',
+            'إذا حدثت مشاكل في المشغل الأول، استخدم المشغل الثاني',
             textAlign: TextAlign.center,
             style: titilliumSemiBold,
           ),

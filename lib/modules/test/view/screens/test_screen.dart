@@ -24,6 +24,7 @@ import 'package:salamat/widgets/confirmation_dialog.dart';
 import 'package:salamat/widgets/custom_button.dart';
 import 'package:salamat/widgets/modern_loading_dialog.dart';
 import 'package:salamat/widgets/try_again.dart';
+import 'package:screen_protector/screen_protector.dart';
 
 class TestScreen extends StatefulWidget {
   const TestScreen({super.key, required this.examId, required this.lesson});
@@ -44,8 +45,10 @@ class _TestScreenState extends State<TestScreen> {
 
   @override
   void dispose() {
+    ScreenProtector.protectDataLeakageOn();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
