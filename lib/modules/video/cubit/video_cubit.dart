@@ -87,7 +87,6 @@ class VideoCubit extends Cubit<VideoState> {
 
 
   void changePlatformView(VideoViewType type)async{
-    print("hello change the plat");
     AppSharedPreferences.saveViewType(type.name);
 
     await controller?.pause();

@@ -181,7 +181,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                   downloadCubit = DownloadCubit2(
                       link: "",
                       fileName:
-                          "${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}",
+                      ("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_"),
                       localPath: FileManagerCubit.privatePath,
                       showContentLength: true,
                       metaId: lessonsCubit.lessonDetails.id)

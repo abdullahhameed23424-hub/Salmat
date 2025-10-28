@@ -88,9 +88,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     // print("hhhhdk${(await downloader.database.allRecordsWithStatus(TaskStatus.running)).toList().length}");
 
     List<TaskRecord> foundTasks =
-
     (await downloader.database.allRecords()).where((element) => element.task.filename == fileName,).toList();
-
     if (metaId != null) {
       try {
 
@@ -108,7 +106,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       taskRecord = foundTasks.last;
       status = foundTasks.last.status;
       progress = foundTasks.last.progress;
-      print("task status show ${status}");
 
     }
     checkAndEmit(status, progress);
@@ -158,7 +155,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     } else if (status1 == TaskStatus.running) {
       emit(RunningState());
       // listenNow();
-    } else if (status1 == TaskStatus.complete) {
+    } else if (await File(localPath + fileName).exists()|| status1 == TaskStatus.complete) {
       emit(CompleteState());
     }
   }
@@ -255,7 +252,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
   void retry() async {
 
-    print("hello hi");
 
     emit(RetryingState());
 
