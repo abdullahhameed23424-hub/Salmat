@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:background_downloader/background_downloader.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:app_links/app_links.dart';
@@ -10,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salamat/apis/network.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/core/sqlite.dart';
+import 'package:salamat/firebase_options.dart';
 import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/helper/cach_helper.dart';
 import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
@@ -23,6 +27,8 @@ import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/localization/language_model.dart';
 import 'package:screen_protector/screen_protector.dart';
 
+import 'modules/notifications/tools/notifications_functions.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +39,14 @@ void main() async {
   await SqliteHelper.init();
   await FlutterDownloader.initialize();
   await ScreenProtector.protectDataLeakageOff();
+  await FileDownloader().trackTasks();
 
 
 
-  // await NotificationsFunctions.init();
+   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationsFunctions.init();
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   // print("fcm: ${await FirebaseMessaging.instance.getToken()}");
   // AppSharedPreferences.removeToken;
 

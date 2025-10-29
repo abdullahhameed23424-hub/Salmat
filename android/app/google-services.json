@@ -1,22 +1,21 @@
 {
   "project_info": {
-    "project_number": "469241564206",
-    "project_id": "nwaferha-f886c",
-    "storage_bucket": "nwaferha-f886c.firebasestorage.app"
+    "project_number": "946886359001",
+    "project_id": "salamat-f97c7",
+    "storage_bucket": "salamat-f97c7.firebasestorage.app"
   },
   "client": [
-   
     {
       "client_info": {
-        "mobilesdk_app_id": "1:469241564206:android:b9c2645bc03dd1a3fca3bf",
+        "mobilesdk_app_id": "1:946886359001:android:a0595b65f7b8c65ad4cbc8",
         "android_client_info": {
-          "package_name": "com.icr.nwafrha"
+          "package_name": "com.icr.salamat"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC-bfLRddELH9jix5j6NpfCgjVpT_HbuLs"
+          "current_key": "AIzaSyDli9FPBOMI6d227ipMhfVfTMHjDTcAB-4"
         }
       ],
       "services": {

@@ -50,8 +50,7 @@ class VideoCubit extends Cubit<VideoState> {
 
   Future<void> initFromNetwork2(dynamic selected, Duration duration) async {
 
-    state is VideoLoadingState ? emit(VideoLoadingState2()) : emit(VideoLoadingState());
-     print("view type ${viewType.name}");
+     emit(VideoLoadingState());
     selectedQuality = 0;
     if (selected != -1 && selected < streamsList.length) {
       selectedQuality = selected;
@@ -148,7 +147,7 @@ class VideoCubit extends Cubit<VideoState> {
     this.path = path;
     emit(VideoLoadingState());
     controller = VideoPlayerController.file(File(path),
-      viewType: VideoViewType.platformView,
+      viewType: viewType,
         );
     initStream = controller!.initialize();
     await initStream;

@@ -3,6 +3,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/main.dart';
 
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
+
 class NotificationsFunctions {
   static AndroidNotificationChannel channel = const AndroidNotificationChannel(
       'high_importance_channel', 'High Importance Notifications',

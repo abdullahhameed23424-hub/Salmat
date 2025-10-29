@@ -106,13 +106,19 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       taskRecord = foundTasks.last;
       status = foundTasks.last.status;
       progress = foundTasks.last.progress;
-
     }
     checkAndEmit(status, progress);
-
-    downloader.updates.listen(listener);
-
     downloader.start();
+
+    await downloader.configure(
+        globalConfig: [
+          (Config.requestTimeout, const Duration(seconds: 100)),
+        ],
+        androidConfig: [
+          (Config.runInForeground, Config.always)
+        ]
+    );
+    downloader.updates.listen(listener);
   }
 
   static Future<bool> checkPermission() async {
@@ -137,7 +143,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   }
 
   void checkAndEmit(TaskStatus status1, double progress1) async {
-    print("hello hello $status1 $progress1  ${TaskStatus.running.index}");
     progress = math.max(0,double.parse((progress1*100).toStringAsFixed(1))) ;
     calMbProgress();
     if(status1 == TaskStatus.notFound){
@@ -172,7 +177,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     try {
       await getContentLength();
       getMbContentLength();
-      print("hello hi");
 
 
 
@@ -187,10 +191,12 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
           error: TaskNotification(fileName,""),
           progressBar: true,
         );
+
       }catch(error){
         print("conf error $error");
 
       }
+
 
       task = DownloadTask(
         url: link,
@@ -199,16 +205,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
         baseDirectory:BaseDirectory.root,
         directory: localPath,
         displayName: fileName,
-        options: TaskOptions(),
-        retries: 0,
-
         allowPause: true,
-
-
-
-
       );
-
       final successfullyEnqueued = await downloader.enqueue(task!,);
       if (successfullyEnqueued) {
 

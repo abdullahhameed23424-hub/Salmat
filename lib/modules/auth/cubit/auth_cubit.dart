@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,11 +44,18 @@ class AuthCubit extends Cubit<AuthState> {
       }catch(error){
         //
       }
+
+      String? fcmToken;
+      try{
+        fcmToken = await FirebaseMessaging.instance.getToken();
+      }catch(error){
+        //
+      }
       try {
         Response response = await Network.postData(url: Urls.login, data: {
           "username": userNameController.text.trim(),
           "password": passwordController.text.trim(),
-          'fcm_token': "fcmToken",
+          'fcm_token': fcmToken,
           if(udid != null) 'fingerprint': udid
         });
 

@@ -227,15 +227,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         ),
                                       );
                                     }
-                                    if(state is VideoLoadingState2){
-                                      return const AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: Center(
-                                          child:SizedBox(),
-                                        ),
-                                      );
 
-                                    }
 
                                     if (state is VideoErrorState) {
                                       return TryAgain(
@@ -265,9 +257,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         ),
                                         ServerOptions(
                                           onViewTypeChanged: (type) {
-                                            context
-                                                .read<VideoCubit>()
-                                                .changePlatformViewOffline(type);
+
+                                                offlineVideoCubit?.
+                                                changePlatformViewOffline(type);
                                           },
                                           state: state,
                                         ),
@@ -286,7 +278,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                       Duration.zero),
                                 child: BlocBuilder<VideoCubit, VideoState>(
                                   builder: (context, state) {
-                                    print("state now is $state");
                                     return Column(
                                       children: [
                                         if (state is VideoLoadingState )
@@ -357,9 +348,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
                                         ServerOptions(
                                           onViewTypeChanged: (type) {
-                                            context
-                                                .read<VideoCubit>()
-                                                .changePlatformView(type);
+                                            onlineVideoCubit?.changePlatformView(type);
                                           },
                                           state: state,
                                         ),
