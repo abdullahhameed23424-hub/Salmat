@@ -179,9 +179,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       getMbContentLength();
 
 
-
       try {
-
 
         downloader.configureNotification(
           running: TaskNotification(fileName,""),

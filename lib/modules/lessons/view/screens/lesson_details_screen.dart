@@ -61,7 +61,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
   @override
   void initState() {
-    ScreenProtector.protectDataLeakageOn();
+    // ScreenProtector.protectDataLeakageOn();
 
     // ScreenProtector.isRecording()
     ScreenProtector.addListener(
