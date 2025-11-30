@@ -56,7 +56,6 @@ class LessonsCubit extends Cubit<LessonsState> {
         if(ResponseCacher.hasCache(key)==false) {
           emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
         }
-
       }
     }
     catch (error) {
