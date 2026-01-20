@@ -34,6 +34,8 @@ class Lesson {
   final String? courseName;
   final int? courseId;
   final Unit? unit;
+   final int attachmentCount;
+   final bool quized;
   Lesson({
     required this.id,
     required this.previousLessonId,
@@ -60,6 +62,8 @@ class Lesson {
     required this.nextLessonId,
     required this.exam,
     this.unit,
+    required this.quized,
+    required this.attachmentCount
   });
 
   factory Lesson.fromJson(
@@ -116,6 +120,9 @@ class Lesson {
       isOpen: tempIsOpen,
       myVideos: streems,
       audio: audio,
+      attachmentCount: json['attachment'] ?? 0,
+      quized: json['quiz'] ?? false
+
     );
   }
 }

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>My Project New</string>
+	<string>منصة سلامات التعليمية</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -45,10 +45,30 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<!-- Screen recording detection support -->
-	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to detect screen recording for security purposes.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This app needs microphone access to detect screen recording for security purposes.</string>
+
+
+
+
+
+		<key>NSCameraUsageDescription</key>
+        	<string>Need Camera Access to upload  photos for example: to upload images for pofile</string>
+        	<key>NSMicrophoneUsageDescription</key>
+        	<string>Need microphone access for example: to upload audio for students</string>
+        	<key>NSPhotoLibraryUsageDescription</key>
+        	<string>Need Camera Access to upload  photos for example: to upload images for profile</string>
+
+
+        	<key>UIBackgroundModes</key>
+            	<array>
+            		<string>fetch</string>
+            		<string>processing</string>
+            		<string>remote-notification</string>
+            	</array>
+
+
+            	<key>BGTaskSchedulerPermittedIdentifiers</key>
+                	<array>
+                		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+                	</array>
 </dict>
 </plist>

@@ -99,24 +99,54 @@ class LessonCard extends StatelessWidget {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20)),
             ),
-            child: Row(
-              children: <Widget>[
-                Image.asset(Images.lessonIcon, width: 40.w),
-                SizedBox(width: 12.w),
-                Expanded(
-                  child: Text(
-                    lesson.name,
-                    maxLines: 2,
-                    style: titilliumSemiBold,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: <Widget>[
+                    Image.asset(Images.lessonIcon, width: 40.w),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Text(
+                        lesson.name,
+                        maxLines: 2,
+                        style: titilliumSemiBold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Icon(
+                      lesson.isOpen ? Icons.lock_open_rounded : Icons.lock_rounded,
+                    )
+                  ],
                 ),
-                Icon(
-                  lesson.isOpen ? Icons.lock_open_rounded : Icons.lock_rounded,
+                const SizedBox(height: 8,),
+                Padding(
+
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+
+                      // if(lesson.quized == true||lesson.attachmentCount > 0)
+                      //   const Text("يوجد ",style: TextStyle(fontSize: 12),),
+                      if(lesson.quized == true)
+                        const Text("+اختبار",style: TextStyle(color: AppColors.DARK_GRAY,
+                        ),),
+                      if(lesson.quized == true && lesson.attachmentCount > 0)
+                        const Text(" "),
+                      if(lesson.attachmentCount > 0)
+                         Text("+${lesson.attachmentCount} ملف مرفق",style: const TextStyle(
+                            color: AppColors.DARK_GRAY
+                        ))
+
+                    ],
+                  ),
                 )
+
               ],
             ),
-          )
+          ),
+
         ],
       ),
     );

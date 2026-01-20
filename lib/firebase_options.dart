@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC9kVWsxIDK6QpwLLuNxY9EMcX-OXCqoNY',
-    appId: '1:946886359001:ios:17327d147693c67ed4cbc8',
+    appId: '1:946886359001:ios:09ee03a209aac2dfd4cbc8',
     messagingSenderId: '946886359001',
     projectId: 'salamat-f97c7',
     storageBucket: 'salamat-f97c7.firebasestorage.app',
-    iosBundleId: 'com.example.myProjectNew',
+    iosBundleId: 'com.icr.salamat',
   );
 
 }

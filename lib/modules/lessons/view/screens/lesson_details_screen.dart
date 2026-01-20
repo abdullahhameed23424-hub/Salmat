@@ -61,7 +61,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
 
   @override
   void initState() {
-    // ScreenProtector.protectDataLeakageOn();
+    ScreenProtector.protectDataLeakageOn();
 
     // ScreenProtector.isRecording()
     ScreenProtector.addListener(
@@ -566,9 +566,15 @@ class _LessonTapsState extends State<_LessonTaps> {
         shape: const RoundedRectangleBorder(),
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
-        title: Text(
-          "المرفقات",
-          style: titilliumBold,
+        title: Row(
+          children: [
+            Text(
+              "المرفقات",
+              style: titilliumBold,
+            ),
+            if(widget.lessonsCubit.lessonDetails.attachmentCount > 0)
+            Text(" +${widget.lessonsCubit.lessonDetails.attachmentCount}")
+          ],
         ),
         children: [_LessonAttachments(widget.lessonsCubit.lessonDetails)],
       ),

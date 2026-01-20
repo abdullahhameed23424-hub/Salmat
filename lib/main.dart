@@ -44,7 +44,9 @@ void main() async {
 
 
    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-   await FirebaseMessaging.instance.subscribeToTopic("guests");
+
+      FirebaseMessaging.instance.subscribeToTopic("guests");
+
   await NotificationsFunctions.init();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 

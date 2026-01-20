@@ -46,6 +46,20 @@ class NotificationCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
+
+                  ReadMoreText(
+                    text: notification.title,
+                    maxLength: 60,
+                  ),
+                  Divider(
+                    endIndent: 140.w,
+                  ),
+                  ReadMoreText(
+                    text: notification.description ?? "",
+
+                  ),
+
                   Row(
                     children: [
                       Align(
@@ -63,13 +77,6 @@ class NotificationCard extends StatelessWidget {
                         ),
                       )
                     ],
-                  ),
-                  Divider(
-                    endIndent: 140.w,
-                  ),
-                  ReadMoreText(
-                    text: notification.title,
-                    maxLength: 60,
                   ),
                 ],
               ),
