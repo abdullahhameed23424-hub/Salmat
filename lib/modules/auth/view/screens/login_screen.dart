@@ -115,63 +115,63 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                 ),
                               SizedBox(height: 10.h),
-                              FadeIn(
-                                delay: const Duration(milliseconds: 900),
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero),
-                                  onPressed: () {
-                                    ContactAdminDialog.show(context,
-                                        infoCubit.infoResponse.contact.phone);
-                                  },
-                                  child: Text(
-                                    translate("forgot_password", context),
-                                    style: TextStyle(
-                                        color: AppColors.SECONDRY,
-                                        fontSize: 14.sp),
-                                  ),
-                                ),
-                              ),
-                              RowTextButton(
-                                  transform:
-                                      Matrix4.translationValues(0, -10.h, 0),
-                                  title:
-                                      translate('dont_have_account', context),
-                                  buttonText:
-                                      translate('create_account', context),
-                                  onClick: () {
-                                    CreateAccountSheet.show(
-                                      context,
-                                      onCall: () {
-                                        EasyLauncher.url(
-                                            url:
-                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
-                                            mode: Mode.externalApp);
-
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  }),
-                              RowTextButton(
-                                  transform:
-                                      Matrix4.translationValues(0, -20.h, 0),
-                                  title: translate(
-                                      'account_locked_question', context),
-                                  buttonText:
-                                      translate('account_recovery', context),
-                                  onClick: () {
-                                    RecoverAccountSheet.show(
-                                      context,
-                                      onCall: () {
-                                        EasyLauncher.url(
-                                            url:
-                                                "https://wa.me/${infoCubit.infoResponse.contact.phone}",
-                                            mode: Mode.externalApp);
-
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  }),
+                              // FadeIn(
+                              //   delay: const Duration(milliseconds: 900),
+                              //   child: TextButton(
+                              //     style: TextButton.styleFrom(
+                              //         padding: EdgeInsets.zero),
+                              //     onPressed: () {
+                              //       ContactAdminDialog.show(context,
+                              //           infoCubit.infoResponse.contact.phone);
+                              //     },
+                              //     child: Text(
+                              //       translate("forgot_password", context),
+                              //       style: TextStyle(
+                              //           color: AppColors.SECONDRY,
+                              //           fontSize: 14.sp),
+                              //     ),
+                              //   ),
+                              // ),
+                              // RowTextButton(
+                              //     transform:
+                              //         Matrix4.translationValues(0, -10.h, 0),
+                              //     title:
+                              //         translate('dont_have_account', context),
+                              //     buttonText:
+                              //         translate('create_account', context),
+                              //     onClick: () {
+                              //       CreateAccountSheet.show(
+                              //         context,
+                              //         onCall: () {
+                              //           EasyLauncher.url(
+                              //               url:
+                              //                   "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                              //               mode: Mode.externalApp);
+                              //
+                              //           Navigator.pop(context);
+                              //         },
+                              //       );
+                              //     }),
+                              // RowTextButton(
+                              //     transform:
+                              //         Matrix4.translationValues(0, -20.h, 0),
+                              //     title: translate(
+                              //         'account_locked_question', context),
+                              //     buttonText:
+                              //         translate('account_recovery', context),
+                              //     onClick: () {
+                              //       RecoverAccountSheet.show(
+                              //         context,
+                              //         onCall: () {
+                              //           EasyLauncher.url(
+                              //               url:
+                              //                   "https://wa.me/${infoCubit.infoResponse.contact.phone}",
+                              //               mode: Mode.externalApp);
+                              //
+                              //           Navigator.pop(context);
+                              //         },
+                              //       );
+                              //     }),
                             ],
                           ),
                         ),
