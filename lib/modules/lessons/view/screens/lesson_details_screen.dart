@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -180,7 +182,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                 create: (context) {
                   downloadCubit = DownloadCubit2(
                       link: "",
-                      fileName:
+                      fileName:Platform.isIOS ?  "${("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_")}.mp4":
                       ("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_"),
                       localPath: FileManagerCubit.privatePath,
                       showContentLength: true,
