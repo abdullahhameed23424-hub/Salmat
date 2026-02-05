@@ -347,10 +347,10 @@ class _CourseHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ReadMoreText(text: course.description, maxLength: 70),
-                    if (!course.subscribed)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                   // if (!course.subscribed)
+                     // Row(
+                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       // children: [
                           // Text(
                           //     maxLines: 2,
                           //     overflow: TextOverflow.ellipsis,
@@ -361,39 +361,39 @@ class _CourseHeader extends StatelessWidget {
                           //         fontWeight: FontWeight.w900,
                           //         fontSize: 18.sp,
                           //         color: AppColors.PRIMARY)),
-                          InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) =>
-                                    const ContactWithAdminDialog(),
-                              );
-                            },
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                SvgPicture.asset(Images.buyIcon,
-                                    width: 90.w,
-                                    colorFilter: ColorFilter.mode(
-                                        course.isFree
-                                            ? Colors.green
-                                            : AppColors.PRIMARY,
-                                        BlendMode.srcIn)),
-                                Positioned(
-                                  child: Text(
-                                    translate('subscribe', context),
-                                    style: titilliumBold.copyWith(
-                                        color: AppColors.WHITE),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      )
-                    else
-                      SizedBox(height: 15.h),
+                          // InkWell(
+                          //   onTap: () {
+                          //     showModalBottomSheet(
+                          //       isScrollControlled: true,
+                          //       context: context,
+                          //       builder: (context) =>
+                          //           const ContactWithAdminDialog(),
+                          //     );
+                          //   },
+                          //   child: Stack(
+                          //     alignment: Alignment.center,
+                          //     children: [
+                          //       SvgPicture.asset(Images.buyIcon,
+                          //           width: 90.w,
+                          //           colorFilter: ColorFilter.mode(
+                          //               course.isFree
+                          //                   ? Colors.green
+                          //                   : AppColors.PRIMARY,
+                          //               BlendMode.srcIn)),
+                          //       Positioned(
+                          //         child: Text(
+                          //           translate('subscribe', context),
+                          //           style: titilliumBold.copyWith(
+                          //               color: AppColors.WHITE),
+                          //         ),
+                          //       )
+                          //     ],
+                          //   ),
+                          // )
+                     //   ],
+                     // )
+                   // else
+                    //  SizedBox(height: 15.h),
                   ],
                 ),
               )

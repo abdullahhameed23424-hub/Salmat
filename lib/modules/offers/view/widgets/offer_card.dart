@@ -20,10 +20,10 @@ class OfferCard extends StatelessWidget {
       onTap: () {
         if (offer.link != "") {
           try {
-            EasyLauncher.url(
-              url: offer.link,
-              mode: Mode.platformDefault,
-            );
+            // EasyLauncher.url(
+            //   url: offer.link,
+            //   mode: Mode.platformDefault,
+            // );
           } catch (_) {
             debugPrint("unavailable link");
           }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salamat/apis/network.dart';
 import 'package:salamat/constant/app_colors.dart';
@@ -37,16 +37,14 @@ void main() async {
   await Network.init();
   await FileManagerCubit.init();
   await SqliteHelper.init();
-  await FlutterDownloader.initialize();
+  // await FlutterDownloader.initialize();
   await ScreenProtector.protectDataLeakageOff();
   await FileDownloader().trackTasks();
 
 
 
-   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-      FirebaseMessaging.instance.subscribeToTopic("guests");
-
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.instance.subscribeToTopic("guests");
   await NotificationsFunctions.init();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
@@ -54,11 +52,6 @@ void main() async {
   // AppSharedPreferences.removeToken;
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  print("token is: ${AppSharedPreferences.getToken}");
-  print("userID is: ${AppSharedPreferences.getUserID}");
-  print("has token is: ${AppSharedPreferences.hasToken}");
-
   runApp(const MyApp());
 }
 
