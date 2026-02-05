@@ -119,7 +119,7 @@ class _MaterialControlsState extends State<CustomControls>
                 //     ),
                 //   )
                 // else
-                  _buildHitArea(),
+                _buildHitArea(),
                 _buildActionBar(),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -221,7 +221,7 @@ class _MaterialControlsState extends State<CustomControls>
   Widget _buildOptionsButton() {
     final options = <OptionItem>[
       OptionItem(
-        onTap: (context) {
+        onTap: (context) async {
           Navigator.pop(context);
           _onSpeedButtonTap();
         },
@@ -458,7 +458,6 @@ class _MaterialControlsState extends State<CustomControls>
     return LayoutBuilder(builder: (context, s) {
       return GestureDetector(
         onTapDown: (TapDownDetails details) {
-
           if (_latestValue.isPlaying) {
             if (_displayTapped) {
               setState(() {
@@ -475,39 +474,39 @@ class _MaterialControlsState extends State<CustomControls>
         },
         child: widget.videoCubit.controller?.value.isInitialized == true
             ? CenterPlayButton(
-          backgroundColor: Colors.black54,
-          iconColor: Colors.white,
-          isFinished: isFinished,
-          isPlaying: controller.value.isPlaying,
-          show: showPlayButton,
-          onPressed: _playPause,
-        )
-            :  Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(
-                color: AppColors.LOGO_PRIMARY,
+                backgroundColor: Colors.black54,
+                iconColor: Colors.white,
+                isFinished: isFinished,
+                isPlaying: controller.value.isPlaying,
+                show: showPlayButton,
+                onPressed: _playPause,
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const CircularProgressIndicator(
+                      color: AppColors.LOGO_PRIMARY,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            Colors.white,
+                            Colors.white70,
+                          ]),
+                        ),
+                        child: const Text(
+                          "يتم تحضير الفيديو الرجاء الانتظار..",
+                          style: TextStyle(color: AppColors.LOGO_PRIMARY),
+                        ))
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.white,
-                      Colors.white70,
-                    ]),
-                  ),
-                  child:  const Text(
-                    "يتم تحضير الفيديو الرجاء الانتظار..",
-                    style: TextStyle(color: AppColors.LOGO_PRIMARY),
-                  ))
-            ],
-          ),
-        ),
       );
     });
   }
@@ -720,7 +719,6 @@ class _MaterialControlsState extends State<CustomControls>
         _displayBufferingIndicator = false;
       }
     } else {
-
       _displayBufferingIndicator = controller.value.isBuffering;
     }
 

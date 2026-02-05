@@ -31,7 +31,6 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.icr.salamat"
     compileSdk = 36
-    ndkVersion = flutter.ndkVersion
 
 
 
