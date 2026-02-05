@@ -70,19 +70,19 @@ class MoreInfoScreen extends StatelessWidget {
           pushTo(context: context, toPage: const PointsRecordScreen());
         }
       },
-    if (AppSharedPreferences.hasToken)
-      {
-        "icon": Icons.download_outlined,
-        "title": "downloaded_lessons",
-        "onTap": (BuildContext context) {
-          pushTo(
-              context: context,
-              toPage: const DownloadedMaterialScreen(
-                title: 'موادي',
-                type: DownloadedMaterialType.subject,
-              ));
-        }
-      },
+    // if (AppSharedPreferences.hasToken)
+    {
+      "icon": Icons.download_outlined,
+      "title": "downloaded_lessons",
+      "onTap": (BuildContext context) {
+        pushTo(
+            context: context,
+            toPage: const DownloadedMaterialScreen(
+              title: 'موادي',
+              type: DownloadedMaterialType.subject,
+            ));
+      }
+    },
     {
       "image": Images.libraryIcon,
       "title": "library",

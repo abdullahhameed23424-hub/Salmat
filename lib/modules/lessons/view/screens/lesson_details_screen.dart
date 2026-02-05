@@ -182,8 +182,10 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                 create: (context) {
                   downloadCubit = DownloadCubit2(
                       link: "",
-                      fileName:Platform.isIOS ?  "${("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_")}.mp4":
-                      ("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_"),
+                      fileName: Platform.isIOS
+                          ? "${("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_")}.mp4"
+                          : ("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}")
+                              .replaceAll("-", "_"),
                       localPath: FileManagerCubit.privatePath,
                       showContentLength: true,
                       metaId: lessonsCubit.lessonDetails.id)
@@ -219,7 +221,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                       '${FileManagerCubit.privatePath}${context.read<DownloadCubit2>().fileName}'),
                                 child: BlocBuilder<VideoCubit, VideoState>(
                                   builder: (context, state) {
-                                    if (state is VideoLoadingState ) {
+                                    if (state is VideoLoadingState) {
                                       return const AspectRatio(
                                         aspectRatio: 16 / 9,
                                         child: Center(
@@ -229,7 +231,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         ),
                                       );
                                     }
-
 
                                     if (state is VideoErrorState) {
                                       return TryAgain(
@@ -259,9 +260,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         ),
                                         ServerOptions(
                                           onViewTypeChanged: (type) {
-
-                                                offlineVideoCubit?.
-                                                changePlatformViewOffline(type);
+                                            offlineVideoCubit
+                                                ?.changePlatformViewOffline(
+                                                    type);
                                           },
                                           state: state,
                                         ),
@@ -282,7 +283,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                   builder: (context, state) {
                                     return Column(
                                       children: [
-                                        if (state is VideoLoadingState )
+                                        if (state is VideoLoadingState)
                                           AspectRatio(
                                             aspectRatio: 16 / 9,
                                             child: Column(
@@ -316,8 +317,6 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                               ],
                                             ),
                                           )
-
-
                                         else if (state is VideoErrorState)
                                           TryAgain(
                                             withImage: false,
@@ -344,13 +343,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                                       .read<VideoCubit>(),
                                                 ),
                                               ),
-
                                             ],
                                           ),
-
                                         ServerOptions(
                                           onViewTypeChanged: (type) {
-                                            onlineVideoCubit?.changePlatformView(type);
+                                            onlineVideoCubit
+                                                ?.changePlatformView(type);
                                           },
                                           state: state,
                                         ),
@@ -385,6 +383,18 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                           ? "إتمام الاختبار"
                                           : translate('do_exam', context),
                                   onTap: () async {
+                                    final bool? startExam =
+                                        await StartExamConfirmationDialog.show(
+                                            context: context,
+                                            title: translate(
+                                                'start_exam_title', context),
+                                            message: translate(
+                                                'start_exam_message', context));
+
+                                    if (startExam != true) {
+                                      return;
+                                    }
+
                                     LessonDetailsScreen.refrshLessonScreen =
                                         false;
                                     ScreenProtector.protectDataLeakageOff();
@@ -423,7 +433,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                         'skip_test_and_show_answers', context),
                                     onPressed: () async {
                                       final bool? shouldSkip =
-                                          await ConfirmationDialog.show(
+                                          await SkipExamConfirmationDialog.show(
                                               context: context,
                                               title: translate(
                                                   'skip_exam', context),
@@ -574,8 +584,8 @@ class _LessonTapsState extends State<_LessonTaps> {
               "المرفقات",
               style: titilliumBold,
             ),
-            if(widget.lessonsCubit.lessonDetails.attachmentCount > 0)
-            Text(" +${widget.lessonsCubit.lessonDetails.attachmentCount}")
+            if (widget.lessonsCubit.lessonDetails.attachmentCount > 0)
+              Text(" +${widget.lessonsCubit.lessonDetails.attachmentCount}")
           ],
         ),
         children: [_LessonAttachments(widget.lessonsCubit.lessonDetails)],
@@ -971,7 +981,8 @@ class _VideoResolutions extends StatelessWidget {
 
 class ServerOptions extends StatefulWidget {
   final VideoState state;
-  const ServerOptions({super.key, required this.onViewTypeChanged,required this.state});
+  const ServerOptions(
+      {super.key, required this.onViewTypeChanged, required this.state});
   final Function(VideoViewType type) onViewTypeChanged;
 
   @override
@@ -979,10 +990,11 @@ class ServerOptions extends StatefulWidget {
 }
 
 class _ServerOptionsState extends State<ServerOptions> {
-  bool isMainSelected = AppSharedPreferences.viewType == VideoViewType.textureView.name ? true:false;
+  bool isMainSelected =
+      AppSharedPreferences.viewType == VideoViewType.textureView.name
+          ? true
+          : false;
   @override
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1004,37 +1016,34 @@ class _ServerOptionsState extends State<ServerOptions> {
               ],
             ),
           ),
-          if(widget.state is! VideoLoadingState)
-          ToggleButtons(
-            selectedBorderColor: AppColors.PRIMARY,
-            isSelected: [isMainSelected, !isMainSelected],
-            onPressed: (index) {
-              if(widget.state is VideoLoadingState){
-
-
-              }
-              setState(() {
-                isMainSelected = index == 0;
-              });
-              widget.onViewTypeChanged(index == 0
-                  ? VideoViewType.textureView
-                  : VideoViewType.platformView);
-            },
-            borderRadius: BorderRadius.circular(20),
-            borderColor: Colors.grey,
-            selectedColor: Colors.white,
-            fillColor: AppColors.PRIMARY,
-            textStyle: titilliumBold.copyWith(fontSize: 8.sp),
-            color: Colors.black,
-            constraints: BoxConstraints(
-              minHeight: 30.h,
-              minWidth: 60.w,
+          if (widget.state is! VideoLoadingState)
+            ToggleButtons(
+              selectedBorderColor: AppColors.PRIMARY,
+              isSelected: [isMainSelected, !isMainSelected],
+              onPressed: (index) {
+                if (widget.state is VideoLoadingState) {}
+                setState(() {
+                  isMainSelected = index == 0;
+                });
+                widget.onViewTypeChanged(index == 0
+                    ? VideoViewType.textureView
+                    : VideoViewType.platformView);
+              },
+              borderRadius: BorderRadius.circular(20),
+              borderColor: Colors.grey,
+              selectedColor: Colors.white,
+              fillColor: AppColors.PRIMARY,
+              textStyle: titilliumBold.copyWith(fontSize: 8.sp),
+              color: Colors.black,
+              constraints: BoxConstraints(
+                minHeight: 30.h,
+                minWidth: 60.w,
+              ),
+              children: const [
+                Text(' الرئيسي'),
+                Text(' الثاني'),
+              ],
             ),
-            children: const [
-              Text(' الرئيسي'),
-              Text(' الثاني'),
-            ],
-          ),
         ],
       ),
     );

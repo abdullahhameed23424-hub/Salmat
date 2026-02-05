@@ -21,14 +21,14 @@ class LessonCard extends StatelessWidget {
     return InkWell(
       splashColor: AppColors.PRIMARY,
       borderRadius: BorderRadius.circular(15),
-      onTap:onTap,
+      onTap: onTap,
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
               Container(
                 width: 42.w,
-                height: 28.h,
+                height: 35.h,
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -45,14 +45,14 @@ class LessonCard extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.center,
-                height: 28.h,
+                height: 35.h,
                 decoration: const BoxDecoration(
                     color: AppColors.DARK_GREY,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15))),
                 child: Container(
-                  height: 28.h,
+                  height: 35.h,
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class LessonCard extends StatelessWidget {
               ),
               Expanded(
                   child: Container(
-                height: 28.h,
+                height: 35.h,
                 decoration: const BoxDecoration(
                   boxShadow: [
                     BoxShadow(
@@ -84,7 +84,7 @@ class LessonCard extends StatelessWidget {
             ],
           ),
           Container(
-            height: 75.h,
+            height: 85.h,
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             decoration: const BoxDecoration(
               color: AppColors.DARK_GREY,
@@ -115,38 +115,40 @@ class LessonCard extends StatelessWidget {
                       ),
                     ),
                     Icon(
-                      lesson.isOpen ? Icons.lock_open_rounded : Icons.lock_rounded,
+                      lesson.isOpen
+                          ? Icons.lock_open_rounded
+                          : Icons.lock_rounded,
                     )
                   ],
                 ),
-                const SizedBox(height: 8,),
+                const SizedBox(
+                  height: 8,
+                ),
                 Padding(
-
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-
                       // if(lesson.quized == true||lesson.attachmentCount > 0)
                       //   const Text("يوجد ",style: TextStyle(fontSize: 12),),
-                      if(lesson.quized == true)
-                        const Text("+اختبار",style: TextStyle(color: AppColors.DARK_GRAY,
-                        ),),
-                      if(lesson.quized == true && lesson.attachmentCount > 0)
+                      if (lesson.quized == true)
+                        const Text(
+                          "+اختبار",
+                          style: TextStyle(
+                            color: AppColors.DARK_GRAY,
+                          ),
+                        ),
+                      if (lesson.quized == true && lesson.attachmentCount > 0)
                         const Text(" "),
-                      if(lesson.attachmentCount > 0)
-                         Text("+${lesson.attachmentCount} ملف مرفق",style: const TextStyle(
-                            color: AppColors.DARK_GRAY
-                        ))
-
+                      if (lesson.attachmentCount > 0)
+                        Text("+${lesson.attachmentCount} ملف مرفق",
+                            style: const TextStyle(color: AppColors.DARK_GRAY))
                     ],
                   ),
                 )
-
               ],
             ),
           ),
-
         ],
       ),
     );

@@ -103,7 +103,6 @@ class _QuestionCardState extends State<QuestionCard> {
           SizedBox(
             height: 180.h,
             child: WebViewWidget(
-
               controller: WebViewController()
                 ..setJavaScriptMode(JavaScriptMode.disabled)
                 ..loadHtmlString(
@@ -119,7 +118,8 @@ class _QuestionCardState extends State<QuestionCard> {
           """,
                 ),
               gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
+                Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer()),
               },
             ),
           ),

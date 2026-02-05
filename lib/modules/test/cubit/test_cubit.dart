@@ -35,7 +35,7 @@ class TestCubit extends Cubit<TestState> {
 
       if (!AppSharedPreferences.isGuest &&
           test.result.pass == null &&
-          // test.isSubscribed &&   
+          // test.isSubscribed &&
           !test.isSolving &&
           !(test.studentExam?.skipped ?? false)) {
         createExam(test.id);
@@ -142,6 +142,9 @@ class TestCubit extends Cubit<TestState> {
       } else {
         final Result failedResult = Result.fromJson(response.data['data']);
         test.result.studentDegree = failedResult.studentDegree;
+        test.studentExam?.attemptCount =
+            (test.studentExam?.attemptCount ?? 0) + 1;
+        test.studentExam?.skipped = false;
         test.result.examDegree = failedResult.examDegree;
         emit(SubmitExamSuccessState(result: failedResult));
         // this mean that the student is failed and in this case back return the result only
@@ -165,7 +168,7 @@ class TestCubit extends Cubit<TestState> {
       final CompletedTestsResponse completedTestsResponse =
           CompletedTestsResponse.fromJson(response.data);
       tests = completedTestsResponse.data.original.data.data;
-      image = completedTestsResponse.extraData.authExams.image??'';
+      image = completedTestsResponse.extraData.authExams.image ?? '';
 
       emit(GetCompletedTestsSuccessState());
     } on DioException catch (e) {

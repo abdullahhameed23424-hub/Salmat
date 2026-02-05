@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math' as math;
-import 'dart:ui';
 
 import 'package:background_downloader/background_downloader.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -15,8 +13,6 @@ import '../../../../apis/network.dart';
 import '../../../../core/sqlite.dart';
 import '../../../lessons/models/lesson.dart';
 
-
-
 class DownloadCubit2 extends Cubit<DownloadState2> {
   DownloadCubit2(
       {required this.link,
@@ -28,8 +24,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       this.requestWithFileName = false})
       : super(InitialState());
 
-   Task? task;
-   TaskRecord? taskRecord;
+  Task? task;
+  TaskRecord? taskRecord;
 
   // late List<Task> tasks;
   bool requestWithFileName;
@@ -49,15 +45,15 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   void calMbProgress() {
     if (mbContentLength != null) {
       mbProgress =
-      "${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB";
+          "${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB";
     }
   }
 
   @override
   Future<void> close() {
     downloader.destroy();
-   // clean up your resources here
-    return super.close();   // then call the base class close
+    // clean up your resources here
+    return super.close(); // then call the base class close
   }
 
   void listener(TaskUpdate update) {
@@ -77,21 +73,21 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     }
   }
 
-
   void init() async {
     // print("show all the tasks ${(await downloader.allTasks()).last.filename}");
     // downloader.cancelAll();
 
     // await downloader.trackTasks();
 
-
     // print("hhhhdk${(await downloader.database.allRecordsWithStatus(TaskStatus.running)).toList().length}");
 
-    List<TaskRecord> foundTasks =
-    (await downloader.database.allRecords()).where((element) => element.task.filename == fileName,).toList();
+    List<TaskRecord> foundTasks = (await downloader.database.allRecords())
+        .where(
+          (element) => element.task.filename == fileName,
+        )
+        .toList();
     if (metaId != null) {
       try {
-
         ///get the file size from sqlite
         final res = await SqliteHelper.getLesson(metaId!);
 
@@ -110,14 +106,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     checkAndEmit(status, progress);
     downloader.start();
 
-    await downloader.configure(
-        globalConfig: [
-          (Config.requestTimeout, const Duration(seconds: 100)),
-        ],
-        androidConfig: [
-          (Config.runInForeground, Config.always)
-        ]
-    );
+    await downloader.configure(globalConfig: [
+      (Config.requestTimeout, const Duration(seconds: 100)),
+    ], androidConfig: [
+      (Config.runInForeground, Config.always)
+    ]);
     downloader.updates.listen(listener);
   }
 
@@ -143,13 +136,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   }
 
   void checkAndEmit(TaskStatus status1, double progress1) async {
-    progress = math.max(0,double.parse((progress1*100).toStringAsFixed(1))) ;
+    progress = math.max(0, double.parse((progress1 * 100).toStringAsFixed(1)));
     calMbProgress();
-    if(status1 == TaskStatus.notFound){
+    if (status1 == TaskStatus.notFound) {
       emit(TaskNotFoundState());
-
-    }
-    else if (status1 == TaskStatus.enqueued) {
+    } else if (status1 == TaskStatus.enqueued) {
       emit(QueuedState());
     } else if (status1 == TaskStatus.canceled) {
       // dispose();
@@ -160,14 +151,13 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     } else if (status1 == TaskStatus.running) {
       emit(RunningState());
       // listenNow();
-    } else if (await File(localPath + fileName).exists()|| status1 == TaskStatus.complete) {
+    } else if (await File(localPath + fileName).exists() ||
+        status1 == TaskStatus.complete) {
       emit(CompleteState());
     }
   }
 
-
-  void requestDownload(
-      {bool showNot = true, Lesson? lessonModel}) async {
+  void requestDownload({bool showNot = true, Lesson? lessonModel}) async {
     emit(RequestingState());
 
     if (!await checkPermission()) {
@@ -178,38 +168,32 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       await getContentLength();
       getMbContentLength();
 
-
       try {
-
         downloader.configureNotification(
-          running: TaskNotification(fileName,""),
-          canceled: TaskNotification(fileName,""),
-          complete: TaskNotification(fileName,""),
-          paused: TaskNotification(fileName,""),
-          error: TaskNotification(fileName,""),
+          running: TaskNotification(fileName, ""),
+          canceled: TaskNotification(fileName, ""),
+          complete: TaskNotification(fileName, ""),
+          paused: TaskNotification(fileName, ""),
+          error: TaskNotification(fileName, ""),
           progressBar: true,
         );
-
-      }catch(error){
+      } catch (error) {
         print("conf error $error");
-
       }
-
 
       task = DownloadTask(
         url: link,
         filename: fileName,
         updates: Updates.statusAndProgress,
-        baseDirectory:BaseDirectory.root,
+        baseDirectory: BaseDirectory.root,
         directory: localPath,
         displayName: fileName,
         allowPause: true,
       );
-      final successfullyEnqueued = await downloader.enqueue(task!,);
+      final successfullyEnqueued = await downloader.enqueue(
+        task!,
+      );
       if (successfullyEnqueued) {
-
-
-
         if (lessonModel != null) {
           SqliteHelper.insertLesson(
               lessonModel, fileName2 ?? fileName, contentLength!);
@@ -221,9 +205,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       emit(RequestingFailedState());
     }
   }
-
-
-
 
   Future<void> getContentLength() async {
     try {
@@ -247,8 +228,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   }
 
   void retry() async {
-
-
     emit(RetryingState());
 
     await checkPermission();

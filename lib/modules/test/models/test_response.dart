@@ -51,8 +51,8 @@ class Question {
 }
 
 class StudentExam {
-  final bool skipped;
-  final int attemptCount;
+    bool skipped;
+    int attemptCount;
   StudentExam({
     required this.skipped,
     required this.attemptCount,

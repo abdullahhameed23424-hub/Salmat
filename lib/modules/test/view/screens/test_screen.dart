@@ -2,7 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:salamat/animation/fade_in_animation.dart';
+
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/constant/images.dart';
@@ -48,7 +48,6 @@ class _TestScreenState extends State<TestScreen> {
     ScreenProtector.protectDataLeakageOn();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -180,13 +179,14 @@ class _TestScreenState extends State<TestScreen> {
                                           context),
                                       onPressed: () async {
                                         final bool? shouldSkip =
-                                            await ConfirmationDialog.show(
-                                                context: context,
-                                                title: translate(
-                                                    'skip_exam', context),
-                                                message: translate(
-                                                    'skip_exam_message',
-                                                    context));
+                                            await SkipExamConfirmationDialog
+                                                .show(
+                                                    context: context,
+                                                    title: translate(
+                                                        'skip_exam', context),
+                                                    message: translate(
+                                                        'skip_exam_message',
+                                                        context));
 
                                         if (shouldSkip == true) {
                                           context.read<LessonsCubit>().skipTest(

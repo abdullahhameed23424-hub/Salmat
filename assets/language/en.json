@@ -285,5 +285,7 @@
   "email_address": "Email Address",
   "verification_code_sent_to_email": "We have sent a verification code to your email:",
   "didnt_receive_code": "Didn't receive the code?",
-  "please_enter_code": "Please enter the code"
+  "please_enter_code": "Please enter the code",
+  "start_exam_title": "Start Exam",
+  "start_exam_message": "Are you sure you want to start the exam?"
 }

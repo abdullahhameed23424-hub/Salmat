@@ -116,7 +116,7 @@ class ResultDialog extends StatelessWidget {
                     _buildRow(
                         translate('your_score', context), result.studentDegree),
                     _buildRow(
-                        translate('min_degree', context),
+                        translate('pass_percentage', context),
                         ((num.parse(result.examPassPercentage) / 100) *
                                 num.parse(result.examDegree))
                             .toString()

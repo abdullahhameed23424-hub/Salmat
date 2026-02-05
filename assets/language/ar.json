@@ -305,5 +305,7 @@
   "email_address": "البريد الإلكتروني",
   "verification_code_sent_to_email": "لقد قمنا بإرسال رمز التحقق إلى البريد الإلكتروني :",
   "didnt_receive_code": "لم أتلق الرمز",
-  "please_enter_code": "يرجى إدخال الرمز"
+  "please_enter_code": "يرجى إدخال الرمز",
+  "start_exam_title": "بدء الاختبار",
+  "start_exam_message": "هل أنت متأكد من بدء الاختبار؟"
 }

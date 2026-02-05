@@ -40,4 +40,5 @@ class FileManagerCubit extends Cubit<FileManagerState> {
     await File(path).rename(newPath);
     emit(FileManagerFileRenameSuccessfulState());
   }
+  
 }
