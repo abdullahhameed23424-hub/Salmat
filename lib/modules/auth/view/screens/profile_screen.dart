@@ -156,14 +156,14 @@ class ProfileScreen extends StatelessWidget {
                             )
                         ],
                       ),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 4.h),
                       Text(authCubit.user.fullName,
                           style: titilliumBold.copyWith(
                               fontSize: 20.sp, color: AppColors.WHITE)),
-                      SizedBox(height: 8.h),
+                      SizedBox(height: 4.h),
                       Text(authCubit.user.grade?.name ?? "",
                           style: titilliumBold.copyWith(fontSize: 20.sp)),
-                      SizedBox(height: 48.h),
+                      SizedBox(height: 10.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -188,7 +188,7 @@ class ProfileScreen extends StatelessWidget {
                 Text(translate('other_info_title', context),
                     style: titilliumBold.copyWith(
                         decoration: TextDecoration.underline)),
-                const SizedBox(height: 10),
+                SizedBox(height: 10.h),
                 InfoCard(
                     title: translate('username', context),
                     value: authCubit.user.username),

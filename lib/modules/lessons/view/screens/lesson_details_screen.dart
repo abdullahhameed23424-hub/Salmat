@@ -572,6 +572,9 @@ class _LessonTaps extends StatefulWidget {
 class _LessonTapsState extends State<_LessonTaps> {
   @override
   Widget build(BuildContext context) {
+    if (widget.lessonsCubit.lessonDetails.attachmentCount == 0) {
+      return const SizedBox.shrink();
+    }
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: ExpansionTile(

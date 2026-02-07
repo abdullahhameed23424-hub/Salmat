@@ -176,32 +176,25 @@ class _Units extends StatelessWidget {
   final Course course;
   @override
   Widget build(BuildContext context) {
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          [
-          Text(
-              translate('units', context),
-              style: TextStyle(
-                fontFamily: FONTF_FAMILY,
-                fontSize: Dimensions.FONT_SIZE_DEFAULT,
-                fontWeight: FontWeight.w700,
-                color: AppColors.PRIMARY
-              ),
-            ),
-            ... List.generate(
-              units.length,
-                  (index) => UnitCard(
-                unit: units[index],
-                isSubscribed: course.subscribed,
-              ),
-            )
-
-
-          ]
-
-      ,
+      children: [
+        Text(
+          translate('units', context),
+          style: TextStyle(
+              fontFamily: FONTF_FAMILY,
+              fontSize: Dimensions.FONT_SIZE_DEFAULT,
+              fontWeight: FontWeight.w700,
+              color: AppColors.PRIMARY),
+        ),
+        ...List.generate(
+          units.length,
+          (index) => UnitCard(
+            unit: units[index],
+            isSubscribed: course.subscribed,
+          ),
+        )
+      ],
     );
     // return  ExpansionTile(
     //   collapsedBackgroundColor: AppColors.PURPLE_LIGHT,
@@ -312,7 +305,7 @@ class _CourseHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.h),
-      padding: EdgeInsets.only(top: 5.h),
+      padding: EdgeInsets.only(top: 0.h),
       decoration: BoxDecoration(
           color: AppColors.WHITE,
           borderRadius: BorderRadius.circular(20),
@@ -322,10 +315,11 @@ class _CourseHeader extends StatelessWidget {
         alignment: AlignmentDirectional.bottomEnd,
         children: [
           Column(
-            mainAxisSize: MainAxisSize.min,
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 0.78.sw,
+                // width: 0.78.sw,
                 decoration: BoxDecoration(
                   boxShadow: boxShadow,
                   color: AppColors.WHITE,
@@ -347,52 +341,52 @@ class _CourseHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ReadMoreText(text: course.description, maxLength: 70),
-                   // if (!course.subscribed)
-                     // Row(
-                     //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       // children: [
-                          // Text(
-                          //     maxLines: 2,
-                          //     overflow: TextOverflow.ellipsis,
-                          //     course.isFree
-                          //         ? translate('free', context)
-                          //         : "${course.totalPrice} ل.س",
-                          //     style: titilliumBold.copyWith(
-                          //         fontWeight: FontWeight.w900,
-                          //         fontSize: 18.sp,
-                          //         color: AppColors.PRIMARY)),
-                          // InkWell(
-                          //   onTap: () {
-                          //     showModalBottomSheet(
-                          //       isScrollControlled: true,
-                          //       context: context,
-                          //       builder: (context) =>
-                          //           const ContactWithAdminDialog(),
-                          //     );
-                          //   },
-                          //   child: Stack(
-                          //     alignment: Alignment.center,
-                          //     children: [
-                          //       SvgPicture.asset(Images.buyIcon,
-                          //           width: 90.w,
-                          //           colorFilter: ColorFilter.mode(
-                          //               course.isFree
-                          //                   ? Colors.green
-                          //                   : AppColors.PRIMARY,
-                          //               BlendMode.srcIn)),
-                          //       Positioned(
-                          //         child: Text(
-                          //           translate('subscribe', context),
-                          //           style: titilliumBold.copyWith(
-                          //               color: AppColors.WHITE),
-                          //         ),
-                          //       )
-                          //     ],
-                          //   ),
-                          // )
-                     //   ],
-                     // )
-                   // else
+                    // if (!course.subscribed)
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // children: [
+                    // Text(
+                    //     maxLines: 2,
+                    //     overflow: TextOverflow.ellipsis,
+                    //     course.isFree
+                    //         ? translate('free', context)
+                    //         : "${course.totalPrice} ل.س",
+                    //     style: titilliumBold.copyWith(
+                    //         fontWeight: FontWeight.w900,
+                    //         fontSize: 18.sp,
+                    //         color: AppColors.PRIMARY)),
+                    // InkWell(
+                    //   onTap: () {
+                    //     showModalBottomSheet(
+                    //       isScrollControlled: true,
+                    //       context: context,
+                    //       builder: (context) =>
+                    //           const ContactWithAdminDialog(),
+                    //     );
+                    //   },
+                    //   child: Stack(
+                    //     alignment: Alignment.center,
+                    //     children: [
+                    //       SvgPicture.asset(Images.buyIcon,
+                    //           width: 90.w,
+                    //           colorFilter: ColorFilter.mode(
+                    //               course.isFree
+                    //                   ? Colors.green
+                    //                   : AppColors.PRIMARY,
+                    //               BlendMode.srcIn)),
+                    //       Positioned(
+                    //         child: Text(
+                    //           translate('subscribe', context),
+                    //           style: titilliumBold.copyWith(
+                    //               color: AppColors.WHITE),
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
+                    //   ],
+                    // )
+                    // else
                     //  SizedBox(height: 15.h),
                   ],
                 ),

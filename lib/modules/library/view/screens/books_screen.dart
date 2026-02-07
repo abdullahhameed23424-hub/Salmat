@@ -27,10 +27,14 @@ class BooksScreen extends StatelessWidget {
         child: BlocBuilder<LibraryCubit, LibraryState>(
           builder: (context, state) {
             final cubit = context.read<LibraryCubit>();
-            if (state is LibraryLoadingState) {
+            final hasCachedBooks = cubit.libraryBooks.isNotEmpty;
+            final isOfflineFallback =
+                state is LibraryErrorState && hasCachedBooks;
+
+            if (state is LibraryLoadingState && !hasCachedBooks) {
               return const AppLoading();
             }
-            if (state is LibraryErrorState) {
+            if (state is LibraryErrorState && !hasCachedBooks) {
               return TryAgain(
                 onTap: () => context.read<LibraryCubit>().getBooks(
                       librarySection.id,
@@ -44,6 +48,13 @@ class BooksScreen extends StatelessWidget {
             }
             return Stack(
               children: [
+                if (isOfflineFallback)
+                  const Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: _OfflineNotice(),
+                  ),
                 Positioned(
                     bottom: 0,
                     right: 0,
@@ -125,6 +136,44 @@ class _TopBanner extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class _OfflineNotice extends StatelessWidget {
+  const _OfflineNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: AppColors.PRIMARY,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.PRIMARY.withOpacity(.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.cloud_off, color: Colors.white, size: 18),
+          SizedBox(width: 8.w),
+          Text(
+            'المكتبة تعمل دون إنترنت',
+            style: titilliumSemiBold.copyWith(
+              color: Colors.white,
+              fontSize: 12.sp,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -14,6 +14,14 @@ import '../../../../core/sqlite.dart';
 import '../../../lessons/models/lesson.dart';
 
 class DownloadCubit2 extends Cubit<DownloadState2> {
+  static final FileDownloader _sharedDownloader = FileDownloader();
+  static bool _downloaderStarted = false;
+  static bool _downloaderConfigured = false;
+  static Stream<TaskUpdate>? _sharedUpdatesStream;
+
+  Stream<TaskUpdate> get _updatesStream =>
+      _sharedUpdatesStream ??= downloader.updates.asBroadcastStream();
+
   DownloadCubit2(
       {required this.link,
       required this.fileName,
@@ -26,7 +34,6 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
   Task? task;
   TaskRecord? taskRecord;
-
   // late List<Task> tasks;
   bool requestWithFileName;
   String localPath;
@@ -41,7 +48,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   int? metaId;
   bool showContentLength;
   late AndroidDeviceInfo androidInfo;
-  FileDownloader downloader = FileDownloader();
+  final FileDownloader downloader = _sharedDownloader;
+  StreamSubscription<TaskUpdate>? _updatesSubscription;
   void calMbProgress() {
     if (mbContentLength != null) {
       mbProgress =
@@ -51,9 +59,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
   @override
   Future<void> close() {
-    downloader.destroy();
-    // clean up your resources here
-    return super.close(); // then call the base class close
+    _updatesSubscription?.cancel();
+    return super.close();
   }
 
   void listener(TaskUpdate update) {
@@ -81,6 +88,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
     // print("hhhhdk${(await downloader.database.allRecordsWithStatus(TaskStatus.running)).toList().length}");
 
+    if (showContentLength) {
+      await getContentLength();
+      getMbContentLength();
+    }
+
     List<TaskRecord> foundTasks = (await downloader.database.allRecords())
         .where(
           (element) => element.task.filename == fileName,
@@ -104,14 +116,21 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       progress = foundTasks.last.progress;
     }
     checkAndEmit(status, progress);
-    downloader.start();
+    if (!_downloaderStarted) {
+      downloader.start();
+      _downloaderStarted = true;
+    }
 
-    await downloader.configure(globalConfig: [
-      (Config.requestTimeout, const Duration(seconds: 100)),
-    ], androidConfig: [
-      (Config.runInForeground, Config.always)
-    ]);
-    downloader.updates.listen(listener);
+    if (!_downloaderConfigured) {
+      await downloader.configure(globalConfig: [
+        (Config.requestTimeout, const Duration(seconds: 100)),
+      ], androidConfig: [
+        (Config.runInForeground, Config.always)
+      ]);
+      _downloaderConfigured = true;
+    }
+
+    _updatesSubscription ??= _updatesStream.listen(listener);
   }
 
   static Future<bool> checkPermission() async {
@@ -158,6 +177,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   }
 
   void requestDownload({bool showNot = true, Lesson? lessonModel}) async {
+    if (state is RequestingState ||
+        state is QueuedState ||
+        state is RunningState) {
+      return;
+    }
     emit(RequestingState());
 
     if (!await checkPermission()) {

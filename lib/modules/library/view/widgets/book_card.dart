@@ -34,8 +34,9 @@ class BookCard extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<DownloadCubit2>();
           final bool isDownloaded = state is CompleteState;
-          final bool isDownloading =
-              state is RunningState || state is QueuedState;
+          final bool isDownloading = state is RunningState ||
+              state is QueuedState ||
+              state is RequestingState;
 
           return InkWell(
             onTap: () {
@@ -99,10 +100,46 @@ class BookCard extends StatelessWidget {
                           if (isDownloading)
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12.w),
-                              child: LinearProgressIndicator(
-                                value: cubit.progress / 100,
-                                color: primaryColor,
-                                backgroundColor: primaryColor.withOpacity(0.2),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  LinearProgressIndicator(
+                                    value: cubit.progress / 100,
+                                    color: primaryColor,
+                                    backgroundColor:
+                                        primaryColor.withOpacity(0.2),
+                                  ),
+                                  SizedBox(height: 6.h),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      if (cubit.mbProgress != null)
+                                        Text(
+                                          cubit.mbProgress!,
+                                          style: titilliumRegular.copyWith(
+                                            fontSize: 10.sp,
+                                            color: AppColors.GRAY500,
+                                          ),
+                                        )
+                                      else if (cubit.mbContentLength != null)
+                                        Text(
+                                          "0 / ${cubit.mbContentLength}MB",
+                                          style: titilliumRegular.copyWith(
+                                            fontSize: 10.sp,
+                                            color: AppColors.GRAY500,
+                                          ),
+                                        ),
+                                      Text(
+                                        "${cubit.progress.toInt()}%",
+                                        style: titilliumRegular.copyWith(
+                                          fontSize: 10.sp,
+                                          color: AppColors.GRAY500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           Row(
