@@ -42,11 +42,13 @@ class OffersCubit extends Cubit<OffersState> {
         refreshController.loadComplete();
       }
       page = offersResponse!.currentPage + 1;
-
+      if (isClosed) return;
       emit(GetOffersSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(GetOffersErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(GetOffersErrorState(message: unknownError()));
     }
   }

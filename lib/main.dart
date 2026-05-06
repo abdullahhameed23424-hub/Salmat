@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:background_downloader/background_downloader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +12,6 @@ import 'package:salamat/apis/network.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/core/sqlite.dart';
 import 'package:salamat/firebase_options.dart';
-import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/helper/cach_helper.dart';
 import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
 import 'package:salamat/modules/notifications/cubit/notifications_cubit.dart';
@@ -40,8 +37,6 @@ void main() async {
   // await FlutterDownloader.initialize();
   await ScreenProtector.protectDataLeakageOff();
   await FileDownloader().trackTasks();
-
-
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.instance.subscribeToTopic("guests");
@@ -128,7 +123,6 @@ class _MyAppState extends State<MyApp> {
 
               return MaterialApp(
                 navigatorKey: navigatorKey,
-
                 home: const SplashScreen(),
                 theme: ThemeData(
                     appBarTheme: const AppBarTheme(
@@ -139,7 +133,6 @@ class _MyAppState extends State<MyApp> {
                           statusBarBrightness: Brightness.dark,
                           systemNavigationBarColor: AppColors.SECONDRY,
                           systemNavigationBarIconBrightness: Brightness.light
-                          
                           // iOS
                           ),
                     ),

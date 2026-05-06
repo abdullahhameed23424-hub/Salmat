@@ -29,13 +29,13 @@ class LessonsCubit extends Cubit<LessonsState> {
     try {
       if (ResponseCacher.hasCache(key)) {
         final LessonsResponse lessonsResponse =
-        LessonsResponse.fromJson(ResponseCacher.getCache(key));
+            LessonsResponse.fromJson(ResponseCacher.getCache(key));
 
         lessons = lessonsResponse.data.data;
-
+        if (isClosed) return;
         emit(GetLessonsSuccessState());
       }
-    }catch(error){
+    } catch (error) {
       //
     }
     try {
@@ -47,18 +47,19 @@ class LessonsCubit extends Cubit<LessonsState> {
 
       lessons = lessonsResponse.data.data;
       ResponseCacher.cache(key, response.data);
+      if (isClosed) return;
       emit(GetLessonsSuccessState());
     } on DioException catch (error) {
-
-      if(error.type == DioExceptionType.badResponse){
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
-      }else{
-        if(ResponseCacher.hasCache(key)==false) {
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetLessonsErrorState(message: exceptionsHandle(error: error)));
         }
       }
-    }
-    catch (error) {
+    } catch (error) {
+      if (isClosed) return;
       emit(GetLessonsErrorState(message: unknownError()));
     }
   }
@@ -70,34 +71,38 @@ class LessonsCubit extends Cubit<LessonsState> {
     emit(GetLessonDetailsLoadingState());
     String key = "${Urls.sections}/$unitId/lessons/$lessonId";
 
-    try{
-    if(ResponseCacher.hasCache(key)) {
-      ResponseCacher.getCache(key);
-      lessonDetails = Lesson.fromJson( ResponseCacher.getCache(key)['data'],ResponseCacher.getCache(key));
-      emit(GetLessonDetailsSuccessState());
-    }
-    }catch(error){
-     //
+    try {
+      if (ResponseCacher.hasCache(key)) {
+        ResponseCacher.getCache(key);
+        lessonDetails = Lesson.fromJson(
+            ResponseCacher.getCache(key)['data'], ResponseCacher.getCache(key));
+        if (isClosed) return;
+        emit(GetLessonDetailsSuccessState());
+      }
+    } catch (error) {
+      //
     }
 
     try {
-
       final response = await Network.getData(
           url: "${Urls.sections}/$unitId/lessons/$lessonId");
 
-      lessonDetails = Lesson.fromJson(response.data['data'],response.data);
+      lessonDetails = Lesson.fromJson(response.data['data'], response.data);
 
       setNextLessonButtonStatus(lessonDetails);
 
-      ResponseCacher.cache(key,response.data);
-
+      ResponseCacher.cache(key, response.data);
+      if (isClosed) return;
       emit(GetLessonDetailsSuccessState());
     } on DioException catch (error) {
-      if(error.type == DioExceptionType.badResponse){
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
-        emit(GetLessonDetailsErrorState(message: exceptionsHandle(error: error)));
-      }else{
-        if(ResponseCacher.hasCache(key) == false){
+        if (isClosed) return;
+        emit(GetLessonDetailsErrorState(
+            message: exceptionsHandle(error: error)));
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetLessonDetailsErrorState(message: unknownError()));
         }
       }
@@ -109,11 +114,14 @@ class LessonsCubit extends Cubit<LessonsState> {
     try {
       final Response response = await Network.postData(
           url: '${Urls.sections}/$unitId/lessons/$lessonId/open');
+      if (isClosed) return;
       emit(OpenNextLessonSuccessState(
           nextLessonId: response.data['data']['next_lesson_id']));
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(OpenNextLessonErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(OpenNextLessonErrorState(message: unknownError()));
     }
   }
@@ -162,12 +170,15 @@ class LessonsCubit extends Cubit<LessonsState> {
     try {
       final Response response = await Network.postData(
           url: '${Urls.sections}/$unitId/lessons/$lessonId/open?skipped=true');
+      if (isClosed) return;
       emit(SkipTestSuccessState(
         nextLessonId: response.data['data']['next_lesson_id'],
       ));
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(SkipTestErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(SkipTestErrorState(message: unknownError()));
     }
   }

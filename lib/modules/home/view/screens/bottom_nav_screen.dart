@@ -86,7 +86,7 @@ class BottomNavScreenState extends State<BottomNavScreen> {
               child: _AppBar(scaffoldKey),
             ),
             extendBody: true,
-            body: SafeArea(child: taps[selectedPage.value]["screen"]) ,
+            body: SafeArea(child: taps[selectedPage.value]["screen"]),
             bottomNavigationBar: SafeArea(
               child: BottomNavBar(
                 onChange: (index) {
@@ -203,7 +203,7 @@ class _UserHeader extends StatelessWidget {
             spacing: 5.h,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("مرحباً 👋🏻",
+              Text("سلامات 👋🏻",
                   style: titilliumBold.copyWith(color: AppColors.WHITE)),
               Text(authCubit.user.fullName, style: titilliumBold),
             ],

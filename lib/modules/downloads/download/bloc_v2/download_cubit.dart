@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-
 import 'package:background_downloader/background_downloader.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:permission_handler/permission_handler.dart' as ph;
 import 'package:salamat/modules/downloads/download/bloc_v2/download_state.dart';
-
-import '../../../../apis/network.dart';
-import '../../../../core/sqlite.dart';
-import '../../../lessons/models/lesson.dart';
+import 'package:salamat/apis/network.dart';
+import 'package:salamat/core/sqlite.dart';
+import 'package:salamat/modules/lessons/models/lesson.dart';
 
 class DownloadCubit2 extends Cubit<DownloadState2> {
   static final FileDownloader _sharedDownloader = FileDownloader();
@@ -53,7 +50,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
   void calMbProgress() {
     if (mbContentLength != null) {
       mbProgress =
-          "${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB";
+          '${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB';
     }
   }
 
@@ -65,7 +62,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
   void listener(TaskUpdate update) {
     if (update is TaskStatusUpdate) {
-      print("task status show listener ${status}");
+      print('task status show listener ${status}');
 
       if (update.task.taskId == task?.taskId) {
         status = update.status;
@@ -103,7 +100,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
         ///get the file size from sqlite
         final res = await SqliteHelper.getLesson(metaId!);
 
-        contentLength = res.first["file_size"];
+        contentLength = res.first['file_size'];
         getMbContentLength();
       } catch (error) {
         //
@@ -158,20 +155,26 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     progress = math.max(0, double.parse((progress1 * 100).toStringAsFixed(1)));
     calMbProgress();
     if (status1 == TaskStatus.notFound) {
+      if (isClosed) return;
       emit(TaskNotFoundState());
     } else if (status1 == TaskStatus.enqueued) {
+      if (isClosed) return;
       emit(QueuedState());
     } else if (status1 == TaskStatus.canceled) {
+      if (isClosed) return;
       // dispose();
       emit(CanceledState());
     } else if (status1 == TaskStatus.failed) {
+      if (isClosed) return;
       // dispose();
       emit(FailedState());
     } else if (status1 == TaskStatus.running) {
+      if (isClosed) return;
       emit(RunningState());
       // listenNow();
     } else if (await File(localPath + fileName).exists() ||
         status1 == TaskStatus.complete) {
+      if (isClosed) return;
       emit(CompleteState());
     }
   }
@@ -194,15 +197,15 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
 
       try {
         downloader.configureNotification(
-          running: TaskNotification(fileName, ""),
-          canceled: TaskNotification(fileName, ""),
-          complete: TaskNotification(fileName, ""),
-          paused: TaskNotification(fileName, ""),
-          error: TaskNotification(fileName, ""),
+          running: TaskNotification(fileName, ''),
+          canceled: TaskNotification(fileName, ''),
+          complete: TaskNotification(fileName, ''),
+          paused: TaskNotification(fileName, ''),
+          error: TaskNotification(fileName, ''),
           progressBar: true,
         );
       } catch (error) {
-        print("conf error $error");
+        print('conf error $error');
       }
 
       task = DownloadTask(
@@ -222,10 +225,12 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
           SqliteHelper.insertLesson(
               lessonModel, fileName2 ?? fileName, contentLength!);
         }
+        if (isClosed) return;
         emit(QueuedState());
       }
     } catch (error) {
-      print("error is $error");
+      print('error is $error');
+      if (isClosed) return;
       emit(RequestingFailedState());
     }
   }
@@ -237,11 +242,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       }
       contentLength = int.parse((await Network.dio.headUri(Uri.parse(link)))
           .headers
-          .map["content-length"]!
+          .map['content-length']!
           .first
           .toString());
     } catch (error) {
-      print("errorr is $error");
+      print('errorr is $error');
     }
   }
 
@@ -259,8 +264,10 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     try {
       await downloader.enqueue((task as DownloadTask));
     } catch (error) {
+      if (isClosed) return;
       emit(RetriedFailedState());
     }
+    if (isClosed) return;
     emit(RetriedState());
   }
 
@@ -272,9 +279,10 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
         (task as DownloadTask),
       );
     } catch (error) {
-      print("show the cancel error $error");
+      print('show the cancel error $error');
       //
     }
+    if (isClosed) return;
     emit(CanceledState());
   }
 
@@ -288,7 +296,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     } finally {
       deleteFile();
     }
-
+    if (isClosed) return;
     emit(TaskNotFoundState());
   }
 

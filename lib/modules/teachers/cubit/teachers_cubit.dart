@@ -42,11 +42,13 @@ class TeachersCubit extends Cubit<TeachersState> {
         refreshController.loadComplete();
       }
       page = teachersResponse.data.currentPage + 1;
-
+      if (isClosed) return;
       emit(GetTeachersSuccess());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(GetTeachersError(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(GetTeachersError(message: unknownError()));
     }
   }
@@ -60,11 +62,13 @@ class TeachersCubit extends Cubit<TeachersState> {
       final Teacher teacherDetailsResponse =
           Teacher.fromJson(response.data['data']);
       teacherDetails = teacherDetailsResponse;
+      if (isClosed) return;
       emit(GetTeacherDetailsSuccess());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(GetTeacherDetailsError(message: exceptionsHandle(error: error)));
-    }
-    catch (error) {
+    } catch (error) {
+      if (isClosed) return;
       emit(GetTeacherDetailsError(message: unknownError()));
     }
   }

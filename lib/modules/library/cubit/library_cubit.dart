@@ -33,12 +33,13 @@ class LibraryCubit extends Cubit<LibraryState> {
     if (isFirstPageRequest) {
       try {
         if (ResponseCacher.hasCache(cacheKey)) {
-          final cachedResponse =
-              LibrarySectionsResponse.fromJson(ResponseCacher.getCache(cacheKey));
+          final cachedResponse = LibrarySectionsResponse.fromJson(
+              ResponseCacher.getCache(cacheKey));
           librarySections = cachedResponse.data.original.data.data;
           image = cachedResponse.extraData.image;
           description = cachedResponse.extraData.description;
           refreshController.loadComplete();
+          if (isClosed) return;
           emit(LibrarySuccessState());
         }
       } catch (_) {
@@ -70,18 +71,22 @@ class LibraryCubit extends Cubit<LibraryState> {
       }
 
       page = librarySectionsResponse.data.original.data.currentPage + 1;
+      if (isClosed) return;
       emit(LibrarySuccessState());
     } on DioException catch (error) {
       if (error.type == DioExceptionType.badResponse) {
         await ResponseCacher.removeCache(cacheKey);
+        if (isClosed) return;
         emit(LibraryErrorState(message: exceptionsHandle(error: error)));
       } else {
         if (isFirstPageRequest && !ResponseCacher.hasCache(cacheKey)) {
+          if (isClosed) return;
           emit(LibraryErrorState(message: unknownError()));
         }
       }
     } catch (error) {
       if (isFirstPageRequest && !ResponseCacher.hasCache(cacheKey)) {
+        if (isClosed) return;
         emit(LibraryErrorState(message: unknownError()));
       }
     }
@@ -94,8 +99,7 @@ class LibraryCubit extends Cubit<LibraryState> {
       emit(LibraryLoadingState());
     }
 
-    final String cacheKey =
-        "${Urls.sections}/$librarySectionId/books?page=1";
+    final String cacheKey = "${Urls.sections}/$librarySectionId/books?page=1";
 
     if (isFirstPageRequest) {
       try {
@@ -104,6 +108,7 @@ class LibraryCubit extends Cubit<LibraryState> {
               LibraryBooksResponse.fromJson(ResponseCacher.getCache(cacheKey));
           libraryBooks = cachedBooks.data.data;
           refreshController.loadComplete();
+          if (isClosed) return;
           emit(LibrarySuccessState());
         }
       } catch (_) {
@@ -136,14 +141,17 @@ class LibraryCubit extends Cubit<LibraryState> {
     } on DioException catch (error) {
       if (error.type == DioExceptionType.badResponse) {
         await ResponseCacher.removeCache(cacheKey);
+        if (isClosed) return;
         emit(LibraryErrorState(message: exceptionsHandle(error: error)));
       } else {
         if (isFirstPageRequest && !ResponseCacher.hasCache(cacheKey)) {
+          if (isClosed) return;
           emit(LibraryErrorState(message: unknownError()));
         }
       }
     } catch (error) {
       if (isFirstPageRequest && !ResponseCacher.hasCache(cacheKey)) {
+        if (isClosed) return;
         emit(LibraryErrorState(message: unknownError()));
       }
     }
