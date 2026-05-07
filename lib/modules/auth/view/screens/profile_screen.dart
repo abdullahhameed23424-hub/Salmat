@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                   message: state.message);
             }
             return Column(
-              children: [
+              children: <Widget>[
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -82,10 +82,10 @@ class ProfileScreen extends StatelessWidget {
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   padding: EdgeInsets.only(top: 40.h),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Stack(
                         clipBehavior: Clip.none,
-                        children: [
+                        children: <Widget>[
                           InkWell(
                             onTap: () {
                               pushTo(
@@ -166,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
                       SizedBox(height: 10.h),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                        children: <Widget>[
                           ProfileInfo(
                               title: translate("dob_label", context),
                               value: authCubit.user.birthday),
@@ -198,9 +198,11 @@ class ProfileScreen extends StatelessWidget {
                 InfoCard(
                     title: translate('mother_name_label', context),
                     value: authCubit.user.motherName),
-                InfoCard(
+                if (authCubit.user.familyPhoneNumber.isNotEmpty)
+                  InfoCard(
                     title: translate('guardian_phone_label', context),
-                    value: authCubit.user.familyPhoneNumber),
+                    value: authCubit.user.familyPhoneNumber,
+                  ),
                 const Spacer(),
                 Directionality(
                   textDirection: TextDirection.rtl,

@@ -287,5 +287,6 @@
   "didnt_receive_code": "Didn't receive the code?",
   "please_enter_code": "Please enter the code",
   "start_exam_title": "Start Exam",
-  "start_exam_message": "Are you sure you want to start the exam?"
+  "start_exam_message": "Are you sure you want to start the exam?",
+  "share_app":"Share App"
 }

@@ -21,10 +21,13 @@ class InfoCubit extends Cubit<InfoState> {
 
       infoResponse = InfoResponse.fromJson(response.data);
 
+      if (isClosed) return;
       emit(GetInfoSuccessState());
     } on DioException catch (e) {
+      if (isClosed) return;
       emit(GetInfoErrorState(message: exceptionsHandle(error: e)));
     } catch (e) {
+      if (isClosed) return;
       emit(GetInfoErrorState(message: unknownError()));
     }
   }

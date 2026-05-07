@@ -57,11 +57,13 @@ class TestCubit extends Cubit<TestState> {
         testTime = test.minutes * 60;
         isSolving = true;
       }
-
+      if (isClosed) return;
       emit(GetTestSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(GetTestErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(GetTestErrorState(message: unknownError()));
     }
   }
@@ -72,10 +74,13 @@ class TestCubit extends Cubit<TestState> {
       await Network.postData(url: '${Urls.studentExams}/$examId/create');
 
       isSolving = true;
+      if (isClosed) return;
       emit(StartExamSuccessState());
     } on DioException catch (e) {
+      if (isClosed) return;
       emit(StartExamErrorState(message: exceptionsHandle(error: e)));
     } catch (e) {
+      if (isClosed) return;
       emit(StartExamErrorState(message: unknownError()));
     }
   }
@@ -118,10 +123,11 @@ class TestCubit extends Cubit<TestState> {
 
   Future<void> submitExam({required int examId, bool force = false}) async {
     if (selectedOptions.any((option) => option['option_id'] == -1) && !force) {
+      if (isClosed) return;
       emit(SubmitExamErrorState(message: "يرجى حل جميع الأسئلة"));
       return;
     }
-
+    if (isClosed) return;
     emit(SubmitExamLoadingState());
     try {
       final response = await Network.postData(
@@ -146,12 +152,15 @@ class TestCubit extends Cubit<TestState> {
             (test.studentExam?.attemptCount ?? 0) + 1;
         test.studentExam?.skipped = false;
         test.result.examDegree = failedResult.examDegree;
+        if (isClosed) return;
         emit(SubmitExamSuccessState(result: failedResult));
         // this mean that the student is failed and in this case back return the result only
       }
     } on DioException catch (e) {
+      if (isClosed) return;
       emit(SubmitExamErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
+      if (isClosed) return;
       emit(SubmitExamErrorState(message: unknownError()));
     }
   }
@@ -169,11 +178,13 @@ class TestCubit extends Cubit<TestState> {
           CompletedTestsResponse.fromJson(response.data);
       tests = completedTestsResponse.data.original.data.data;
       image = completedTestsResponse.extraData.authExams.image ?? '';
-
+      if (isClosed) return;
       emit(GetCompletedTestsSuccessState());
     } on DioException catch (e) {
+      if (isClosed) return;
       emit(GetCompletedTestsErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
+      if (isClosed) return;
       print("show the error $error");
       emit(GetCompletedTestsErrorState(message: unknownError()));
     }

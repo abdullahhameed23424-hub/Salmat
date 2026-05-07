@@ -26,7 +26,7 @@ class BookCard extends StatelessWidget {
     return BlocProvider(
       create: (context) => DownloadCubit2(
         link: book.file,
-        fileName: "book_${book.id}.pdf",
+        fileName: 'book_${book.id}.pdf',
         localPath: FileManagerCubit.privatePath,
         showContentLength: true,
       )..init(),
@@ -56,9 +56,10 @@ class BookCard extends StatelessWidget {
                   padding: EdgeInsets.all(0.w),
                   margin: EdgeInsets.symmetric(horizontal: 8.w),
                   decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: boxShadow),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: boxShadow,
+                  ),
                   child: Stack(
                     clipBehavior: Clip.none,
                     alignment: Alignment.topCenter,
@@ -124,14 +125,14 @@ class BookCard extends StatelessWidget {
                                         )
                                       else if (cubit.mbContentLength != null)
                                         Text(
-                                          "0 / ${cubit.mbContentLength}MB",
+                                          '0 / ${cubit.mbContentLength}MB',
                                           style: titilliumRegular.copyWith(
                                             fontSize: 10.sp,
                                             color: AppColors.GRAY500,
                                           ),
                                         ),
                                       Text(
-                                        "${cubit.progress.toInt()}%",
+                                        '${cubit.progress.toInt()}%',
                                         style: titilliumRegular.copyWith(
                                           fontSize: 10.sp,
                                           color: AppColors.GRAY500,
@@ -183,7 +184,7 @@ class BookCard extends StatelessWidget {
         cubit.downloader.openFile(task: cubit.task!);
       } else {
         // Fallback if task is null for some reason but file exists
-        EasyLauncher.url(url: "file://$path", mode: Mode.externalApp);
+        EasyLauncher.url(url: 'file://$path', mode: Mode.externalApp);
       }
     }
   }

@@ -22,25 +22,25 @@ class SubjectsCubit extends Cubit<SubjectsState> {
   String headerText = '';
   String headerImage = '';
   Future<void> getSubjects({required int sectionId}) async {
-
-
     if (page == 1) {
       emit(GetSubjectsLoadingState());
     }
     String key = "${Urls.sections}/$sectionId?type=subjects&page=1";
 
-    try{
-      if(ResponseCacher.hasCache(key)) {
-        subjectsResponse = SubjectsResponse.fromJson(ResponseCacher.getCache(key));
+    try {
+      if (ResponseCacher.hasCache(key)) {
+        subjectsResponse =
+            SubjectsResponse.fromJson(ResponseCacher.getCache(key));
 
-        if(page == 1){
+        if (page == 1) {
           subjects = subjectsResponse.original.data.seubjects;
           headerImage = subjectsResponse.original.section.image;
           headerText = subjectsResponse.original.section.description;
         }
+        if (isClosed) return;
         emit(GetSubjectsSuccessState());
       }
-    }catch(error){
+    } catch (error) {
       //
     }
     try {
@@ -62,22 +62,28 @@ class SubjectsCubit extends Cubit<SubjectsState> {
         headerImage = subjectsResponse.original.section.image;
         headerText = subjectsResponse.original.section.description;
       }
-      if(page == 1){
-      ResponseCacher.cache(key, response.data);
+      if (page == 1) {
+        ResponseCacher.cache(key, response.data);
       }
 
       page = subjectsResponse.original.data.currentPage + 1;
+      if (isClosed) return;
+
       emit(GetSubjectsSuccessState());
     } on DioException catch (error) {
-      if(error.type == DioExceptionType.badResponse){
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
+        if (isClosed) return;
+
         emit(GetSubjectsErrorState(message: exceptionsHandle(error: error)));
-      }else{
-        if(ResponseCacher.hasCache(key) == false){
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetSubjectsErrorState(message: unknownError()));
         }
       }
     } catch (error) {
+      if (isClosed) return;
       emit(GetSubjectsErrorState(message: unknownError()));
     }
   }

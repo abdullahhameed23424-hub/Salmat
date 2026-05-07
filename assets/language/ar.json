@@ -307,5 +307,6 @@
   "didnt_receive_code": "لم أتلق الرمز",
   "please_enter_code": "يرجى إدخال الرمز",
   "start_exam_title": "بدء الاختبار",
-  "start_exam_message": "هل أنت متأكد من بدء الاختبار؟"
+  "start_exam_message": "هل أنت متأكد من بدء الاختبار؟",
+  "share_app": "مشاركة التطبيق"
 }

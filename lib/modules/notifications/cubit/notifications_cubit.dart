@@ -46,9 +46,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         notifications = notificationsResponse.data.notifications;
       }
       page = notificationsResponse.data.currentPage + 1;
-
+      if (isClosed) return;
       emit(GetNotificationsSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(GetNotificationsErrorState(message: exceptionsHandle(error: error)));
     }
     // catch (error) {

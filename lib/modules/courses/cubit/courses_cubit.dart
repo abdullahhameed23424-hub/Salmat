@@ -28,18 +28,15 @@ class CoursesCubit extends Cubit<CoursesState> {
     }
     String key = "${Urls.sections}/$subjectId?type=courses&page=1";
     try {
-      if (ResponseCacher.hasCache(key)&&page ==1 ) {
+      if (ResponseCacher.hasCache(key) && page == 1) {
+        coursesResponse =
+            CoursesResponse.fromJson(ResponseCacher.getCache(key));
 
-        coursesResponse = CoursesResponse.fromJson(ResponseCacher.getCache(key));
-
-
-          courses = coursesResponse.data.courses;
-          emit(GetCoursesSuccessState());
-
+        courses = coursesResponse.data.courses;
+        if (isClosed) return;
+        emit(GetCoursesSuccessState());
       }
-
-
-    }catch(error){
+    } catch (error) {
       //
     }
     try {
@@ -59,20 +56,20 @@ class CoursesCubit extends Cubit<CoursesState> {
       } else {
         courses = coursesResponse.data.courses;
       }
-      if(page == 1){
+      if (page == 1) {
         ResponseCacher.cache(key, response.data);
       }
       page = coursesResponse.data.currentPage + 1;
-
+      if (isClosed) return;
       emit(GetCoursesSuccessState());
     } on DioException catch (error) {
-
-      if(error.type == DioExceptionType.badResponse){
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
+        if (isClosed) return;
         emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
-
-      }else{
-        if(ResponseCacher.hasCache(key) == false){
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetCoursesErrorState(message: unknownError()));
         }
       }
@@ -87,18 +84,17 @@ class CoursesCubit extends Cubit<CoursesState> {
   Future<void> getCourseDetails({required int courseId}) async {
     emit(GetCourseDetailsLoadingState());
 
-    String key =  "${Urls.sections}/$courseId?type=course_sections";
-    try{
-      if(ResponseCacher.hasCache(key)) {
+    String key = "${Urls.sections}/$courseId?type=course_sections";
+    try {
+      if (ResponseCacher.hasCache(key)) {
         final CourseResponse courseResponse =
-        CourseResponse.fromJson(ResponseCacher.getCache(key));
+            CourseResponse.fromJson(ResponseCacher.getCache(key));
         couresDetails = courseResponse.data.original.coures;
         units = courseResponse.data.original.data.data;
-
+        if (isClosed) return;
         emit(GetCourseDetailsSuccessState());
       }
-
-    }catch(error){
+    } catch (error) {
       //
     }
 
@@ -110,22 +106,24 @@ class CoursesCubit extends Cubit<CoursesState> {
           CourseResponse.fromJson(response.data);
       couresDetails = courseResponse.data.original.coures;
       units = courseResponse.data.original.data.data;
-     ResponseCacher.cache(key, response.data);
-
+      ResponseCacher.cache(key, response.data);
+      if (isClosed) return;
       emit(GetCourseDetailsSuccessState());
     } on DioException catch (error) {
-      if(error.type == DioExceptionType.badResponse) {
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
+        if (isClosed) return;
         emit(GetCourseDetailsErrorState(
             message: exceptionsHandle(error: error)));
-      }else{
-        if(ResponseCacher.hasCache( key) == false){
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetCourseDetailsErrorState(
               message: exceptionsHandle(error: error)));
         }
-
       }
     } catch (error) {
+      if (isClosed) return;
       emit(GetCourseDetailsErrorState(message: unknownError()));
     }
   }
@@ -135,18 +133,15 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesLoadingState());
     }
     String key = "${Urls.myCourses}?page=1";
-    try{
-      if(ResponseCacher.hasCache(key) && page == 1){
+    try {
+      if (ResponseCacher.hasCache(key) && page == 1) {
         final MyCoursesResponse coursesResponse =
-        MyCoursesResponse.fromJson(ResponseCacher.getCache(key));
+            MyCoursesResponse.fromJson(ResponseCacher.getCache(key));
         courses = coursesResponse.data.courses;
+        if (isClosed) return;
         emit(GetCoursesSuccessState());
-
-
       }
-    }catch(error){
-
-    }
+    } catch (error) {}
     try {
       final Response response =
           await Network.getData(url: "${Urls.myCourses}?page=$page");
@@ -164,37 +159,42 @@ class CoursesCubit extends Cubit<CoursesState> {
       } else {
         courses = coursesResponse.data.courses;
       }
-      if(page == 1){
+      if (page == 1) {
         ResponseCacher.cache(key, response.data);
       }
       page = coursesResponse.data.currentPage + 1;
-
+      if (isClosed) return;
       emit(GetCoursesSuccessState());
     } on DioException catch (error) {
-
-      if(error.type == DioExceptionType.badResponse){
+      if (error.type == DioExceptionType.badResponse) {
         ResponseCacher.removeCache(key);
+        if (isClosed) return;
         emit(GetCoursesErrorState(message: exceptionsHandle(error: error)));
-      }else{
-        if(ResponseCacher.hasCache(key) == false){
+      } else {
+        if (ResponseCacher.hasCache(key) == false) {
+          if (isClosed) return;
           emit(GetCoursesErrorState(message: unknownError()));
         }
       }
-
     } catch (error) {
+      if (isClosed) return;
       emit(GetCoursesErrorState(message: unknownError()));
     }
   }
 
   Future<void> subscribeToCourse({required int courseId}) async {
     try {
+      if (isClosed) return;
       emit(SubscribeToCourseLoadingState());
       await Network.postData(url: "${Urls.sections}/$courseId/open");
+      if (isClosed) return;
       emit(SubscribeToCourseSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(
           SubscribeToCourseErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(SubscribeToCourseErrorState(message: unknownError()));
     }
   }

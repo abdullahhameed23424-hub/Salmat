@@ -1,8 +1,5 @@
-import 'package:easy_url_launcher/easy_url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:salamat/constant/app_colors.dart';
-import 'package:salamat/constant/custom_themes.dart';
 
 class ContactRow extends StatelessWidget {
   final Widget icon;

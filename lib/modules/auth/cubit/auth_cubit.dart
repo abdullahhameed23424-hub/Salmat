@@ -37,18 +37,16 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(LoginLoadingState());
       String? udid;
-      try{
-
+      try {
         udid = await FlutterUdid.udid;
-
-      }catch(error){
+      } catch (error) {
         //
       }
 
       String? fcmToken;
-      try{
+      try {
         fcmToken = await FirebaseMessaging.instance.getToken();
-      }catch(error){
+      } catch (error) {
         //
       }
       try {
@@ -56,7 +54,7 @@ class AuthCubit extends Cubit<AuthState> {
           "username": userNameController.text.trim(),
           "password": passwordController.text.trim(),
           'fcm_token': fcmToken,
-          if(udid != null) 'fingerprint': udid
+          if (udid != null) 'fingerprint': udid
         });
 
         await AppSharedPreferences.saveToken(
@@ -65,11 +63,13 @@ class AuthCubit extends Cubit<AuthState> {
             response.data['data']['user']['id'].toString());
         AppSharedPreferences.removeGust;
         await Network.init();
-
+        if (isClosed) return;
         emit(LoginSuccessState());
       } on DioException catch (error) {
+        if (isClosed) return;
         emit(LoginErrorState(message: exceptionsHandle(error: error)));
       } catch (error) {
+        if (isClosed) return;
         emit(LoginErrorState(message: unknownError()));
       }
     }
@@ -79,19 +79,22 @@ class AuthCubit extends Cubit<AuthState> {
     emit(LogoutLoadingState());
     try {
       await Network.postData(url: Urls.logout);
-
+      if (isClosed) return;
       emit(LogoutSuccessState());
 
       AppSharedPreferences.removeToken;
     } on DioException catch (error) {
       if (error.response?.statusCode == 401) {
         AppSharedPreferences.removeToken;
+        if (isClosed) return;
         emit(LogoutErrorState(
             message: error.response?.data['message'], code: 401));
       } else {
+        if (isClosed) return;
         emit(LogoutErrorState(message: exceptionsHandle(error: error)));
       }
     } catch (error) {
+      if (isClosed) return;
       emit(LogoutErrorState(message: unknownError()));
     }
   }
@@ -106,14 +109,18 @@ class AuthCubit extends Cubit<AuthState> {
       profileResponse = ProfileResponse.fromJson(response.data['data']);
       user = profileResponse.user;
       notificationCount = response.data['notifications_count'];
+      if (isClosed) return;
       emit(GetProfileSuccessState());
     } on DioException catch (e) {
       if (e.response!.statusCode == 401) {
+        if (isClosed) return;
         emit(UnAuthenticatedState());
         return;
       }
+      if (isClosed) return;
       emit(GetProfileErrorState(message: exceptionsHandle(error: e)));
     } catch (error) {
+      if (isClosed) return;
       emit(GetProfileErrorState(message: unknownError()));
     }
   }
@@ -135,10 +142,13 @@ class AuthCubit extends Cubit<AuthState> {
       });
       try {
         await Network.postData(url: Urls.CHANGE_PASSWORD, data: formData);
+        if (isClosed) return;
         emit(ChangePasswordSuccessState());
       } on DioException catch (e) {
+        if (isClosed) return;
         emit(ChangePasswordErrorState(message: exceptionsHandle(error: e)));
       } catch (error) {
+        if (isClosed) return;
         emit(ChangePasswordErrorState(message: unknownError()));
       }
     }
@@ -155,10 +165,13 @@ class AuthCubit extends Cubit<AuthState> {
 
       await Network.postData(url: "${Urls.profile}/update", data: formData);
       userImageFile = null;
+      if (isClosed) return;
       emit(EditProfileSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(EditProfileErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(EditProfileErrorState(message: unknownError()));
     }
   }
@@ -170,10 +183,13 @@ class AuthCubit extends Cubit<AuthState> {
           FormData.fromMap({"_method": "PUT", "image": null});
 
       await Network.postData(url: "${Urls.profile}/update", data: formData);
+      if (isClosed) return;
       emit(DeleteImageSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(DeleteImageErrorState(message: exceptionsHandle(error: error)));
     } catch (error) {
+      if (isClosed) return;
       emit(DeleteImageErrorState(message: unknownError()));
     }
   }

@@ -17,11 +17,13 @@ class PointsRecordCubit extends Cubit<PointsRecordState> {
     try {
       final Response response = await Network.getData(url: Urls.points);
       pointsResponse = PointsResponse.fromJson(response.data);
-
+      if (isClosed) return;
       emit(PointsRecordSuccessState());
     } on DioException catch (error) {
+      if (isClosed) return;
       emit(PointsRecordErrorState(message: exceptionsHandle(error: error)));
     } catch (_) {
+      if (isClosed) return;
       emit(PointsRecordErrorState(message: unknownError()));
     }
   }

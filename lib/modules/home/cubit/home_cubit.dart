@@ -38,12 +38,12 @@ class HomeCubit extends Cubit<HomeState> {
       platformComments = homeResponse.data.platformComments;
       libraryImage = homeResponse.data.libraryInfo?.image ?? "";
 
+      if (isClosed) return;
       emit(GetHomeSuccessState());
     } on DioException catch (error) {
       emit(GetHomeErrorState(message: exceptionsHandle(error: error)));
-    }
-
-    catch (error) {
+    } catch (error) {
+      if (isClosed) return;
       emit(GetHomeErrorState(message: unknownError()));
     } finally {
       refreshController.refreshCompleted();

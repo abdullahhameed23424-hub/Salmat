@@ -8,6 +8,7 @@ class InfoResponse {
 
   final Features features;
   final AboutUs aboutUs;
+  final Application application;
   final AdminContact adminContact;
   InfoResponse({
     required this.privacyPolicy,
@@ -16,15 +17,28 @@ class InfoResponse {
     required this.features,
     required this.aboutUs,
     required this.adminContact,
+    required this.application,
   });
 
   factory InfoResponse.fromJson(Map<String, dynamic> json) => InfoResponse(
-        privacyPolicy: PrivacyPolicy.fromJson(json["privacy_policy"]),
-        platformManager: PlatformManaGer.fromJson(json["owner_teacher"]),
-        contact: Contact.fromJson(json["contact"]),
-        features: Features.fromJson(json["features"]),
-        aboutUs: AboutUs.fromJson(json["about_us"]),
-        adminContact: AdminContact.fromJson(json["admin_contact"]),
+        privacyPolicy: PrivacyPolicy.fromJson(json['privacy_policy']),
+        platformManager: PlatformManaGer.fromJson(json['owner_teacher']),
+        contact: Contact.fromJson(json['contact']),
+        features: Features.fromJson(json['features']),
+        aboutUs: AboutUs.fromJson(json['about_us']),
+        adminContact: AdminContact.fromJson(json['admin_contact']),
+        application: Application.fromJson(json['application']),
+      );
+}
+
+class Application {
+  final String googlePlay;
+  final String appStore;
+  Application({required this.appStore, required this.googlePlay});
+
+  factory Application.fromJson(Map<String, dynamic> json) => Application(
+        appStore: json['app_store'] ?? '',
+        googlePlay: json['google_play'] ?? '',
       );
 }
 
@@ -36,7 +50,7 @@ class AboutUs {
   });
 
   factory AboutUs.fromJson(Map<String, dynamic> json) => AboutUs(
-        description: json["description"],
+        description: json['description'],
       );
 }
 
@@ -65,16 +79,16 @@ class Contact {
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) => Contact(
-        whatsapp: json["whatsapp"] ?? "",
-        whatsappChannel: json["whatsapp_channel"] ?? "",
-        linkedin: json["linkedin"] ?? "",
-        facebook: json["facebook"] ?? "",
-        telegram: json["telegram"] ?? "",
-        youtube: json["youtube"] ?? "",
-        instagram: json["instagram"] ?? "",
-        email: json["email"] ?? "",
-        phone: json["phone"] ?? "",
-        twitter: json["twitter"] ?? '',
+        whatsapp: json['whatsapp'] ?? '',
+        whatsappChannel: json['whatsapp_channel'] ?? '',
+        linkedin: json['linkedin'] ?? '',
+        facebook: json['facebook'] ?? '',
+        telegram: json['telegram'] ?? '',
+        youtube: json['youtube'] ?? '',
+        instagram: json['instagram'] ?? '',
+        email: json['email'] ?? '',
+        phone: json['phone'] ?? '',
+        twitter: json['twitter'] ?? '',
       );
 }
 
@@ -86,12 +100,12 @@ class Features {
   });
 
   factory Features.fromJson(Map<String, dynamic> json) {
-    String? text1 = json["text1"];
-    String? text2 = json["text2"];
-    String? text3 = json["text3"];
-    String? text4 = json["text4"];
-    String? text5 = json["text5"];
-    String? text6 = json["text6"];
+    String? text1 = json['text1'];
+    String? text2 = json['text2'];
+    String? text3 = json['text3'];
+    String? text4 = json['text4'];
+    String? text5 = json['text5'];
+    String? text6 = json['text6'];
     List<String> texts = [];
     if (text1 != null) {
       texts.add(text1);
@@ -142,14 +156,14 @@ class PlatformManaGer {
 
   factory PlatformManaGer.fromJson(Map<String, dynamic> json) =>
       PlatformManaGer(
-          name: json["name"],
-          description: json["description"],
-          image: json["image"],
-          facebook: json["facebook"],
-          instagram: json["instagram"],
-          whatsapp: json["whatsapp"],
-          telegram: json["telegram"],
-          youtube: json["youtube"],
+          name: json['name'],
+          description: json['description'],
+          image: json['image'],
+          facebook: json['facebook'],
+          instagram: json['instagram'],
+          whatsapp: json['whatsapp'],
+          telegram: json['telegram'],
+          youtube: json['youtube'],
           show: boolConverter(json['show']));
 }
 
@@ -163,8 +177,8 @@ class Subjects {
   });
 
   factory Subjects.fromJson(Map<String, dynamic> json) => Subjects(
-        header: json["header"],
-        image1: json["image1"],
+        header: json['header'],
+        image1: json['image1'],
       );
 }
 
@@ -174,7 +188,7 @@ class PrivacyPolicy {
   PrivacyPolicy({required this.text});
 
   factory PrivacyPolicy.fromJson(Map<String, dynamic> json) => PrivacyPolicy(
-        text: json["text"],
+        text: json['text'],
       );
 }
 
@@ -185,7 +199,7 @@ class AdminContact {
   AdminContact({required this.email, required this.phone});
 
   factory AdminContact.fromJson(Map<String, dynamic> json) => AdminContact(
-        email: json["email"],
-        phone: json["phone"],
+        email: json['email'],
+        phone: json['phone'],
       );
 }

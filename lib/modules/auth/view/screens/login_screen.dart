@@ -10,11 +10,8 @@ import 'package:salamat/core/validators/password_validator.dart';
 import 'package:salamat/core/validators/username_validator.dart';
 import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
-import 'package:salamat/modules/auth/view/widgets/create_account_sheet.dart';
 import 'package:salamat/modules/info/cubit/info_cubit.dart';
 import 'package:salamat/utils/global_functions.dart';
-import 'package:salamat/modules/auth/view/widgets/recover_account_sheet.dart';
-import 'package:salamat/modules/auth/view/widgets/row_text_button.dart';
 import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/custom_button.dart';
@@ -82,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                                   },
                                   controller: authCubit.userNameController,
                                   validator: UsernameValidator.validate,
-                                  label: translate("username", context),
+                                  label: translate('username', context),
                                   keyboardtype: TextInputType.name,
                                 ),
                               ),
@@ -97,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                                   isPassword: true,
                                   validator: PasswordValidator.validate,
                                   controller: authCubit.passwordController,
-                                  label: translate("password", context),
+                                  label: translate('password', context),
                                   keyboardtype: TextInputType.visiblePassword,
                                 ),
                               ),
@@ -108,7 +105,7 @@ class LoginScreen extends StatelessWidget {
                                 FadeIn(
                                   delay: const Duration(milliseconds: 800),
                                   child: CustomButton(
-                                    label: translate("login", context),
+                                    label: translate('login', context),
                                     onPressed: () {
                                       authCubit.login();
                                     },
@@ -207,11 +204,11 @@ class _Header extends StatelessWidget {
               SizedBox(height: 20.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Text(translate("login_description", context),
+                child: Text(translate('login_description', context),
                     textAlign: TextAlign.center, style: titilliumSemiBold),
               ),
               SizedBox(height: 10.h),
-              Text(translate("login_now", context),
+              Text(translate('login_now', context),
                   style: titilliumBold.copyWith(
                     color: AppColors.SECONDRY,
                   )),
@@ -249,8 +246,11 @@ class ContactAdminDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.admin_panel_settings,
-              size: 56, color: AppColors.PRIMARY),
+          const Icon(
+            Icons.admin_panel_settings,
+            size: 56,
+            color: AppColors.PRIMARY,
+          ),
           const SizedBox(height: 20),
           Text(
             translate('contact_admin_message', context),
@@ -294,7 +294,7 @@ class ContactAdminDialog extends StatelessWidget {
           ),
           onPressed: () {
             EasyLauncher.url(
-                url: "https://wa.me/$phoneNumber", mode: Mode.externalApp);
+                url: 'https://wa.me/$phoneNumber', mode: Mode.externalApp);
           },
         ),
       ],
