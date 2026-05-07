@@ -99,11 +99,14 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     }
 
     if (!_downloaderConfigured) {
-      await downloader.configure(globalConfig: [
-        (Config.requestTimeout, const Duration(seconds: 100)),
-      ], androidConfig: [
-        (Config.runInForeground, Config.always),
-      ]);
+      await downloader.configure(
+        globalConfig: [
+          (Config.requestTimeout, const Duration(seconds: 100)),
+        ],
+        androidConfig: [
+          (Config.runInForeground, Config.always),
+        ],
+      );
       _downloaderConfigured = true;
     }
 

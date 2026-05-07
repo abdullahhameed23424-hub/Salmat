@@ -11,7 +11,7 @@ import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/comments/cubit/comments_cubit.dart';
 import 'package:salamat/modules/comments/view/widgets/comment_card.dart';
 import 'package:salamat/modules/comments/view/widgets/comment_input_field.dart';
-import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/modules/startup/view/screen/get_started_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 import 'package:salamat/widgets/app_loading.dart';
 import 'package:salamat/widgets/app_scaffold.dart';

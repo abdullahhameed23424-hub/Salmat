@@ -8,7 +8,7 @@ import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
 import 'package:salamat/modules/auth/view/screens/login_screen.dart';
-import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/modules/startup/view/screen/get_started_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 
 import 'package:salamat/constant/images.dart';

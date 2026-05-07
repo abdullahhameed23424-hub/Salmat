@@ -10,7 +10,7 @@ import 'package:salamat/localization/language_constrants.dart';
 import 'package:salamat/modules/auth/cubit/auth_cubit.dart';
 import 'package:salamat/modules/auth/view/screens/change_password_screen.dart';
 import 'package:salamat/modules/auth/view/widgets/delete_account_dialog.dart';
-import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/modules/startup/view/screen/get_started_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 import 'package:salamat/widgets/app_scaffold.dart';
 import 'package:salamat/widgets/custom_button.dart';

@@ -3,13 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:salamat/constant/app_colors.dart';
 
 class AppLoading extends StatelessWidget {
+  final Color? color;
   const AppLoading({
     super.key,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: StretchedDots(color: AppColors.PRIMARY, size: 60.sp));
+    return Center(
+      child: StretchedDots(
+        color: color ?? AppColors.PRIMARY,
+        size: 60.sp,
+      ),
+    );
   }
 }
 

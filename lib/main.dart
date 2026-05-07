@@ -16,7 +16,7 @@ import 'package:salamat/helper/cach_helper.dart';
 import 'package:salamat/modules/downloads/file_manager/file_manager_cubit.dart';
 import 'package:salamat/modules/notifications/cubit/notifications_cubit.dart';
 import 'package:salamat/modules/Theme/cubit/theme_cubit.dart';
-import 'package:salamat/modules/startup/splash_screen.dart';
+import 'package:salamat/modules/startup/view/screen/splash_screen.dart';
 import 'package:salamat/screens/notifications_screen.dart';
 import 'package:salamat/utils/device_type.dart';
 import 'package:salamat/localization/cubit/localization_cubit.dart';

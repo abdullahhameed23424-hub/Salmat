@@ -119,9 +119,9 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                 if (lessonsCubit.buttonStatus ==
                     NextLessonButtonStatus.OPEN_NEXT_UNIT) {
                   Navigator.pop(context,
-                      {"next_unit_id": lessonsCubit.lessonDetails.nextUnitId!});
+                      {'next_unit_id': lessonsCubit.lessonDetails.nextUnitId!});
                   customSnackBar(context,
-                      success: 1, message: "تم إنهاء الوحدة");
+                      success: 1, message: 'تم إنهاء الوحدة');
                 } else if (lessonsCubit.buttonStatus ==
                     NextLessonButtonStatus.OPEN_AND_MOVE) {
                   lessonsCubit.getLessonDetails(
@@ -142,11 +142,12 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                 ScreenProtector.protectDataLeakageOff();
 
                 pushTo(
-                    context: context,
-                    toPage: TestScreen(
-                      examId: lessonsCubit.lessonDetails.exam!.id,
-                      lesson: lessonsCubit.lessonDetails,
-                    ));
+                  context: context,
+                  toPage: TestScreen(
+                    examId: lessonsCubit.lessonDetails.exam!.id,
+                    lesson: lessonsCubit.lessonDetails,
+                  ),
+                );
               } else if (state is SkipTestErrorState) {
                 if (_loadingDialogKey.currentState != null) {
                   Navigator.pop(context);
@@ -181,11 +182,11 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
               return BlocProvider(
                 create: (context) {
                   downloadCubit = DownloadCubit2(
-                      link: "",
+                      link: '',
                       fileName: Platform.isIOS
                           ? "${("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}").replaceAll("-", "_")}.mp4"
-                          : ("${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}")
-                              .replaceAll("-", "_"),
+                          : ('${lessonsCubit.lessonDetails.name.trim()}_100${lessonsCubit.lessonDetails.id}')
+                              .replaceAll('-', '_'),
                       localPath: FileManagerCubit.privatePath,
                       showContentLength: true,
                       metaId: lessonsCubit.lessonDetails.id)
@@ -309,7 +310,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                                           ]),
                                                     ),
                                                     child: const Text(
-                                                      "يتم تحضير الفيديو الرجاء الانتظار..",
+                                                      'يتم تحضير الفيديو الرجاء الانتظار..',
                                                       style: TextStyle(
                                                           color: AppColors
                                                               .LOGO_PRIMARY),
@@ -380,7 +381,7 @@ class _LessonDetailsScreenState extends State<LessonDetailsScreen>
                                       : lessonsCubit.lessonDetails.exam
                                                   ?.isSolving ==
                                               true
-                                          ? "إتمام الاختبار"
+                                          ? 'إتمام الاختبار'
                                           : translate('do_exam', context),
                                   onTap: () async {
                                     final bool? startExam =
@@ -474,7 +475,7 @@ class NextAndLastLessonButtons extends StatelessWidget {
   final LessonsCubit lessonsCubit;
   @override
   Widget build(BuildContext context) {
-    print("lessonsCubit.buttonStatus: ${lessonsCubit.buttonStatus}");
+    print('lessonsCubit.buttonStatus: ${lessonsCubit.buttonStatus}');
     return Container(
       decoration: BoxDecoration(
           color: AppColors.LIGHTGRAY, borderRadius: BorderRadius.circular(50)),
@@ -584,11 +585,11 @@ class _LessonTapsState extends State<_LessonTaps> {
         title: Row(
           children: [
             Text(
-              "المرفقات",
+              'المرفقات',
               style: titilliumBold,
             ),
             if (widget.lessonsCubit.lessonDetails.attachmentCount > 0)
-              Text(" +${widget.lessonsCubit.lessonDetails.attachmentCount}")
+              Text(' +${widget.lessonsCubit.lessonDetails.attachmentCount}')
           ],
         ),
         children: [_LessonAttachments(widget.lessonsCubit.lessonDetails)],
@@ -655,7 +656,9 @@ class _LessonAttachments extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(bottom: 10.h, top: 2),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1, childAspectRatio: 1.2, mainAxisSpacing: 15.h),
+            crossAxisCount: 1,
+            childAspectRatio: 12 / 16,
+            mainAxisSpacing: 15.h),
         itemCount: lesson.files.length,
         itemBuilder: (BuildContext context, int index) {
           return AttachmentCard(file: lesson.files[index]);
@@ -677,7 +680,7 @@ class _LessonDscription extends StatelessWidget {
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
         title: Text(
-          translate("description", context),
+          translate('description', context),
           style: titilliumBold,
         ),
         children: [
@@ -738,7 +741,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
                 // Duration text
                 Expanded(
                   child: Text(
-                    translate("duration_label", context,
+                    translate('duration_label', context,
                         args: [widget.lesson.time]),
                     style: titilliumBold.copyWith(
                       color: AppColors.WHITE,
@@ -783,7 +786,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            widget.download.mbProgress ?? "",
+            widget.download.mbProgress ?? '',
             textDirection: TextDirection.ltr,
             style: titilliumBold.copyWith(
               decoration: TextDecoration.underline,
@@ -799,7 +802,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
-              "إلغاء التحميل",
+              'إلغاء التحميل',
               style: titilliumBold.copyWith(
                 decoration: TextDecoration.underline,
                 decorationColor: AppColors.LOGO_PRIMARY,
@@ -849,7 +852,7 @@ class _LessonHeaderState extends State<_LessonHeader> {
               ),
               onPressed: () => _showRemoveDialog(),
               child: Text(
-                "إزالة من عمليات التحميل",
+                'إزالة من عمليات التحميل',
                 style: TextStyle(
                   color: AppColors.WHITE,
                   fontSize: 10.sp,
@@ -863,9 +866,9 @@ class _LessonHeaderState extends State<_LessonHeader> {
 
   String _getDownloadButtonText() {
     if (widget.download.state is CompleteState) {
-      return "حذف الفيديو";
+      return 'حذف الفيديو';
     } else if (widget.download.state is FailedState) {
-      return "إعادة";
+      return 'إعادة';
     } else {
       return translate('download', context);
     }

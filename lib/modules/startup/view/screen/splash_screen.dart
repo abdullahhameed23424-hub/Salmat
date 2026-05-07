@@ -8,7 +8,7 @@ import 'package:salamat/constant/images.dart';
 import 'package:salamat/helper/app_sharedPreferance.dart';
 import 'package:salamat/localization/cubit/localization_cubit.dart';
 import 'package:salamat/modules/home/view/screens/bottom_nav_screen.dart';
-import 'package:salamat/modules/startup/get_started_screen.dart';
+import 'package:salamat/modules/startup/view/screen/get_started_screen.dart';
 import 'package:salamat/utils/global_functions.dart';
 
 class SplashScreen extends StatefulWidget {
