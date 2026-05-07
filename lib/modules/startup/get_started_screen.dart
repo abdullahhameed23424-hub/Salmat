@@ -68,20 +68,21 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
           ),
           SizedBox(height: 65.h),
           CustomButton(
+            label: translate('login', context),
+            onPressed: () {
+              pushTo(context: context, toPage: const LoginScreen());
+            },
+          ),
+          SizedBox(height: 25.h),
+          CustomButton(
             label: translate('login_as_guest', context),
             onPressed: () {
-              AppSharedPreferences.saveGuest("true");
+              AppSharedPreferences.saveGuest('true');
               pushTo(context: context, toPage: const BottomNavScreen());
             },
             buttonStyle: titilliumBold,
             backgroundColor: AppColors.LIGHTGRAY,
           ),
-          SizedBox(height: 25.h),
-          CustomButton(
-              label: translate('login', context),
-              onPressed: () {
-                pushTo(context: context, toPage: const LoginScreen());
-              }),
           SizedBox(height: 25.h),
         ],
       ),

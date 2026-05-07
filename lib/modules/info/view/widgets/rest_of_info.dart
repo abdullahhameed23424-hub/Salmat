@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:salamat/constant/app_colors.dart';
 import 'package:salamat/constant/custom_themes.dart';
 import 'package:salamat/constant/images.dart';
@@ -92,7 +94,11 @@ class RestOfInfo extends StatelessWidget {
               bottomLeft: Radius.circular(25.r),
             ),
             onPressed: () {
-              // Share.share(infoCubit.infoResponse. );
+              if (Platform.isAndroid) {
+                Share.share(infoCubit.infoResponse.application.googlePlay);
+              } else if (Platform.isIOS) {
+                Share.share(infoCubit.infoResponse.application.appStore);
+              }
             },
           ),
           SizedBox(height: 20.h),

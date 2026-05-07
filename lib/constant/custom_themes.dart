@@ -2,11 +2,10 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:salamat/constant/app_colors.dart';
+import 'package:salamat/constant/dimensions.dart';
 
-import 'app_colors.dart';
-import 'dimensions.dart';
-
-const String FONTF_FAMILY = "NotoKufiArabic";
+const String FONTF_FAMILY = 'NotoKufiArabic';
 final TextStyle titilliumRegular = TextStyle(
     fontFamily: FONTF_FAMILY,
     fontSize: Dimensions.FONT_SIZE_SMALL,
@@ -41,4 +40,3 @@ final TextStyle titilliumBold = TextStyle(
   fontSize: Dimensions.FONT_SIZE_DEFAULT,
   fontWeight: FontWeight.w700,
 );
- 

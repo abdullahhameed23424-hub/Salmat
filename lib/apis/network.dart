@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -7,7 +6,7 @@ import 'package:dio/io.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:salamat/apis/urls.dart';
 
-import '../helper/app_sharedPreferance.dart';
+import 'package:salamat/helper/app_sharedPreferance.dart';
 
 class Network {
   static late Dio dio;
@@ -16,14 +15,13 @@ class Network {
     dio = Dio(BaseOptions(
       baseUrl: Urls.baseUrl,
       headers: {
-        'Authorization': "Bearer ${AppSharedPreferences.getToken}",
+        'Authorization': 'Bearer ${AppSharedPreferences.getToken}',
         'Content-Type': 'application/json',
-        "Accept": 'application/json',
-        "Accept-Charset": "application/json",
-        "locale": "ar",
-        "Accept-Language": AppSharedPreferences.getLocale
+        'Accept': 'application/json',
+        'Accept-Charset': 'application/json',
+        'locale': 'ar',
+        'Accept-Language': AppSharedPreferences.getLocale
       },
-
     ));
 
     dio.interceptors.add(PrettyDioLogger(
@@ -36,9 +34,8 @@ class Network {
         compact: true,
         maxWidth: 1000));
 
-    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
-        () {
-      HttpClient client = HttpClient();
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final HttpClient client = HttpClient();
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
 

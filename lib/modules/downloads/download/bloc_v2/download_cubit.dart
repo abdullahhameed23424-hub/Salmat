@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:background_downloader/background_downloader.dart';
@@ -11,86 +12,65 @@ import 'package:salamat/core/sqlite.dart';
 import 'package:salamat/modules/lessons/models/lesson.dart';
 
 class DownloadCubit2 extends Cubit<DownloadState2> {
-  static final FileDownloader _sharedDownloader = FileDownloader();
-  static bool _downloaderStarted = false;
-  static bool _downloaderConfigured = false;
-  static Stream<TaskUpdate>? _sharedUpdatesStream;
+  /// [REQUIRED]
+  String link; // Link to the file to be downloaded
+  String fileName; // Name of the file to be downloaded
+  String localPath; // Local path used for storing the file
+  /// [OPTIONAL]
+  String? mbProgress; // Progress of the download in MB
+  String? fileName2; // Used for saving the file with a different name
+  bool showContentLength; // Whether to show the content length
+  int? metaId; // Metadata ID used for storing and retrieving the file
+  bool requestWithFileName; // Whether to request the file with its name
+  DownloadCubit2({
+    required this.link,
+    required this.fileName,
+    required this.localPath,
+    this.fileName2,
+    this.showContentLength = false,
+    this.metaId,
+    this.requestWithFileName = false,
+  }) : super(InitialState());
 
+  /// [GET_UPDATES_STREAM] Stream for listening to download updates
   Stream<TaskUpdate> get _updatesStream =>
       _sharedUpdatesStream ??= downloader.updates.asBroadcastStream();
 
-  DownloadCubit2(
-      {required this.link,
-      required this.fileName,
-      this.fileName2,
-      required this.localPath,
-      this.showContentLength = false,
-      this.metaId,
-      this.requestWithFileName = false})
-      : super(InitialState());
+  /// [INSTACNES]
+  static final FileDownloader _sharedDownloader =
+      FileDownloader(); // Shared FileDownloader instance
+  final FileDownloader downloader =
+      _sharedDownloader; // Downloader instance used for downloading the file
+  static Stream<TaskUpdate>?
+      _sharedUpdatesStream; // Stream for listening to download updates
+  StreamSubscription<TaskUpdate>?
+      _updatesSubscription; // Subscription for listening to download updates
+  TaskStatus status = TaskStatus.notFound; // Status of the download
+  Task? task; // Task for the download
+  TaskRecord? taskRecord; // Task record for the download
+  late AndroidDeviceInfo
+      androidInfo; // Android device info used for checking the file permission
 
-  Task? task;
-  TaskRecord? taskRecord;
-  // late List<Task> tasks;
-  bool requestWithFileName;
-  String localPath;
-  TaskStatus status = TaskStatus.notFound;
-  double progress = 0;
-  String? mbProgress;
-  String link;
-  String fileName;
-  String? fileName2;
-  int? contentLength;
-  int? mbContentLength;
-  int? metaId;
-  bool showContentLength;
-  late AndroidDeviceInfo androidInfo;
-  final FileDownloader downloader = _sharedDownloader;
-  StreamSubscription<TaskUpdate>? _updatesSubscription;
-  void calMbProgress() {
-    if (mbContentLength != null) {
-      mbProgress =
-          '${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB';
-    }
-  }
+  /// [NORMAL]
+  int? contentLength; // Length of the content by bytes
+  int? mbContentLength; // Length of the content by MB
+  static bool _downloaderConfigured =
+      false; // Whether the downloader has been configured
+  static bool _downloaderStarted = false; // Whether the downloader has started
+  double progress = 0; // Progress of the download
 
-  @override
-  Future<void> close() {
-    _updatesSubscription?.cancel();
-    return super.close();
-  }
-
-  void listener(TaskUpdate update) {
-    if (update is TaskStatusUpdate) {
-      print('task status show listener ${status}');
-
-      if (update.task.taskId == task?.taskId) {
-        status = update.status;
-        checkAndEmit(status, progress);
-      }
-    }
-    if (update is TaskProgressUpdate) {
-      if (update.task.taskId == task?.taskId) {
-        progress = update.progress;
-        checkAndEmit(status, progress);
-      }
-    }
-  }
-
+  /// [INIT]
   void init() async {
-    // print("show all the tasks ${(await downloader.allTasks()).last.filename}");
-    // downloader.cancelAll();
-
-    // await downloader.trackTasks();
-
-    // print("hhhhdk${(await downloader.database.allRecordsWithStatus(TaskStatus.running)).toList().length}");
-
+    /// [CHECK_CONTENT_LENGTH]
+    // Check the content length if needed
     if (showContentLength) {
       await getContentLength();
       getMbContentLength();
     }
 
-    List<TaskRecord> foundTasks = (await downloader.database.allRecords())
+    /// [FOUND_TASKS]
+    // get the task from the database
+    final List<TaskRecord> foundTasks = (await downloader.database.allRecords())
         .where(
           (element) => element.task.filename == fileName,
         )
@@ -122,7 +102,7 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       await downloader.configure(globalConfig: [
         (Config.requestTimeout, const Duration(seconds: 100)),
       ], androidConfig: [
-        (Config.runInForeground, Config.always)
+        (Config.runInForeground, Config.always),
       ]);
       _downloaderConfigured = true;
     }
@@ -130,9 +110,47 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     _updatesSubscription ??= _updatesStream.listen(listener);
   }
 
+  /// [DISPOSE]
+  @override
+  Future<void> close() {
+    /// [FOR_PREVENT_MEMORY_LEAKS]
+    _updatesSubscription?.cancel();
+    return super.close();
+  }
+
+  /// [CALCULATE_PROGRESS_IN_MB]
+  // Method to calculate the progress in MB
+  void calMbProgress() {
+    if (mbContentLength != null) {
+      mbProgress =
+          '${((progress / 100) * mbContentLength!).toStringAsFixed(1)} / ${mbContentLength}MB';
+    }
+  }
+
+  /// [LISTENER_FOR_DOWNLOAD_UPDATES]
+  // listener for download updates
+  void listener(TaskUpdate update) {
+    if (update is TaskStatusUpdate) {
+      log('task status show listener $status');
+
+      if (update.task.taskId == task?.taskId) {
+        status = update.status;
+        checkAndEmit(status, progress);
+      }
+    }
+    if (update is TaskProgressUpdate) {
+      if (update.task.taskId == task?.taskId) {
+        progress = update.progress;
+        checkAndEmit(status, progress);
+      }
+    }
+  }
+
+  /// [CHECK_PERMISSION]
+  // Check the permission for the download
   static Future<bool> checkPermission() async {
     if (Platform.isIOS) return true;
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo;
     androidInfo = await deviceInfo.androidInfo;
 
@@ -151,9 +169,14 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     return false;
   }
 
+  /// [CHECK_AND_EMIT]
+  // Check the status and emit the appropriate state
   void checkAndEmit(TaskStatus status1, double progress1) async {
+    /// [PROGRESS_IN_MB]
+    // Calculate the progress in MB
     progress = math.max(0, double.parse((progress1 * 100).toStringAsFixed(1)));
     calMbProgress();
+
     if (status1 == TaskStatus.notFound) {
       if (isClosed) return;
       emit(TaskNotFoundState());
@@ -179,6 +202,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     }
   }
 
+  /// [REQUEST_DOWNLOAD]
+  // Request the download
   void requestDownload({bool showNot = true, Lesson? lessonModel}) async {
     if (state is RequestingState ||
         state is QueuedState ||
@@ -192,9 +217,13 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
       return;
     }
     try {
+      /// [GET_CONTENT_LENGTH]
+      // Get the content length
       await getContentLength();
       getMbContentLength();
 
+      /// [CONFIGURE_NOTIFICATION]
+      // Configure the notification for the download
       try {
         downloader.configureNotification(
           running: TaskNotification(fileName, ''),
@@ -205,9 +234,11 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
           progressBar: true,
         );
       } catch (error) {
-        print('conf error $error');
+        log('conf error $error');
       }
 
+      /// [TASK]
+      // Task for the download
       task = DownloadTask(
         url: link,
         filename: fileName,
@@ -229,12 +260,14 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
         emit(QueuedState());
       }
     } catch (error) {
-      print('error is $error');
+      log('error is $error');
       if (isClosed) return;
       emit(RequestingFailedState());
     }
   }
 
+  /// [GET_CONTENT_LENGTH]
+  // Get the content length
   Future<void> getContentLength() async {
     try {
       if (showContentLength == false) {
@@ -246,16 +279,20 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
           .first
           .toString());
     } catch (error) {
-      print('errorr is $error');
+      log('error is $error');
     }
   }
 
+  /// [GET_MB_CONTENT_LENGTH]
+  // Get the content length in MB
   void getMbContentLength() {
     if (contentLength != null) {
       mbContentLength = contentLength! ~/ 1000000;
     }
   }
 
+  /// [RETRY]
+  // Retry the download
   void retry() async {
     emit(RetryingState());
 
@@ -271,21 +308,21 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     emit(RetriedState());
   }
 
+  /// [CANCEL_DOWNLOAD]
+  // Cancel the download
   void cancelDownload() async {
     emit(CancellingSate());
     try {
-      // await FlutterDownloader.cancel(taskId: taskId);
-      await downloader.cancel(
-        (task as DownloadTask),
-      );
+      await downloader.cancel((task as DownloadTask));
     } catch (error) {
-      print('show the cancel error $error');
-      //
+      log('show the cancel error $error');
     }
     if (isClosed) return;
     emit(CanceledState());
   }
 
+  /// [REMOVE_TASK]
+  // Remove the task from the database
   void removeTask() async {
     emit(CancellingSate());
     try {
@@ -300,6 +337,8 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     emit(TaskNotFoundState());
   }
 
+  /// [DELETE_FILE]
+  // Delete the file from the device
   void deleteFile() async {
     if (!await checkPermission()) {
       return;
@@ -307,15 +346,17 @@ class DownloadCubit2 extends Cubit<DownloadState2> {
     await File(localPath + fileName).delete(recursive: true);
   }
 
+  /// [DELETE_LESSON]
+  // Delete the lesson from the database
   void deleteLesson(int lessonId) {
     SqliteHelper.deleteLesson(lessonId);
     removeTask();
   }
 
+  /// [CANCEL_LESSON]
+  // Cancel the lesson from the database
   void cancelLesson(int id) {
-    ///Remove lessons from Sqlite table
     SqliteHelper.deleteLesson(id);
-
     cancelDownload();
   }
 }
